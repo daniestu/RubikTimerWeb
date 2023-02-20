@@ -6,17 +6,15 @@
     <jsp:include page="head.jsp" />
     <script src="js/scrambleScript.js"></script>
     <link rel="stylesheet" type="text/css" href="css/cronometroStyles.css">
+    <link rel="stylesheet" type="text/css" href="css/asideStyles.css">
+    <link rel="stylesheet" type="text/css" href="css/scrambleStyles.css">
   </head>
   <body>
     <div class="scramble-container">
       <p id="scramble"></p>
     </div>
     <aside class="aside-container">
-      <ul>
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
-      </ul>
+      <img id="logo" src="images/logo.png" alt="Rubik timer">
     </aside>
     <div class="cronometro-container">
       <p id="cronometro">00:00:00</p>
