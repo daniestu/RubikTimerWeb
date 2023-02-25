@@ -42,6 +42,30 @@
   	<description></description>
   	<servlet-class>controller.GenerarScrambleServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>GetEstadisticasServlet</servlet-name>
+  	<display-name>GetEstadisticasServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.GetEstadisticasServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>GetTiemposServlet</servlet-name>
+  	<display-name>GetTiemposServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.GetTiemposServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>GetSesionesServlet</servlet-name>
+  	<display-name>GetSesionesServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.GetSesionesServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>CrearSesionServlet</servlet-name>
+  	<display-name>CrearSesionServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.CrearSesionServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>GuardaTiempoServlet</servlet-name>
   	<url-pattern>/GuardaTiempoServlet</url-pattern>
@@ -57,5 +81,21 @@
   <servlet-mapping>
   	<servlet-name>GenerarScrambleServlet</servlet-name>
   	<url-pattern>/GenerarScrambleServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>GetEstadisticasServlet</servlet-name>
+  	<url-pattern>/GetEstadisticasServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>GetTiemposServlet</servlet-name>
+  	<url-pattern>/GetTiemposServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>GetSesionesServlet</servlet-name>
+  	<url-pattern>/GetSesionesServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>CrearSesionServlet</servlet-name>
+  	<url-pattern>/CrearSesionServlet</url-pattern>
   </servlet-mapping>
 </web-app>
