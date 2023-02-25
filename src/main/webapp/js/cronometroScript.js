@@ -50,8 +50,9 @@ function pad(numero, longitud) {
 }
 
 function guardarTiempo(tiempo, scramble) {
-	fetch('GuardaTiempoServlet?tiempo=' + tiempo + '&scramble=' + scramble)
+	fetch('GuardaTiempoServlet?tiempo=' + tiempo + '&scramble=' + scramble + '&sesion=' + document.getElementById("sesion_select").value)
 		.then(response => {
+			getTiemposSesion(document.getElementById("sesion_select").value)
 			console.log('El tiempo se ha guardado correctamente.');
 		})
 		.catch(error => {

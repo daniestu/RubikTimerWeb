@@ -5,6 +5,7 @@
   <head>
     <jsp:include page="head.jsp" />
     <script src="js/scrambleScript.js"></script>
+    <script src="js/sesionScript.js"></script>
     <link rel="stylesheet" type="text/css" href="css/cronometroStyles.css">
     <link rel="stylesheet" type="text/css" href="css/asideStyles.css">
     <link rel="stylesheet" type="text/css" href="css/scrambleStyles.css">
@@ -19,41 +20,37 @@
     	</div>
       	<div id="sesion_container">
 			<label id="sesion_label" for="sesion_select">Sesión:</label>
-		 	<select id="sesion_select">
-				<option value="option1">Option 1</option>
-				<option value="option2">Option 2</option>
-				<option value="option3">Option 3</option>
-			 </select>
+		 	<select id="sesion_select" onchange="getTiemposSesion(this.value)"></select>
       	</div>
       	<div id="estadisticas_container">
       		<table id="tablaEstadisticas">
 				<tr>
 					<th>Total</th>
-					<td></td>
+					<td id="total"></td>
 				</tr>
 				<tr>
 					<th>Mejor</th>
-					<td></td>
+					<td id="mejor"></td>
 				</tr>
 				<tr>
 					<th>Peor</th>
-					<td></td>
+					<td id="peor"></td>
 				</tr>
 				<tr>
 					<th>Ao5</th>
-					<td></td>
+					<td id="ao5"></td>
 				</tr>
 				<tr>
 					<th>Ao12</th>
-					<td></td>
+					<td id="ao12"></td>
 				</tr>
 				<tr>
 					<th>Ao100</th>
-					<td></td>
+					<td id="ao100"></td>
 				</tr>
 				<tr>
 					<th>Media</th>
-					<td></td>
+					<td id="media"></td>
 				</tr>
 			</table>
       	</div>
@@ -76,6 +73,9 @@
 		<p id="cronometro">00:00:00</p>
     </div>
     <script src="js/cronometroScript.js"></script>
-    <script>generateScramble();</script>
+    <script>
+	    generateScramble();
+	    getSesiones();
+    </script>
   </body>
 </html>

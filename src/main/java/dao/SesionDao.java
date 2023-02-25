@@ -12,45 +12,49 @@ import java.util.List;
 import java.util.Properties;
 
 import dao.contracts.Persistencia;
-import models.Usuario;
+import models.Sesion;
 import utils.AccesoBBDD;
 
-public class UsuarioDao implements Persistencia<Usuario>{
+public class SesionDao implements Persistencia<Sesion>{
 
 	@Override
-	public Usuario add(Usuario usuario) throws IOException{
-		String sql = "INSERT INTO usuario (usuario, contrasena, correo) VALUES (?, ?, ?)";
+	public Sesion add(Sesion sesion) throws IOException, SQLException {
+		String sql = "INSERT INTO sesion (nombre, usuario_id) VALUES (?, ?)";
 		AccesoBBDD accesoBBDD = new AccesoBBDD();
 		Properties prop = accesoBBDD.cargarFichero();
-        
+		
 		int generatedId = -1;
+		ResultSet rs = null;
         try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
-            statement.setString(1, usuario.getNombreUsuario());
-            statement.setString(2, usuario.getpassword());
-            statement.setString(3, usuario.getCorreo());
-            
+        	statement.setString(1, sesion.getNombre());
+        	statement.setInt(2, sesion.getUsuario_id());
             statement.executeUpdate();
             
-            ResultSet rs = statement.getGeneratedKeys();
+            rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 generatedId = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+	    	if (rs != null) {
+	            rs.close();
+	        }
+    	    
         }
         if (generatedId != -1) {
-        	usuario.setIdUsuario(generatedId);
+        	sesion.setId(generatedId);
 		}
         
-		return usuario;
+		return sesion;
 	}
 
 	@Override
-	public List<Usuario> getAll() throws IOException, SQLException {
-		List<Usuario> usuarios = new ArrayList<>();
-	    String query = "SELECT id, usuario, correo FROM usuario";
+	public List<Sesion> getAll() throws IOException, SQLException {
+		List<Sesion> sesiones = new ArrayList<>();
+	    String query = "SELECT id, nombre, usuario_id FROM sesion";
 	    
 	    AccesoBBDD accesoBBDD = new AccesoBBDD();
 		Properties prop = accesoBBDD.cargarFichero();
@@ -60,39 +64,45 @@ public class UsuarioDao implements Persistencia<Usuario>{
 	         ResultSet rs = stmt.executeQuery(query)) {
 	        while (rs.next()) {
 	            int id = rs.getInt("id");
-	            String usuario = rs.getString("usuario");
-	            String correo = rs.getString("correo");
+	            String nombre = rs.getString("nombre");
+	            int usuario_id = rs.getInt("usuario_id");
 
-	            Usuario u = new Usuario(id, usuario, correo);
-	            usuarios.add(u);
+	            Sesion s = new Sesion(id, nombre, usuario_id);
+	            sesiones.add(s);
 	        }
 	    }
 
-	    return usuarios;
+	    return sesiones;
 	}
 	
-	public Usuario getByUsernamePwd(String username, String password) throws IOException, SQLException {
+	public Sesion getByName(String nombreSesion, int id_usuario) throws IOException, SQLException {
+	    String query = "SELECT id, nombre, usuario_id FROM sesion WHERE nombre = ? AND usuario_id = ?";
+	    
 	    AccesoBBDD accesoBBDD = new AccesoBBDD();
 		Properties prop = accesoBBDD.cargarFichero();
-
-		Usuario usuario = null;
 		
-		String sql = "SELECT id, usuario, correo FROM usuario WHERE usuario = ? AND contrasena = ?";
+		Sesion sesion = null;
+		ResultSet rs = null;
 	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
-	    	stmt.setString(1, username);
-	        stmt.setString(2, password);
-	        ResultSet rs = stmt.executeQuery();
+    		PreparedStatement statement = conn.prepareStatement(query)) {
+	    	
+	    	statement.setString(1, nombreSesion);
+	    	statement.setInt(2, id_usuario);
+	    	rs = statement.executeQuery();
 	        if (rs.next()) {
-	        	usuario = new Usuario();
-	            usuario.setIdUsuario(rs.getInt("id"));
-	            usuario.setNombreUsuario(rs.getString("usuario"));
-	            usuario.setCorreo(rs.getString("correo"));
+	            int id = rs.getInt("id");
+	            String nombre = rs.getString("nombre");
+	            int usuario_id = rs.getInt("usuario_id");
+
+	            sesion = new Sesion(id, nombre, usuario_id);
 	        }
-	        rs.close();
+	    }finally {
+	    	if (rs != null) {
+	            rs.close();
+	        }
 	    }
 
-	    return usuario;
+	    return sesion;
 	}
-
+	
 }
