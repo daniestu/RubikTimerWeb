@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,6 +40,15 @@ public class LoginServlet extends HttpServlet {
     			request.getRequestDispatcher("login.jsp").forward(request, response);
     		}else {
     			request.getSession().setAttribute("usuario", usuario);
+    			
+    			Cookie usernameCookie = new Cookie("RubikTimerUsername", username);
+            	usernameCookie.setMaxAge(7 * 24 * 60 * 60);
+            	response.addCookie(usernameCookie);
+
+            	Cookie passwordCookie = new Cookie("RubikTimerPassword", password);
+            	passwordCookie.setMaxAge(7 * 24 * 60 * 60);
+            	response.addCookie(passwordCookie);
+            	
     			response.sendRedirect("index.jsp");
     		}
 		} catch (Exception e) {
