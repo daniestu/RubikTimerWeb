@@ -6,14 +6,26 @@
     <jsp:include page="head.jsp" />
     <script src="js/scrambleScript.js"></script>
     <script src="js/sesionScript.js"></script>
+    <script src="js/configuracionScript.js"></script>
     <link rel="stylesheet" type="text/css" href="css/cronometroStyles.css">
     <link rel="stylesheet" type="text/css" href="css/asideStyles.css">
     <link rel="stylesheet" type="text/css" href="css/scrambleStyles.css">
+    <link rel="stylesheet" type="text/css" href="css/configuracionStyles.css">
   </head>
   <body>
     <div class="scramble-container">
       <p id="scramble"></p>
     </div>
+	<img id="config-btn" src="images/config-icon.png"/>
+	<div id="config-container" style="display:none;">
+   		<ul id="config-menu">
+			<li><a href="#">Opción 1</a></li>
+			<li><a href="#">Opción 2</a></li>
+			<li><a href="#">Opción 3</a></li>
+			<hr>
+			<li><a href="#" id="logout">Cerrar sesión</a></li>
+		</ul>
+   	</div>
     <aside class="aside-container">
     	<div id="logo_container">
     		<img id="logo" src="images/logo.png" alt="Rubik timer">

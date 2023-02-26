@@ -1,0 +1,45 @@
+#config-btn {
+	position: fixed;
+	top: 0.5vh;
+	right: 0.5vw;
+	width: 3vh;
+	min-width: 20px;
+	padding: 0.5vh;
+}
+
+#config-btn:hover {
+	background-color: #4A6572;
+	border-radius: 10%;
+}
+
+#config-container {
+	position: fixed;
+	top: 5vh;
+	right: 0.5vw;
+	width: 24vh;
+	/*height: 80vh;*/
+	background-color: #4A6572;
+	border-radius: 12px;
+}
+
+#config-menu {
+    list-style: none;
+    width: 100%;
+    padding: 0px;
+}
+
+#config-menu li {
+  	color: white;
+  	text-align: left;
+  	padding-left: 10px;
+  	padding: 5px 10px;
+}
+
+#config-menu li:hover {
+  background-color: #3F545E;
+}
+
+#config-menu li a {
+  color: white;
+  text-decoration: none;
+}

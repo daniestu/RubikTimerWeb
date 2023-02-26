@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -26,7 +25,7 @@ public class GetTiemposServlet extends HttpServlet {
         super();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession(false);
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
@@ -39,16 +38,25 @@ public class GetTiemposServlet extends HttpServlet {
 		try {
 			sesion = sesionService.getByName(nombre_sesion, usuario);
 			solves = solveService.getAll(sesion);
-		} catch (IOException | SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			if (usuario != null) {
+				e.printStackTrace();
+			}
 		}
 		
-		String json = new Gson().toJson(solves);
-		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);
+		if (usuario == null) {
+			String json = "{\"usuario\":\"nulo\"}";
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
+		}else {
+			String json = new Gson().toJson(solves);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
+		}
 	}
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

@@ -22,50 +22,56 @@ function getTiemposSesion(sesion) {
 	fetch('GetTiemposServlet?sesion=' + sesion)
 		.then(response => response.json())
 		.then(json => {
-			json = formatJsonTiempos(json);
-			getEstadisticasSesion(json);
-			const tbody = document.querySelector('#tablaTiempos tbody');
-			tbody.innerHTML = '';
-			for (let i = json.length-1; i >= 0; i--) {
-				const tiempo = json[i];
-				const tr = document.createElement('tr');
-				
-				const idTd = document.createElement('td');
-				const idSpan = document.createElement('span');
-				idTd.textContent = i+1;
-				idSpan.textContent = tiempo.id;
-				idSpan.style.display = "none";
-				tr.appendChild(idTd);
-				tr.appendChild(idSpan);
-				
-				const tiempoTd = document.createElement('td');
-				tiempoTd.textContent = tiempo.tiempo;
-				tr.appendChild(tiempoTd);
-				
-				const mas2Td = document.createElement('td');
-				if (tiempo.mas_2) {
-					mas2Td.textContent = "x";
+			console.log(json);
+			if(json.usuario == "nulo") {
+				window.location.href = "./login.jsp";
+			}else {
+				json = formatJsonTiempos(json);
+				getEstadisticasSesion(json);
+				const tbody = document.querySelector('#tablaTiempos tbody');
+				tbody.innerHTML = '';
+				for (let i = json.length-1; i >= 0; i--) {
+					const tiempo = json[i];
+					const tr = document.createElement('tr');
+					
+					const idTd = document.createElement('td');
+					const idSpan = document.createElement('span');
+					idTd.textContent = i+1;
+					idSpan.textContent = tiempo.id;
+					idSpan.style.display = "none";
+					tr.appendChild(idTd);
+					tr.appendChild(idSpan);
+					
+					const tiempoTd = document.createElement('td');
+					tiempoTd.textContent = tiempo.tiempo;
+					tr.appendChild(tiempoTd);
+					
+					const mas2Td = document.createElement('td');
+					if (tiempo.mas_2) {
+						mas2Td.textContent = "x";
+					}
+					tr.appendChild(mas2Td);
+					
+					
+					const dnfTd = document.createElement('td');
+					
+					if (tiempo.dnf) {
+						dnfTd.textContent = "x";
+					}
+					tr.appendChild(dnfTd);
+					
+					tbody.appendChild(tr);
 				}
-				tr.appendChild(mas2Td);
-				
-				
-				const dnfTd = document.createElement('td');
-				
-				if (tiempo.dnf) {
-					dnfTd.textContent = "x";
-				}
-				tr.appendChild(dnfTd);
-				
-				tbody.appendChild(tr);
 			}
 		});
+			
+			
 }
 
 function getSesiones() {
 	fetch('GetSesionesServlet')
 		.then(response => response.json())
 		.then(sesiones => {
-			console.log(sesiones.lenth);
 			if (sesiones.length == 0) {
 				crearSesion("Default");
 			}else {
@@ -78,6 +84,9 @@ function getSesiones() {
 				}
 				getTiemposSesion(document.getElementById("sesion_select").value);
 			}
+		})
+		.catch(function (error) {
+			console.log("problemas");
 		});
 }
 
