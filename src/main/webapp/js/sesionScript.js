@@ -1,3 +1,14 @@
+var originalSelectedOption;
+
+function sesionChanged(sesion){
+	if(sesion == "selectOptionNew") {
+		document.getElementById("sesion_select").value = originalSelectedOption;
+		document.getElementById("nuevaSesion-modal").style.display = "flex";
+	}else {
+		getTiemposSesion(sesion);
+	}
+}
+
 function getEstadisticasSesion(tiempos) {
 	const options = {
 	  method: 'POST',
@@ -19,6 +30,7 @@ function getEstadisticasSesion(tiempos) {
 }
 
 function getTiemposSesion(sesion) {
+	originalSelectedOption = sesion;
 	fetch('GetTiemposServlet?sesion=' + sesion)
 		.then(response => response.json())
 		.then(json => {
@@ -64,42 +76,65 @@ function getTiemposSesion(sesion) {
 				}
 			}
 		});
-			
-			
 }
 
 function getSesiones() {
-	fetch('GetSesionesServlet')
-		.then(response => response.json())
-		.then(sesiones => {
-			if (sesiones.length == 0) {
-				crearSesion("Default");
-			}else {
-				document.getElementById("sesion_select").innerHTML = "";
-				for (var i = 0; i < sesiones.length; i++) {
-					var option = document.createElement("option");
-					option.text = sesiones[i].nombre;
-					option.value = sesiones[i].nombre;
-					document.getElementById("sesion_select").add(option);
-				}
-				getTiemposSesion(document.getElementById("sesion_select").value);
-			}
-		})
-		.catch(function (error) {
-			console.log("problemas");
-		});
+  fetch('GetSesionesServlet')
+    .then(response => response.json())
+    .then(sesiones => {
+      if (sesiones.length == 0) {
+        crearSesion("Default");
+      } else {
+        const select = document.getElementById("sesion_select");
+        select.innerHTML = "";
+
+        for (var i = 0; i < sesiones.length; i++) {
+          const option = document.createElement("option");
+          option.text = sesiones[i].nombre;
+          option.value = sesiones[i].nombre;
+
+          select.add(option);
+        }
+
+        const separator = document.createElement("optgroup");
+        separator.label = "\u2014\u2014\u2014\u2014\u2014\u2014\u2014";
+        select.add(separator);
+
+        const nuevaSesion = document.createElement("option");
+        nuevaSesion.text = "Nueva sesión";
+        nuevaSesion.value = "selectOptionNew";
+        select.add(nuevaSesion);
+
+        getTiemposSesion(select.value);
+      }
+    });
 }
 
 function crearSesion(nombreSesion) {
-	fetch('CrearSesionServlet?sesion=' + nombreSesion)
-		.then(response => response.json())
-		.then(sesion => {
-			document.getElementById("sesion_select").innerHTML = "";
-			var option = document.createElement("option");
-			option.text = sesion.nombre;
-			option.value = sesion.nombre;
-			document.getElementById("sesion_select").add(option);
+	event.preventDefault();
+	if(validarNombreSesion(nombreSesion)) {
+		fetch('CrearSesionServlet?sesion=' + nombreSesion)
+			.then(response => response.json())
+			.then(sesion => {
+				var option = document.createElement("option");
+				option.text = sesion.nombre;
+				option.value = sesion.nombre;
+				document.getElementById("sesion_select").add(option);
+				document.getElementById("nuevaSesion-modal").style.display = "none";
 		});
+	}else {
+		document.getElementById("nuevaSesion-modal-error").style.display = "block";
+	}
+}
+
+function validarNombreSesion(nombreSesion) {
+	var opciones = $('#sesion_select option');
+	for (var i = 0; i < opciones.length; i++) {
+		if (opciones[i].value === nombreSesion) {
+			return false;
+		}
+	}
+	return true;
 }
 
 function formatJsonTiempos(json) {

@@ -1,8 +1,9 @@
 $(document).ready(function() {
     var configContainer = $("#config-container");
     var configBtn = $("#config-btn");
+    var nuevaSesionModal = $("#nuevaSesion-modal-content");
+    var sesionSelect = $("#sesion_select");
 
-    // Muestra u oculta el contenedor y cambia el color del botón
     function toggleConfigContainer() {
         configContainer.toggle();
         if (configContainer.is(":visible")) {
@@ -12,18 +13,21 @@ $(document).ready(function() {
         }
     }
 
-    // Cuando se hace clic en el botón, se muestra u oculta el contenedor
     configBtn.click(function() {
         toggleConfigContainer();
     });
 
-    // Cuando se hace clic en el documento, si no es el contenedor ni alguno de sus hijos, se oculta el contenedor
 	$(document).click(function(event) {
 		if (!configContainer.is(event.target) && configContainer.has(event.target).length === 0 
 			&& !configBtn.is(event.target) && configBtn.has(event.target).length === 0 
 			&& !configBtn.find('img').is(event.target) && configBtn.find('img').has(event.target).length === 0) {
 				configContainer.hide();
 				configBtn.css("background-color", "#1c2833");
+		}
+		if (!nuevaSesionModal.is(event.target) && nuevaSesionModal.has(event.target).length === 0
+			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0) {
+				$("#nuevaSesion-modal").hide();
+				$("#nombre_sesion").val("");
 		}
 	});
 	
