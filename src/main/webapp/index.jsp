@@ -4,18 +4,32 @@
 <html>
   <head>
     <jsp:include page="head.jsp" />
-    <script src="js/scrambleScript.js"></script>
-    <script src="js/sesionScript.js"></script>
-    <script src="js/configuracionScript.js"></script>
+    <meta charset="UTF-8">
+    <script src="js/scrambleScript.js" charset="UTF-8"></script>
+    <script src="js/sesionScript.js" charset="UTF-8"></script>
+    <script src="js/configuracionScript.js" charset="UTF-8"></script>
     <link rel="stylesheet" type="text/css" href="css/cronometroStyles.css">
     <link rel="stylesheet" type="text/css" href="css/asideStyles.css">
     <link rel="stylesheet" type="text/css" href="css/scrambleStyles.css">
     <link rel="stylesheet" type="text/css" href="css/configuracionStyles.css">
+    <link rel="stylesheet" type="text/css" href="css/sesionStyles.css">
   </head>
   <body>
     <div class="scramble-container">
       <p id="scramble"></p>
     </div>
+    <div id="nuevaSesion-modal" class="modal">
+		<div id="nuevaSesion-modal-content">
+			<h2>Crear nueva sesión</h2>
+			<form onsubmit="event.preventDefault();crearSesion(document.getElementById('nombre_sesion').value)">
+				<label for="nombre_sesion">Nombre de la sesión</label>
+				<input type="text" id="nombre_sesion" autocomplete="off" onchange="document.getElementById('nuevaSesion-modal-error').style.display = 'none'" required>
+				<br>
+				<button type="submit" id="guardar_sesion">Guardar</button>
+				<span id="nuevaSesion-modal-error" style="color:red; display:none;">Ya existe una sesión con ese nombre.</span>
+			</form>
+		</div>
+	</div>
 	<img id="config-btn" src="images/config-icon.png"/>
 	<div id="config-container" style="display:none;">
    		<ul id="config-menu">
@@ -32,7 +46,7 @@
     	</div>
       	<div id="sesion_container">
 			<label id="sesion_label" for="sesion_select">Sesión:</label>
-		 	<select id="sesion_select" onchange="getTiemposSesion(this.value)"></select>
+		 	<select id="sesion_select" onchange="sesionChanged(this.value)"></select>
       	</div>
       	<div id="estadisticas_container">
       		<table id="tablaEstadisticas">
