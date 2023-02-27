@@ -115,4 +115,22 @@ public class SolveDao implements Persistencia<Solve>{
 	    return solves;
 	}
 
+	public boolean deleteBySesion(Integer id_sesion) {
+		String sql = "DELETE FROM tiempos WHERE sesion_id = ?";
+		AccesoBBDD accesoBBDD = new AccesoBBDD();
+		Properties prop = accesoBBDD.cargarFichero();
+		
+        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id_sesion);
+            statement.executeUpdate();
+            
+            return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+	}
+
 }

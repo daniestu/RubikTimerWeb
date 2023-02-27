@@ -18,4 +18,9 @@ public class SolveService {
 		SolveDao solveDao = new SolveDao();
 		return solveDao.getAllBySesion(sesion.getId());
 	}
+
+	public boolean deleteBySesion(Integer id_sesion) {
+		SolveDao solveDao = new SolveDao();
+		return solveDao.deleteBySesion(id_sesion);
+	}
 }

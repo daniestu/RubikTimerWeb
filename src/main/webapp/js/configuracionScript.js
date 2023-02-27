@@ -2,6 +2,7 @@ $(document).ready(function() {
     var configContainer = $("#config-container");
     var configBtn = $("#config-btn");
     var nuevaSesionModal = $("#nuevaSesion-modal-content");
+    var borrarSesionModal = $("#borrarSesion-modal-content");
     var sesionSelect = $("#sesion_select");
 
     function toggleConfigContainer() {
@@ -28,6 +29,10 @@ $(document).ready(function() {
 			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0) {
 				$("#nuevaSesion-modal").hide();
 				$("#nombre_sesion").val("");
+		}
+		if (!borrarSesionModal.is(event.target) && borrarSesionModal.has(event.target).length === 0
+			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0) {
+				$("#borrarSesion-modal").hide();
 		}
 	});
 	

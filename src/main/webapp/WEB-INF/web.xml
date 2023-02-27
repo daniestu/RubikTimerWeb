@@ -72,6 +72,12 @@
   	<description></description>
   	<servlet-class>controller.LogoutServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>BorrarSesionServlet</servlet-name>
+  	<display-name>BorrarSesionServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.BorrarSesionServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>GuardaTiempoServlet</servlet-name>
   	<url-pattern>/GuardaTiempoServlet</url-pattern>
@@ -107,5 +113,9 @@
   <servlet-mapping>
   	<servlet-name>LogoutServlet</servlet-name>
   	<url-pattern>/LogoutServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>BorrarSesionServlet</servlet-name>
+  	<url-pattern>/BorrarSesionServlet</url-pattern>
   </servlet-mapping>
 </web-app>
