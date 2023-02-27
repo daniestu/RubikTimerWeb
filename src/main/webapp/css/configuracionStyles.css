@@ -5,11 +5,11 @@
 	width: 3vh;
 	min-width: 20px;
 	padding: 0.5vh;
+	border-radius: 10%;
 }
 
 #config-btn:hover {
 	background-color: #4A6572;
-	border-radius: 10%;
 }
 
 #config-container {
