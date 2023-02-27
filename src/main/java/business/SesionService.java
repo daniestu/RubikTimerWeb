@@ -35,4 +35,9 @@ public class SesionService {
 		sesion = sesionDao.add(sesion);
 		return sesion;
 	}
+	
+	public boolean deleteSesion(int id_sesion) {
+		SesionDao sesionDao = new SesionDao();
+		return sesionDao.remove(id_sesion);
+	}
 }

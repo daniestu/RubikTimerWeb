@@ -104,5 +104,23 @@ public class SesionDao implements Persistencia<Sesion>{
 
 	    return sesion;
 	}
+
+	public boolean remove(int id_sesion) {
+		String sql = "DELETE FROM sesion WHERE id = ?";
+		AccesoBBDD accesoBBDD = new AccesoBBDD();
+		Properties prop = accesoBBDD.cargarFichero();
+		
+        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id_sesion);
+            statement.executeUpdate();
+            
+            return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+	}
 	
 }

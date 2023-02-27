@@ -18,16 +18,29 @@
     <div class="scramble-container">
       <p id="scramble"></p>
     </div>
-    <div id="nuevaSesion-modal" class="modal">
-		<div id="nuevaSesion-modal-content">
+    <div id="nuevaSesion-modal" class="sesionModal">
+		<div id="nuevaSesion-modal-content" class="sesionModal-content">
 			<h2>Crear nueva sesión</h2>
 			<form onsubmit="event.preventDefault();crearSesion(document.getElementById('nombre_sesion').value)">
 				<label for="nombre_sesion">Nombre de la sesión</label>
 				<input type="text" id="nombre_sesion" autocomplete="off" onchange="document.getElementById('nuevaSesion-modal-error').style.display = 'none'" required>
 				<br>
-				<button type="submit" id="guardar_sesion">Guardar</button>
+				<button type="submit" id="sesionBtn-guardar">Guardar</button>
 				<span id="nuevaSesion-modal-error" style="color:red; display:none;">Ya existe una sesión con ese nombre.</span>
 			</form>
+		</div>
+	</div>
+	<div id="borrarSesion-modal" class="sesionModal">
+		<div id="borrarSesion-modal-content" class="sesionModal-content">
+			<h2>Eliminar sesión</h2>
+			<p>
+				Se eliminará la sesión y todos los tiempos asociados. ¿Seguro que desea continuar?
+			</p>
+			<div id="sesionBtn-container">
+				<button id="sesionBtn-aceptar" onclick="borrarSesion()">Aceptar</button>
+            	<button id="sesionBtn-cancelar" onclick="ocultarBorrarSesionModal()">Cancelar</button>
+	        </div>
+	        <span id="borrarSesion-modal-error" style="color:red; display:none;">Ha ocurrido un error al borrar la sesión.</span>
 		</div>
 	</div>
 	<img id="config-btn" src="images/config-icon.png"/>

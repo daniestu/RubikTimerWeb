@@ -3,7 +3,13 @@ var originalSelectedOption;
 function sesionChanged(sesion){
 	if(sesion == "selectOptionNew") {
 		document.getElementById("sesion_select").value = originalSelectedOption;
+		document.getElementById("nombre_sesion").value = "";
+		document.getElementById("nuevaSesion-modal-error").style.display = "none";
 		document.getElementById("nuevaSesion-modal").style.display = "flex";
+	}else if(sesion == "selectOptionDelete") {
+		document.getElementById("sesion_select").value = originalSelectedOption;
+		document.getElementById("borrarSesion-modal-error").style.display = "none";
+		document.getElementById("borrarSesion-modal").style.display = "flex";
 	}else {
 		getTiemposSesion(sesion);
 	}
@@ -34,7 +40,6 @@ function getTiemposSesion(sesion) {
 	fetch('GetTiemposServlet?sesion=' + sesion)
 		.then(response => response.json())
 		.then(json => {
-			console.log(json);
 			if(json.usuario == "nulo") {
 				window.location.href = "./login.jsp";
 			}else {
@@ -104,27 +109,49 @@ function getSesiones() {
         nuevaSesion.text = "Nueva sesión";
         nuevaSesion.value = "selectOptionNew";
         select.add(nuevaSesion);
+        
+        const borrarSesion = document.createElement("option");
+        borrarSesion.text = "Eliminar sesión";
+        borrarSesion.value = "selectOptionDelete";
+        select.add(borrarSesion);
 
+		if ( !(originalSelectedOption === undefined) ) {
+			select.value = originalSelectedOption;
+		}
         getTiemposSesion(select.value);
       }
     });
 }
 
 function crearSesion(nombreSesion) {
-	event.preventDefault();
 	if(validarNombreSesion(nombreSesion)) {
 		fetch('CrearSesionServlet?sesion=' + nombreSesion)
 			.then(response => response.json())
 			.then(sesion => {
-				var option = document.createElement("option");
-				option.text = sesion.nombre;
-				option.value = sesion.nombre;
-				document.getElementById("sesion_select").add(option);
+				originalSelectedOption = sesion.nombre;
+				getSesiones();
 				document.getElementById("nuevaSesion-modal").style.display = "none";
 		});
 	}else {
 		document.getElementById("nuevaSesion-modal-error").style.display = "block";
 	}
+}
+
+function borrarSesion() {
+	fetch('BorrarSesionServlet?sesion=' + originalSelectedOption)
+		.then(response => response.json())
+		.then(data => {
+			if(data.eliminado) {
+				originalSelectedOption = undefined;
+				getSesiones();
+				ocultarBorrarSesionModal();
+			}else {
+				document.getElementById("borrarSesion-modal-error").style.display = "block";
+			}
+		})
+		.catch(function() {
+			document.getElementById("borrarSesion-modal-error").style.display = "block";
+		});
 }
 
 function validarNombreSesion(nombreSesion) {
@@ -148,4 +175,8 @@ function formatJsonTiempos(json) {
 	}
 	
 	return json;
+}
+
+function ocultarBorrarSesionModal() {
+	document.getElementById("borrarSesion-modal").style.display = "none";
 }
