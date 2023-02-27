@@ -35,15 +35,6 @@ public class GetSesionesServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		if (sesiones == null || sesiones.size() == 0) {
-			if (usuario != null) {
-				System.out.println("no es null");
-				System.out.println("id: " + usuario.getIdUsuario() + ", nombre: " + usuario.getNombreUsuario() + ", correo: " + usuario.getCorreo());
-			}else {
-				System.out.println("Usuario nulo");
-			}
-		}
-		
 		String json = new Gson().toJson(sesiones);
 		
 		response.setContentType("application/json");
