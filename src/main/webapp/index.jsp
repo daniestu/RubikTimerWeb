@@ -8,7 +8,7 @@
     <script src="js/scrambleScript.js" charset="UTF-8"></script>
     <script src="js/sesionScript.js" charset="UTF-8"></script>
     <script src="js/configuracionScript.js" charset="UTF-8"></script>
-    <link rel="stylesheet" type="text/css" href="css/cronometroStyles.css">
+    <link rel="stylesheet" type="text/css" href="css/mainStyles.css">
     <link rel="stylesheet" type="text/css" href="css/asideStyles.css">
     <link rel="stylesheet" type="text/css" href="css/scrambleStyles.css">
     <link rel="stylesheet" type="text/css" href="css/configuracionStyles.css">
@@ -16,7 +16,7 @@
   </head>
   <body>
     <div class="scramble-container">
-      <p id="scramble"></p>
+      <p id="scramble" onclick="generateScramble()"></p>
     </div>
     <div id="nuevaSesion-modal" class="modal">
 		<div id="nuevaSesion-modal-content" class="modal-content">
@@ -66,11 +66,11 @@
 	<img id="config-btn" src="images/config-icon.png"/>
 	<div id="config-container" style="display:none;">
    		<ul id="config-menu">
-			<li><a href="#">Opción 1</a></li>
-			<li><a href="#">Opción 2</a></li>
-			<li><a href="#">Opción 3</a></li>
+			<li id="previus-scramble" class="list-item-disabled"><img id="previus-icon" class="config-icon" src="images/previus-disabled.png"/>Mezcla anterior</li>
+			<li id="next-scramble" class="list-item"><img id="next-icon" class="config-icon" src="images/next.png"/>Mezcla siguiente</li>
+			<li class="list-item">Opción 3</li>
 			<hr>
-			<li><a href="#" id="logout">Cerrar sesión</a></li>
+			<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="images/logout.png"/>Cerrar sesión</li>
 		</ul>
    	</div>
     <aside class="aside-container">
