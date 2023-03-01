@@ -43,7 +43,7 @@ function getTiemposSesion(sesion) {
 			if(json.usuario == "nulo") {
 				window.location.href = "./login.jsp";
 			}else {
-				json = formatJsonTiempos(json);
+				json = formatJsonTiempos(json, 0);
 				getEstadisticasSesion(json);
 				const tbody = document.querySelector('#tablaTiempos tbody');
 				tbody.innerHTML = '';
@@ -52,35 +52,52 @@ function getTiemposSesion(sesion) {
 					const tr = document.createElement('tr');
 					
 					const idTd = document.createElement('td');
-					const idSpan = document.createElement('span');
 					idTd.textContent = i+1;
-					idSpan.textContent = tiempo.id;
-					idSpan.style.display = "none";
 					tr.appendChild(idTd);
-					tr.appendChild(idSpan);
 					
 					const tiempoTd = document.createElement('td');
 					tiempoTd.textContent = tiempo.tiempo;
+					tiempoTd.classList.add('tablaTiempos-tiempo');
+					tiempoTd.onclick = function() {
+						mostrarTiempo(tiempo.id);
+					}
 					tr.appendChild(tiempoTd);
-					
-					const mas2Td = document.createElement('td');
-					if (tiempo.mas_2) {
-						mas2Td.textContent = "x";
-					}
-					tr.appendChild(mas2Td);
-					
-					
-					const dnfTd = document.createElement('td');
-					
-					if (tiempo.dnf) {
-						dnfTd.textContent = "x";
-					}
-					tr.appendChild(dnfTd);
 					
 					tbody.appendChild(tr);
 				}
 			}
 		});
+}
+
+function mostrarTiempo(id) {
+	fetch('GetSelectedSolveServlet?id=' + id)
+		.then(response => response.json())
+		.then(tiempo => {
+			tiempo = formatJsonTiempos(tiempo, 1);
+			console.log(tiempo);
+			document.getElementById("hidden-id").value = tiempo.id;
+			document.getElementById("scrambleInput").value = tiempo.scramble;
+			document.getElementById("fecha").value = tiempo.fecha;
+			document.getElementById("tiempo").value = tiempo.tiempo;
+			document.getElementById("solve-modal-error").style.display = "none";
+			document.getElementById("solveModal").style.display = "flex";
+	});
+}
+
+function borrarTiempo(id) {
+	fetch('EliminarSolveServlet?id=' + id)
+		.then(response => response.json())
+		.then(data => {
+			if(data.eliminado) {
+				getSesiones();
+				document.getElementById("solveModal").style.display = "none";
+			}else {
+				document.getElementById("solve-modal-error").style.display = "block";
+			}
+	})
+	.catch(function() {
+		document.getElementById("solve-modal-error").style.display = "block";
+	});
 }
 
 function getSesiones() {
@@ -164,14 +181,23 @@ function validarNombreSesion(nombreSesion) {
 	return true;
 }
 
-function formatJsonTiempos(json) {
-	for (let i = 0; i < json.length; i++) {
-		let fecha = new Date(json[i].fecha);
+function formatJsonTiempos(json, accion) {
+	if(accion == 0) {
+		for (let i = 0; i < json.length; i++) {
+			let fecha = new Date(json[i].fecha);
+			let dia = fecha.getDate().toString().padStart(2, '0');
+			let mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+			let anio = fecha.getFullYear().toString();
+			let fechaFormateada = `${anio}-${mes}-${dia}`;
+			json[i].fecha = fechaFormateada;
+		}
+	}else if(accion == 1) {
+		let fecha = new Date(json.fecha);
 		let dia = fecha.getDate().toString().padStart(2, '0');
 		let mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
 		let anio = fecha.getFullYear().toString();
-		let fechaFormateada = `${anio}-${mes}-${dia}`;
-		json[i].fecha = fechaFormateada;
+		let fechaFormateada = `${dia}/${mes}/${anio}`;
+		json.fecha = fechaFormateada;
 	}
 	
 	return json;

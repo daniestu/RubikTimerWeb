@@ -18,8 +18,8 @@
     <div class="scramble-container">
       <p id="scramble"></p>
     </div>
-    <div id="nuevaSesion-modal" class="sesionModal">
-		<div id="nuevaSesion-modal-content" class="sesionModal-content">
+    <div id="nuevaSesion-modal" class="modal">
+		<div id="nuevaSesion-modal-content" class="modal-content">
 			<h2>Crear nueva sesión</h2>
 			<form onsubmit="event.preventDefault();crearSesion(document.getElementById('nombre_sesion').value)">
 				<label for="nombre_sesion">Nombre de la sesión</label>
@@ -30,17 +30,37 @@
 			</form>
 		</div>
 	</div>
-	<div id="borrarSesion-modal" class="sesionModal">
-		<div id="borrarSesion-modal-content" class="sesionModal-content">
+	<div id="borrarSesion-modal" class=modal>
+		<div id="borrarSesion-modal-content" class="modal-content">
 			<h2>Eliminar sesión</h2>
 			<p>
 				Se eliminará la sesión y todos los tiempos asociados. ¿Seguro que desea continuar?
 			</p>
-			<div id="sesionBtn-container">
+			<div id="btn-container">
 				<button id="sesionBtn-aceptar" onclick="borrarSesion()">Aceptar</button>
             	<button id="sesionBtn-cancelar" onclick="ocultarBorrarSesionModal()">Cancelar</button>
 	        </div>
 	        <span id="borrarSesion-modal-error" style="color:red; display:none;">Ha ocurrido un error al borrar la sesión.</span>
+		</div>
+	</div>
+	<div id="solveModal" class="modal">
+		<div id="solveModal-content" class="modal-content">
+			<h2>Crear nueva sesión</h2>
+			<form id="solveForm" onsubmit="event.preventDefault();borrarTiempo(document.getElementById('hidden-id').value)">
+				<input id="hidden-id" name="hidden-id" type="hidden">
+				<label for="scrambleInput">Scramble</label>
+				<input type="text" id="scrambleInput" name="scrambleInput" value="R' F L F2 U2 R' U2 F D B' F' R D2 F' D' F2 U R2 B2 U'" disabled>
+				<div class="d-flex flex-column justify-content-center">
+					<label for="fecha">Fecha</label>
+					<input type="text" id="fecha" name="fecha" disabled>
+					<label for="tiempo">Tiempo</label>
+					<input type="text" id="tiempo" name="tiempo" disabled>
+				</div>
+				<div class="d-flex justify-content-end">
+					<button type="submit" id="solveBtn-eliminar">Eliminar</button>
+				</div>
+				<span id="solve-modal-error" style="color:red; display:none;">Ha ocurrido un error al borrar el tiempo.</span>
+			</form>
 		</div>
 	</div>
 	<img id="config-btn" src="images/config-icon.png"/>
@@ -58,7 +78,7 @@
     		<img id="logo" src="images/logo.png" alt="Rubik timer">
     	</div>
       	<div id="sesion_container">
-			<label id="sesion_label" for="sesion_select">Sesión:</label>
+			<label id="sesion_label" class="mb-0" for="sesion_select">Sesión:</label>
 		 	<select id="sesion_select" onchange="sesionChanged(this.value)"></select>
       	</div>
       	<div id="estadisticas_container">
@@ -99,8 +119,6 @@
 					<tr>
 						<th>ID</th>
 						<th>TIEMPO</th>
-						<th>+2</th>
-						<th>DNF</th>
 					</tr>
 				</thead>
 				<tbody>

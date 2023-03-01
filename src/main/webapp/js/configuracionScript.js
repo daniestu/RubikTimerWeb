@@ -3,6 +3,7 @@ $(document).ready(function() {
     var configBtn = $("#config-btn");
     var nuevaSesionModal = $("#nuevaSesion-modal-content");
     var borrarSesionModal = $("#borrarSesion-modal-content");
+    var solveModal = $("#solveModal-content");
     var sesionSelect = $("#sesion_select");
 
     function toggleConfigContainer() {
@@ -33,6 +34,9 @@ $(document).ready(function() {
 		if (!borrarSesionModal.is(event.target) && borrarSesionModal.has(event.target).length === 0
 			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0) {
 				$("#borrarSesion-modal").hide();
+		}
+		if (!solveModal.is(event.target) && solveModal.has(event.target).length === 0) {
+				$("#solveModal").hide();
 		}
 	});
 	

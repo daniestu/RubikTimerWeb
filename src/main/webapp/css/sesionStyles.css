@@ -1,4 +1,4 @@
-.sesionModal {
+.modal {
 	display: none;
 	position: fixed;
 	z-index: 1;
@@ -10,7 +10,7 @@
 	justify-content: center;
 }
 
-.sesionModal-content {
+.modal-content {
 	background-color: #4A6572;
 	padding: 20px;
 	max-width: 30%;
@@ -23,9 +23,11 @@
 	justify-content: space-between;
 }
 
-.sesionModal-content h2 {
+.modal-content h2 {
 	margin-top: 0;
 	color: #fff;
+	font-size: 1.5rem;
+	margin-bottom: 1.2rem;
 }
 
 #nombre_sesion {
@@ -68,8 +70,8 @@
 
 #sesionBtn-cancelar {
     background-color: #FF4141;
-    color: #fff;
     margin-left: 2%;
+    color: #fff;
 }
 
 #sesionBtn-aceptar:hover {
@@ -78,10 +80,47 @@
 
 #sesionBtn-cancelar:hover {
     background-color: #e60000;
-    color: #fff;
 }
 
-#sesionBtn-container {
-    display: flex;
-    justify-content: flex-end;
+#solveForm {
+	display: flex;
+	flex-direction: column;
 }
+
+#solveForm label {
+	margin-bottom: 10px;
+}
+
+#solveForm input[type="text"] {
+	border: none;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 10px;
+	font-size: 0.85vw;
+	text-align: center;
+}
+
+#solveForm #tiempo, #solveForm #fecha {
+	margin-inline: auto;
+}
+
+#solveModal-content {
+	width:30%;
+}
+
+#solveBtn-eliminar {
+	width: 26%;
+    padding: 1.7% 0px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-size:100%;
+	background-color: #FF4141;
+	color: #fff;
+}
+
+#solveBtn-eliminar:hover {
+	background-color: #e60000;
+}
+
