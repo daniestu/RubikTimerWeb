@@ -11,7 +11,7 @@ $(document).ready(function() {
         if (configContainer.is(":visible")) {
             configBtn.css("background-color", "#4A6572");
         } else {
-            configBtn.css("background-color", "#1c2833");
+            configBtn.removeAttr("style");
         }
     }
 
@@ -24,7 +24,7 @@ $(document).ready(function() {
 			&& !configBtn.is(event.target) && configBtn.has(event.target).length === 0 
 			&& !configBtn.find('img').is(event.target) && configBtn.find('img').has(event.target).length === 0) {
 				configContainer.hide();
-				configBtn.css("background-color", "#1c2833");
+				configBtn.removeAttr("style");
 		}
 		if (!nuevaSesionModal.is(event.target) && nuevaSesionModal.has(event.target).length === 0
 			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0) {
