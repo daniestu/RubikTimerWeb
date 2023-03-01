@@ -89,9 +89,10 @@
 }
 
 #tablaTiempos {
-	width: 100%;
+	width: 85%;
 	font-size: 1.7vh;
 	border-collapse: collapse;
+	margin:auto;
 }
 
 #tablaTiempos td {
@@ -105,4 +106,9 @@
 	color: white;
 	font-weight: bold;
 	border: 1px solid #484747;
+}
+
+.tablaTiempos-tiempo:hover {
+	cursor: pointer;
+	background-color: #4A6572;
 }

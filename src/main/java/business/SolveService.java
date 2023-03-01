@@ -23,4 +23,14 @@ public class SolveService {
 		SolveDao solveDao = new SolveDao();
 		return solveDao.deleteBySesion(id_sesion);
 	}
+
+	public Solve getById(int id_tiempo) throws SQLException {
+		SolveDao solveDao = new SolveDao();
+		return solveDao.getById(id_tiempo);
+	}
+
+	public boolean eliminar(int id) {
+		SolveDao solveDao = new SolveDao();
+		return solveDao.delete(id);
+	}
 }

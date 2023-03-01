@@ -3,6 +3,7 @@ body {
   font-family: 'Helvetica Neue', sans-serif;
   color: #ecf0f1;
   margin: 0px;
+  line-height: normal;
 }
 
 .cronometro-container {

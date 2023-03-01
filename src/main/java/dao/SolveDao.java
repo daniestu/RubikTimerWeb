@@ -133,4 +133,47 @@ public class SolveDao implements Persistencia<Solve>{
         }
 	}
 
+	public Solve getById(int id_tiempo) throws SQLException {
+		String query = "SELECT * FROM tiempos WHERE id = ?";
+	    
+	    AccesoBBDD accesoBBDD = new AccesoBBDD();
+		Properties prop = accesoBBDD.cargarFichero();
+		
+		Solve solve = null;
+		ResultSet rs = null;
+	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+    		PreparedStatement statement = conn.prepareStatement(query)) {
+	    	
+	    	statement.setInt(1, id_tiempo);
+	    	rs = statement.executeQuery();
+	        if (rs.next()) {
+	            solve = new Solve(rs.getInt("id"), rs.getString("scramble"), rs.getDate("fecha"), rs.getString("tiempo"), rs.getBoolean("mas_dos"), rs.getBoolean("dnf"), rs.getInt("usuario_id"), rs.getInt("sesion_id"));
+	        }
+	    }finally {
+	    	if (rs != null) {
+	            rs.close();
+	        }
+	    }
+
+	    return solve;
+	}
+
+	public boolean delete(int id) {
+		String sql = "DELETE FROM tiempos WHERE id = ?";
+		AccesoBBDD accesoBBDD = new AccesoBBDD();
+		Properties prop = accesoBBDD.cargarFichero();
+		
+        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            
+            return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+	}
+
 }

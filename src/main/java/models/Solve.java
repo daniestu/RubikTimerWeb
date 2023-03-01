@@ -25,6 +25,9 @@ public class Solve implements Comparable<Solve>{
 		this.sesion_id = sesion_id;
 	}
 
+	public Solve() {
+	}
+
 	public Integer getId() {
 		return id;
 	}

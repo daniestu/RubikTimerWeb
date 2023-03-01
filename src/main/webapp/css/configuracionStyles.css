@@ -6,6 +6,7 @@
 	min-width: 20px;
 	padding: 0.5vh;
 	border-radius: 10%;
+	box-sizing: content-box;
 }
 
 #config-btn:hover {
@@ -22,10 +23,14 @@
 	border-radius: 12px;
 }
 
+
 #config-menu {
     list-style: none;
     width: 100%;
     padding: 0px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    line-height: normal;
 }
 
 #config-menu li {
@@ -42,4 +47,12 @@
 #config-menu li a {
   color: white;
   text-decoration: none;
+}
+
+#config-menu hr {
+	overflow: hidden;
+    border-style: inset;
+    border-width: 1px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
