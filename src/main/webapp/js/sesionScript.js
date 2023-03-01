@@ -13,6 +13,7 @@ function sesionChanged(sesion){
 	}else {
 		getTiemposSesion(sesion);
 	}
+	document.getElementById("sesion_select").blur();
 }
 
 function getEstadisticasSesion(tiempos) {

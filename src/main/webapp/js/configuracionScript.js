@@ -55,8 +55,17 @@ $(document).ready(function() {
 	}
 	
 	$("#logout").click(function(event) {
-	  event.preventDefault();
 	  logout();
+	  
+	});
+	
+	$("#next-scramble").click(function(event) {
+	  generateScramble();
+	  
+	});
+	
+	$("#previus-scramble").click(function(event) {
+	  scrambleAnterior();
 	  
 	});
 
