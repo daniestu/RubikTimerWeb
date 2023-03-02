@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="css/scrambleStyles.css">
     <link rel="stylesheet" type="text/css" href="css/configuracionStyles.css">
     <link rel="stylesheet" type="text/css" href="css/sesionStyles.css">
+    <link rel="stylesheet" type="text/css" href="css/previewStyles.css">
   </head>
   <body>
     <div class="scramble-container">
@@ -73,6 +74,7 @@
 			<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="images/logout.png"/>Cerrar sesión</li>
 		</ul>
    	</div>
+   	<jsp:include page="preview.jsp" />
     <aside class="aside-container">
     	<div id="logo_container">
     		<img id="logo" src="images/logo.png" alt="Rubik timer">

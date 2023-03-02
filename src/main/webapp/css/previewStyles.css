@@ -1,0 +1,94 @@
+#preview-container {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	width: 46vh;
+	height:36vh;
+	padding: 4.5vh 5vh;
+}
+
+.layout-container {
+	display:flex;
+    flex-wrap: wrap;
+	width: 9vh;
+	height:9vh;
+}
+
+.layout {
+	flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+	border: 1px solid black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#u-container {
+	position:absolute;
+	top:4.5vh;
+	left:14vh;
+	border-top: 1px solid black;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+}
+#l-container {
+	position:absolute;
+	top:13.5vh;
+	right:32vh;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px solid black;
+}
+#f-container {
+	position:absolute;
+	top:13.5vh;
+	left:14vh;
+}
+#r-container {
+	position:absolute;
+	top:13.5vh;
+	left:23vh;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+#b-container {
+	position:absolute;
+	top:13.5vh;
+	left:32vh;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+}
+#d-container {
+	position:absolute;
+	top:22.5vh;
+	left:14vh;
+	border-left: 1px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+}
+

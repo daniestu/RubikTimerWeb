@@ -90,6 +90,12 @@
   	<description></description>
   	<servlet-class>controller.EliminarSolveServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>EstablecerCuboServlet</servlet-name>
+  	<display-name>EstablecerCuboServlet</display-name>
+  	<description></description>
+  	<servlet-class>controller.EstablecerCuboServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>GuardaTiempoServlet</servlet-name>
   	<url-pattern>/GuardaTiempoServlet</url-pattern>
@@ -137,5 +143,9 @@
   <servlet-mapping>
   	<servlet-name>EliminarSolveServlet</servlet-name>
   	<url-pattern>/EliminarSolveServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>EstablecerCuboServlet</servlet-name>
+  	<url-pattern>/EstablecerCuboServlet</url-pattern>
   </servlet-mapping>
 </web-app>
