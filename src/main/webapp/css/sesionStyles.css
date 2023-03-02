@@ -30,7 +30,7 @@
 	margin-bottom: 1.2rem;
 }
 
-#nombre_sesion {
+#nombre_sesion, #scramble-text {
 	width: 100%;
 	padding: 10px 0;
 	margin: 10px 0;
@@ -38,7 +38,7 @@
 	border: 1px solid #ccc;
 }
 
-#sesionBtn-guardar {
+.btn-guardar {
 	padding: 10px 20px;
 	background-color: #fff;
 	color: #4A6572;
@@ -48,7 +48,7 @@
 	transition: background-color 0.2s ease-in-out;
 }
 
-#sesionBtn-guardar:hover {
+.btn-guardar:hover {
 	background-color: #33424B;
 	color: #fff;
 }
@@ -82,16 +82,16 @@
     background-color: #e60000;
 }
 
-#solveForm {
+.modalForm {
 	display: flex;
 	flex-direction: column;
 }
 
-#solveForm label {
+.modalForm label {
 	margin-bottom: 10px;
 }
 
-#solveForm input[type="text"] {
+.modalForm input[type="text"] {
 	border: none;
 	border-radius: 5px;
 	padding: 10px;
@@ -100,7 +100,7 @@
 	text-align: center;
 }
 
-#solveForm #tiempo, #solveForm #fecha {
+.modalForm #tiempo, .modalForm #fecha {
 	margin-inline: auto;
 }
 

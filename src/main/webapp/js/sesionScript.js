@@ -75,7 +75,6 @@ function mostrarTiempo(id) {
 		.then(response => response.json())
 		.then(tiempo => {
 			tiempo = formatJsonTiempos(tiempo, 1);
-			console.log(tiempo);
 			document.getElementById("hidden-id").value = tiempo.id;
 			document.getElementById("scrambleInput").value = tiempo.scramble;
 			document.getElementById("fecha").value = tiempo.fecha;

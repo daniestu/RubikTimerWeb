@@ -4,6 +4,7 @@ $(document).ready(function() {
     var nuevaSesionModal = $("#nuevaSesion-modal-content");
     var borrarSesionModal = $("#borrarSesion-modal-content");
     var solveModal = $("#solveModal-content");
+    var scramblePersonalizadoModal = $("#scramble-personalizado-modal-content");
     var sesionSelect = $("#sesion_select");
 
     function toggleConfigContainer() {
@@ -38,6 +39,10 @@ $(document).ready(function() {
 		if (!solveModal.is(event.target) && solveModal.has(event.target).length === 0) {
 				$("#solveModal").hide();
 		}
+		if (!scramblePersonalizadoModal.is(event.target) && scramblePersonalizadoModal.has(event.target).length === 0
+			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
+				$("#scramble-personalizado-modal").hide();
+		}
 	});
 	
 	function logout() {
@@ -55,18 +60,22 @@ $(document).ready(function() {
 	}
 	
 	$("#logout").click(function(event) {
-	  logout();
-	  
+	  	logout();
 	});
 	
 	$("#next-scramble").click(function(event) {
-	  generateScramble();
-	  
+	  	generateScramble();
 	});
 	
 	$("#previus-scramble").click(function(event) {
-	  scrambleAnterior();
-	  
+	  	scrambleAnterior();
+	});
+	
+	$("#custom-scramble").click(function(event) {
+		$("#scramble-text").val("");
+		document.getElementById("scramble-personalizado-modal-error").style.display = "none";
+		document.getElementById("scramble-personalizado-modal").style.display = "flex";
+		toggleConfigContainer();
 	});
 
 });
