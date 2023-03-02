@@ -48,7 +48,6 @@ function scramblePersonalizado(scramble) {
 }
 
 function validarScramble(scramble) {
-	console.log(scramble);
 	const regex = /^([UDLRFB]('?2?)\s?)+$/i;
 	
 	if (regex.test(scramble)) {
