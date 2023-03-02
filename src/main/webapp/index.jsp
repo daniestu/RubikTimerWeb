@@ -23,10 +23,10 @@
 		<div id="nuevaSesion-modal-content" class="modal-content">
 			<h2>Crear nueva sesión</h2>
 			<form onsubmit="event.preventDefault();crearSesion(document.getElementById('nombre_sesion').value)">
-				<label for="nombre_sesion">Nombre de la sesión</label>
+				<label class="mb-0" for="nombre_sesion">Nombre de la sesión</label>
 				<input type="text" id="nombre_sesion" autocomplete="off" onchange="document.getElementById('nuevaSesion-modal-error').style.display = 'none'" required>
 				<br>
-				<button type="submit" id="sesionBtn-guardar">Guardar</button>
+				<button type="submit" class="btn-guardar">Guardar</button>
 				<span id="nuevaSesion-modal-error" style="color:red; display:none;">Ya existe una sesión con ese nombre.</span>
 			</form>
 		</div>
@@ -44,10 +44,22 @@
 	        <span id="borrarSesion-modal-error" style="color:red; display:none;">Ha ocurrido un error al borrar la sesión.</span>
 		</div>
 	</div>
+	<div id="scramble-personalizado-modal" class="modal">
+		<div id="scramble-personalizado-modal-content" class="modal-content">
+			<h2>Mezcla personalizada</h2>
+			<form onsubmit="event.preventDefault();scramblePersonalizado(document.getElementById('scramble-text').value);">
+				<label class="mb-0" for="scramble-text">Scramble</label>
+				<input type="text" id="scramble-text" autocomplete="off" required>
+				<br>
+				<button type="submit" class="btn-guardar">Guardar</button>
+				<span id="scramble-personalizado-modal-error" style="color:red; display:none;">El scramble introducido no es válido.</span>
+			</form>
+		</div>
+	</div>
 	<div id="solveModal" class="modal">
 		<div id="solveModal-content" class="modal-content">
 			<h2>Crear nueva sesión</h2>
-			<form id="solveForm" onsubmit="event.preventDefault();borrarTiempo(document.getElementById('hidden-id').value)">
+			<form class="modalForm" onsubmit="event.preventDefault();borrarTiempo(document.getElementById('hidden-id').value)">
 				<input id="hidden-id" name="hidden-id" type="hidden">
 				<label for="scrambleInput">Scramble</label>
 				<input type="text" id="scrambleInput" name="scrambleInput" value="R' F L F2 U2 R' U2 F D B' F' R D2 F' D' F2 U R2 B2 U'" disabled>
@@ -67,9 +79,9 @@
 	<img id="config-btn" src="images/config-icon.png"/>
 	<div id="config-container" style="display:none;">
    		<ul id="config-menu">
+   			<li id="custom-scramble" class="list-item"><img id="custom-icon" class="config-icon" src="images/personalizar.png"/>Mezcla personalizada</li>
 			<li id="previus-scramble" class="list-item-disabled"><img id="previus-icon" class="config-icon" src="images/previus-disabled.png"/>Mezcla anterior</li>
 			<li id="next-scramble" class="list-item"><img id="next-icon" class="config-icon" src="images/next.png"/>Mezcla siguiente</li>
-			<li class="list-item">Opción 3</li>
 			<hr>
 			<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="images/logout.png"/>Cerrar sesión</li>
 		</ul>

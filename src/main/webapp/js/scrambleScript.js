@@ -18,9 +18,9 @@ function generateScramble() {
 
 function scrambleAnterior() {
 	if (historialScrambles.length > 1) {
-		establecerCubo(historialScrambles[historialScrambles.length - 1]);
 		historialScrambles.splice(historialScrambles.length - 1);
-		document.getElementById('scramble').textContent = historialScrambles[historialScrambles.length - 1];
+		establecerCubo(historialScrambles[historialScrambles.length - 1]);
+		document.getElementById('scramble').textContent = historialScrambles[historialScrambles.length - 1].toUpperCase();
 		
 		if ( !(historialScrambles.length > 1) ) {
 			$('#previus-icon').attr('src', 'images/previus-disabled.png');
@@ -30,8 +30,37 @@ function scrambleAnterior() {
 	}
 }
 
+function scramblePersonalizado(scramble) {
+	if (validarScramble(scramble)) {
+		document.getElementById('scramble').textContent = scramble.toUpperCase();
+		document.getElementById('scramble-personalizado-modal').style.display = "none";
+		historialScrambles.push(scramble);
+		establecerCubo(scramble);
+		
+		if(historialScrambles.length > 1) {
+			$('#previus-icon').attr('src', 'images/previus.png');
+			$("#previus-scramble").removeClass("list-item-disabled");
+			$("#previus-scramble").addClass("list-item");
+		}
+	}else {
+		document.getElementById("scramble-personalizado-modal-error").style.display = "block";
+	}
+}
+
+function validarScramble(scramble) {
+	console.log(scramble);
+	const regex = /^([UDLRFB]('?2?)\s?)+$/i;
+	
+	if (regex.test(scramble)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
 function establecerCubo(scramble) {
-	fetch('EstablecerCuboServlet?scramble=' + scramble)
+	fetch('EstablecerCuboServlet?scramble=' + scramble.toUpperCase())
 		.then(response => response.json())
 		.then(json => {
 			
