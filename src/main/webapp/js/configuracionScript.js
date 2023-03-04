@@ -4,6 +4,8 @@ $(document).ready(function() {
     var nuevaSesionModal = $("#nuevaSesion-modal-content");
     var borrarSesionModal = $("#borrarSesion-modal-content");
     var solveModal = $("#solveModal-content");
+    var avgModal = $("#avgModal-content");
+    var avgTable = $(".average");
     var sesionSelect = $("#sesion_select");
 
     function toggleConfigContainer() {
@@ -37,6 +39,10 @@ $(document).ready(function() {
 		}
 		if (!solveModal.is(event.target) && solveModal.has(event.target).length === 0) {
 				$("#solveModal").hide();
+		}
+		if (!avgModal.is(event.target) && avgModal.has(event.target).length === 0
+			&& !avgTable.is(event.target) && avgTable.has(event.target).length === 0) {
+				$("#avgModal").hide();
 		}
 	});
 	

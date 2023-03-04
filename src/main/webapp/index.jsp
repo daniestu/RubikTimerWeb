@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="css/asideStyles.css">
     <link rel="stylesheet" type="text/css" href="css/scrambleStyles.css">
     <link rel="stylesheet" type="text/css" href="css/configuracionStyles.css">
-    <link rel="stylesheet" type="text/css" href="css/sesionStyles.css">
+    <link rel="stylesheet" type="text/css" href="css/modalStyles.css">
     <link rel="stylesheet" type="text/css" href="css/previewStyles.css">
   </head>
   <body>
@@ -47,10 +47,10 @@
 	<div id="solveModal" class="modal">
 		<div id="solveModal-content" class="modal-content">
 			<h2>Crear nueva sesión</h2>
-			<form id="solveForm" onsubmit="event.preventDefault();borrarTiempo(document.getElementById('hidden-id').value)">
+			<form class="modalForm" onsubmit="event.preventDefault();borrarTiempo(document.getElementById('hidden-id').value)">
 				<input id="hidden-id" name="hidden-id" type="hidden">
 				<label for="scrambleInput">Scramble</label>
-				<input type="text" id="scrambleInput" name="scrambleInput" value="R' F L F2 U2 R' U2 F D B' F' R D2 F' D' F2 U R2 B2 U'" disabled>
+				<input type="text" id="scrambleInput" name="scrambleInput" disabled>
 				<div class="d-flex flex-column justify-content-center">
 					<label for="fecha">Fecha</label>
 					<input type="text" id="fecha" name="fecha" disabled>
@@ -64,6 +64,26 @@
 			</form>
 		</div>
 	</div>
+	
+	
+	
+	<div id="avgModal" class="modal">
+		<div id="avgModal-content" class="modal-content">
+			<h2 id="avgModal-title"></h2>
+			<form class="modalForm">
+				<label for="scrambleInput">Media</label>
+				<input type="text" id="avg-tiempo" name="avg-tiempo" disabled>
+				<label>Tiempos</label>
+				<div id="avgTiempos-container">
+					<table id="avg-table"></table>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	
+	
+	
 	<img id="config-btn" src="images/config-icon.png"/>
 	<div id="config-container" style="display:none;">
    		<ul id="config-menu">
@@ -99,15 +119,15 @@
 				</tr>
 				<tr>
 					<th>Ao5</th>
-					<td id="ao5"></td>
+					<td id="ao5" class="average"></td>
 				</tr>
 				<tr>
 					<th>Ao12</th>
-					<td id="ao12"></td>
+					<td id="ao12" class="average"></td>
 				</tr>
 				<tr>
 					<th>Ao100</th>
-					<td id="ao100"></td>
+					<td id="ao100" class="average"></td>
 				</tr>
 				<tr>
 					<th>Media</th>

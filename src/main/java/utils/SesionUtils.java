@@ -1,8 +1,10 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import models.AVG;
 import models.Estadisticas;
 import models.Solve;
 
@@ -10,11 +12,11 @@ public class SesionUtils {
 
 	public Estadisticas getEstadisticas(List<Solve> tiempos) {
 		int total = tiempos.size();
-		String mejor = mejorTiempo(tiempos);
-		String peor = peorTiempo(tiempos);
-		String ao5 = avg(tiempos, 5);
-		String ao12 = avg(tiempos, 12);
-		String ao100 = avg(tiempos, 100);
+		Solve mejor = mejorTiempo(tiempos);
+		Solve peor = peorTiempo(tiempos);
+		AVG ao5 = avg(tiempos, 5);
+		AVG ao12 = avg(tiempos, 12);
+		AVG ao100 = avg(tiempos, 100);
 		String media = media(tiempos);
 		
 		return new Estadisticas(total, mejor, peor, ao5, ao12, ao100, media);
@@ -35,15 +37,18 @@ public class SesionUtils {
 		return media;
 	}
 
-	private String avg(List<Solve> tiempos, int numero_avg) {
-		String avgFinal = "";
+	private AVG avg(List<Solve> tiempos, int numero_avg) {
+		AVG avgFinal = null;
 		
 		if (tiempos.size() >= numero_avg) {
+			avgFinal = new AVG();
+			List<Solve> avgSolves = new ArrayList<Solve>();
 			Collections.sort(tiempos);
 			String mejor = tiempos.get(0).getTiempo();
 			String peor = tiempos.get(0).getTiempo();
 			int suma = 0;
 			for (int i = 0; i < numero_avg; i++) {
+				avgSolves.add(tiempos.get(i));
 				suma += convertirTiempoMs(tiempos.get(i).getTiempo());
 				if (esPeorTiempo(peor, tiempos.get(i).getTiempo())) {
 					peor = tiempos.get(i).getTiempo();
@@ -54,19 +59,20 @@ public class SesionUtils {
 			}
 			
 			suma = (suma - convertirTiempoMs(peor) - convertirTiempoMs(mejor)) / (numero_avg-2);
-			avgFinal = convertirMsTiempo(suma);
+			avgFinal.setSolves(avgSolves);
+			avgFinal.setTiempo(convertirMsTiempo(suma));
 		}
 		
 		return avgFinal;
 	}
 
-	private String peorTiempo(List<Solve> tiempos) {
-		String peor = "";
+	private Solve peorTiempo(List<Solve> tiempos) {
+		Solve peor = null;
 		if (tiempos.size() != 0) {
-			peor = tiempos.get(0).getTiempo();
+			peor = tiempos.get(0);
 			for (Solve solve : tiempos) {
-				if (esPeorTiempo(peor, solve.getTiempo())) {
-					peor = solve.getTiempo();
+				if (esPeorTiempo(peor.getTiempo(), solve.getTiempo())) {
+					peor = solve;
 				}
 			}
 		}
@@ -74,13 +80,13 @@ public class SesionUtils {
 		return peor;
 	}
 
-	private String mejorTiempo(List<Solve> tiempos) {
-		String mejor = "";
+	private Solve mejorTiempo(List<Solve> tiempos) {
+		Solve mejor = null;
 		if (tiempos.size() != 0) {
-			mejor = tiempos.get(0).getTiempo();
+			mejor = tiempos.get(0);
 			for (Solve solve : tiempos) {
-				if (esMejorTiempo(mejor, solve.getTiempo())) {
-					mejor = solve.getTiempo();
+				if (esMejorTiempo(mejor.getTiempo(), solve.getTiempo())) {
+					mejor = solve;
 				}
 			}
 		}
