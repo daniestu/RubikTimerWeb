@@ -27,13 +27,64 @@ function getEstadisticasSesion(tiempos) {
 		.then(response => response.json())
 		.then(estadisticas => {
 			document.getElementById("total").textContent = estadisticas.total;
-			document.getElementById("mejor").textContent = estadisticas.mejor;
-			document.getElementById("peor").textContent = estadisticas.peor;
-			document.getElementById("ao5").textContent = estadisticas.ao5;
-			document.getElementById("ao12").textContent = estadisticas.ao12;
-			document.getElementById("ao100").textContent = estadisticas.ao100;
+			
+			if (estadisticas.hasOwnProperty("mejor")) {
+				const mejor = estadisticas.mejor;
+				document.getElementById("mejor").textContent = mejor.tiempo;
+				document.getElementById("mejor").onclick = function() {
+					mostrarTiempo(mejor.id);
+				}
+			}else {
+				document.getElementById("mejor").textContent = "";
+				document.getElementById("mejor").onclick = null;
+			}
+			
+			if (estadisticas.hasOwnProperty("peor")) {
+				const peor = estadisticas.peor;
+				document.getElementById("peor").textContent = peor.tiempo;
+				document.getElementById("peor").onclick = function() {
+					mostrarTiempo(peor.id);
+				}
+			}else {
+				document.getElementById("peor").textContent = "";
+				document.getElementById("peor").onclick = null;
+			}
+			
+			if (estadisticas.hasOwnProperty("ao5")) {
+				const ao5 = estadisticas.ao5;
+				document.getElementById("ao5").textContent = ao5.tiempo;
+				document.getElementById("ao5").onclick = function() {
+					mostrarAvg(ao5);
+				}
+			}else {
+				document.getElementById("ao5").textContent = "";
+				document.getElementById("ao5").onclick = null;
+			}
+			
+			if (estadisticas.hasOwnProperty("ao12")) {
+				const ao12 = estadisticas.ao12;
+				document.getElementById("ao12").textContent = ao12.tiempo;
+				document.getElementById("ao12").onclick = function() {
+					mostrarAvg(ao12);
+				}
+			}else {
+				document.getElementById("ao12").textContent = "";
+				document.getElementById("ao12").onclick = null;
+			}
+			
+			if (estadisticas.hasOwnProperty("ao100")) {
+				const ao100 = estadisticas.ao100;
+				document.getElementById("ao100").textContent = ao100.tiempo;
+				document.getElementById("ao12").onclick = function() {
+					mostrarAvg(ao100);
+				}
+			}else {
+				document.getElementById("ao100").textContent = "";
+				document.getElementById("ao100").onclick = null;
+			}
+			
 			document.getElementById("media").textContent = estadisticas.media;
-		});
+		})
 }
 
 function getTiemposSesion(sesion) {
@@ -82,6 +133,26 @@ function mostrarTiempo(id) {
 			document.getElementById("solve-modal-error").style.display = "none";
 			document.getElementById("solveModal").style.display = "flex";
 	});
+}
+
+function mostrarAvg(avg) {
+	const total = avg.solves.length;
+	document.getElementById("avgModal-title").textContent = "Ao" + total;
+	document.getElementById("avg-tiempo").value = avg.tiempo;
+	
+	const tabla = document.querySelector('#avg-table');
+	tabla.innerHTML = "";
+	for (let i = avg.solves.length-1; i >= 0; i--) {
+		const solve = avg.solves[i];
+		
+		const tr = document.createElement('tr');
+		const solveTd = document.createElement('td');
+		solveTd.textContent = solve.tiempo;
+		
+		tr.appendChild(solveTd);
+		tabla.appendChild(tr);
+	}
+	document.getElementById("avgModal").style.display = "flex";
 }
 
 function borrarTiempo(id) {

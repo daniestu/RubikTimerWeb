@@ -2,14 +2,14 @@ package models;
 
 public class Estadisticas {
 	private int total;
-    private String mejor;
-    private String peor;
-    private String ao5;
-    private String ao12;
-    private String ao100;
+    private Solve mejor;
+    private Solve peor;
+    private AVG ao5;
+    private AVG ao12;
+    private AVG ao100;
     private String media;
 
-	public Estadisticas(int total, String mejor, String peor, String ao5, String ao12, String ao100, String media) {
+	public Estadisticas(int total, Solve mejor, Solve peor, AVG ao5, AVG ao12, AVG ao100, String media) {
 		super();
 		this.total = total;
 		this.mejor = mejor;
@@ -28,43 +28,43 @@ public class Estadisticas {
 		this.total = total;
 	}
 	
-	public String getMejor() {
+	public Solve getMejor() {
 		return mejor;
 	}
 	
-	public void setMejor(String mejor) {
+	public void setMejor(Solve mejor) {
 		this.mejor = mejor;
 	}
 	
-	public String getPeor() {
+	public Solve getPeor() {
 		return peor;
 	}
 	
-	public void setPeor(String peor) {
+	public void setPeor(Solve peor) {
 		this.peor = peor;
 	}
 	
-	public String getAo5() {
+	public AVG getAo5() {
 		return ao5;
 	}
 	
-	public void setAo5(String ao5) {
+	public void setAo5(AVG ao5) {
 		this.ao5 = ao5;
 	}
 	
-	public String getAo12() {
+	public AVG getAo12() {
 		return ao12;
 	}
 	
-	public void setAo12(String ao12) {
+	public void setAo12(AVG ao12) {
 		this.ao12 = ao12;
 	}
 	
-	public String getAo100() {
+	public AVG getAo100() {
 		return ao100;
 	}
 	
-	public void setAo100(String ao100) {
+	public void setAo100(AVG ao100) {
 		this.ao100 = ao100;
 	}
 	

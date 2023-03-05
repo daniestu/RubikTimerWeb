@@ -4,6 +4,8 @@ $(document).ready(function() {
     var nuevaSesionModal = $("#nuevaSesion-modal-content");
     var borrarSesionModal = $("#borrarSesion-modal-content");
     var solveModal = $("#solveModal-content");
+    var avgModal = $("#avgModal-content");
+    var avgTable = $(".average");
     var scramblePersonalizadoModal = $("#scramble-personalizado-modal-content");
     var sesionSelect = $("#sesion_select");
 
@@ -39,6 +41,9 @@ $(document).ready(function() {
 		if (!solveModal.is(event.target) && solveModal.has(event.target).length === 0) {
 				$("#solveModal").hide();
 		}
+		if (!avgModal.is(event.target) && avgModal.has(event.target).length === 0
+			&& !avgTable.is(event.target) && avgTable.has(event.target).length === 0) {
+				$("#avgModal").hide();
 		if (!scramblePersonalizadoModal.is(event.target) && scramblePersonalizadoModal.has(event.target).length === 0
 			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
 				$("#scramble-personalizado-modal").hide();
