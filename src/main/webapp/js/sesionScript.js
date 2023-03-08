@@ -32,7 +32,7 @@ function getEstadisticasSesion(tiempos) {
 				const mejor = estadisticas.mejor;
 				document.getElementById("mejor").textContent = mejor.tiempo;
 				document.getElementById("mejor").onclick = function() {
-					mostrarTiempo(mejor.id);
+					mostrarTiempo(mejor);
 				}
 			}else {
 				document.getElementById("mejor").textContent = "";
@@ -43,7 +43,7 @@ function getEstadisticasSesion(tiempos) {
 				const peor = estadisticas.peor;
 				document.getElementById("peor").textContent = peor.tiempo;
 				document.getElementById("peor").onclick = function() {
-					mostrarTiempo(peor.id);
+					mostrarTiempo(peor);
 				}
 			}else {
 				document.getElementById("peor").textContent = "";
@@ -111,7 +111,7 @@ function getTiemposSesion(sesion) {
 					tiempoTd.textContent = tiempo.tiempo;
 					tiempoTd.classList.add('tablaTiempos-tiempo');
 					tiempoTd.onclick = function() {
-						mostrarTiempo(tiempo.id);
+						mostrarTiempo(tiempo);
 					}
 					tr.appendChild(tiempoTd);
 					
@@ -121,18 +121,15 @@ function getTiemposSesion(sesion) {
 		});
 }
 
-function mostrarTiempo(id) {
-	fetch('GetSelectedSolveServlet?id=' + id)
-		.then(response => response.json())
-		.then(tiempo => {
-			tiempo = formatJsonTiempos(tiempo, 1);
-			document.getElementById("hidden-id").value = tiempo.id;
-			document.getElementById("scrambleInput").value = tiempo.scramble;
-			document.getElementById("fecha").value = tiempo.fecha;
-			document.getElementById("tiempo").value = tiempo.tiempo;
-			document.getElementById("solve-modal-error").style.display = "none";
-			document.getElementById("solveModal").style.display = "flex";
-	});
+function mostrarTiempo(tiempo) {
+	tiempo = formatJsonTiempos(tiempo, 1);
+	console.log(tiempo);
+	document.getElementById("hidden-id").value = tiempo.id;
+	document.getElementById("scrambleInput").value = tiempo.scramble;
+	document.getElementById("fecha").value = tiempo.fecha;
+	document.getElementById("tiempo").value = tiempo.tiempo;
+	document.getElementById("solve-modal-error").style.display = "none";
+	document.getElementById("solveModal").style.display = "flex";
 }
 
 function mostrarAvg(avg) {

@@ -79,12 +79,6 @@
   	<servlet-class>controller.BorrarSesionServlet</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>GetSelectedSolveServlet</servlet-name>
-  	<display-name>GetSelectedSolveServlet</display-name>
-  	<description></description>
-  	<servlet-class>controller.GetSelectedSolveServlet</servlet-class>
-  </servlet>
-  <servlet>
   	<servlet-name>EliminarSolveServlet</servlet-name>
   	<display-name>EliminarSolveServlet</display-name>
   	<description></description>
@@ -135,10 +129,6 @@
   <servlet-mapping>
   	<servlet-name>BorrarSesionServlet</servlet-name>
   	<url-pattern>/BorrarSesionServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>GetSelectedSolveServlet</servlet-name>
-  	<url-pattern>/GetSelectedSolveServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
   	<servlet-name>EliminarSolveServlet</servlet-name>
