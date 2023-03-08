@@ -44,6 +44,7 @@ $(document).ready(function() {
 		if (!avgModal.is(event.target) && avgModal.has(event.target).length === 0
 			&& !avgTable.is(event.target) && avgTable.has(event.target).length === 0) {
 				$("#avgModal").hide();
+		}
 		if (!scramblePersonalizadoModal.is(event.target) && scramblePersonalizadoModal.has(event.target).length === 0
 			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
 				$("#scramble-personalizado-modal").hide();

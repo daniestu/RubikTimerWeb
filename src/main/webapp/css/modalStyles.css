@@ -32,7 +32,7 @@
 	margin-bottom: 1.2rem;
 }
 
-#nombre_sesion {
+#nombre_sesion, #scramble-text {
 	width: 100%;
 	padding: 10px 0;
 	margin: 10px 0;
@@ -40,7 +40,7 @@
 	border: 1px solid #ccc;
 }
 
-#sesionBtn-guardar {
+.btn-guardar {
 	padding: 10px 20px;
 	background-color: #fff;
 	color: #4A6572;
@@ -50,7 +50,7 @@
 	transition: background-color 0.2s ease-in-out;
 }
 
-#sesionBtn-guardar:hover {
+btn-guardar:hover {
 	background-color: #33424B;
 	color: #fff;
 }
