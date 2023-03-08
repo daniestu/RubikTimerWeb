@@ -9,6 +9,7 @@ $(document).ready(function() {
     var solveTd = $(".solve");
     var tablaTiempos = $("#tablaTiempos");
     var scramblePersonalizadoModal = $("#scramble-personalizado-modal-content");
+    var addSolve = $("#add-solve-modal-content");
     var sesionSelect = $("#sesion_select");
 
     function toggleConfigContainer() {
@@ -53,6 +54,10 @@ $(document).ready(function() {
 			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
 				$("#scramble-personalizado-modal").hide();
 		}
+		if (!addSolve.is(event.target) && addSolve.has(event.target).length === 0
+			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
+				$("#add-solve-modal").hide();
+		}
 	});
 	
 	function logout() {
@@ -85,6 +90,15 @@ $(document).ready(function() {
 		$("#scramble-text").val("");
 		document.getElementById("scramble-personalizado-modal-error").style.display = "none";
 		document.getElementById("scramble-personalizado-modal").style.display = "flex";
+		toggleConfigContainer();
+	});
+	
+	$("#add-solve").click(function(event) {
+		$('#addSolve-form').find(':input').each(function() {
+			$(this).val('');
+		});
+		document.getElementById("add-solve-modal-error").style.display = "none";
+		document.getElementById("add-solve-modal").style.display = "flex";
 		toggleConfigContainer();
 	});
 

@@ -20,12 +20,11 @@
       <p id="scramble" onclick="generateScramble()"></p>
     </div>
     <div id="nuevaSesion-modal" class="modal">
-		<div id="nuevaSesion-modal-content" class="modal-content">
+		<div id="nuevaSesion-modal-content" class="modal-content modal-23">
 			<h2>Crear nueva sesión</h2>
-			<form onsubmit="event.preventDefault();crearSesion(document.getElementById('nombre_sesion').value)">
-				<label class="mb-0" for="nombre_sesion">Nombre de la sesión</label>
-				<input type="text" id="nombre_sesion" autocomplete="off" onchange="document.getElementById('nuevaSesion-modal-error').style.display = 'none'" required>
-				<br>
+			<form class="modalForm" onsubmit="event.preventDefault();crearSesion(document.getElementById('nombre_sesion').value)">
+				<label for="nombre_sesion">Nombre de la sesión</label>
+				<input type="text" class="input-100" id="nombre_sesion" autocomplete="off" onchange="document.getElementById('nuevaSesion-modal-error').style.display = 'none'" required>
 				<button type="submit" class="btn-guardar">Guardar</button>
 				<span id="nuevaSesion-modal-error" style="color:red; display:none;">Ya existe una sesión con ese nombre.</span>
 			</form>
@@ -45,40 +44,47 @@
 		</div>
 	</div>
 	<div id="scramble-personalizado-modal" class="modal">
-		<div id="scramble-personalizado-modal-content" class="modal-content">
+		<div id="scramble-personalizado-modal-content" class="modal-content modal-30">
 			<h2>Mezcla personalizada</h2>
-			<form onsubmit="event.preventDefault();scramblePersonalizado(document.getElementById('scramble-text').value);">
-				<label class="mb-0" for="scramble-text">Scramble</label>
-				<input type="text" id="scramble-text" autocomplete="off" required>
-				<br>
+			<form class="modalForm" onsubmit="event.preventDefault();scramblePersonalizado(document.getElementById('scramble-text').value);">
+				<label for="scramble-text">Scramble</label>
+				<input type="text" id="scramble-text" class="input-100" autocomplete="off" required>
 				<button type="submit" class="btn-guardar">Guardar</button>
 				<span id="scramble-personalizado-modal-error" style="color:red; display:none;">El scramble introducido no es válido.</span>
 			</form>
 		</div>
 	</div>
+	<div id="add-solve-modal" class="modal">
+		<div id="add-solve-modal-content" class="modal-content modal-30">
+			<h2>Agregar tiempo</h2>
+			<form id="addSolve-form" class="modalForm" onsubmit="event.preventDefault();validarTiempo(document.getElementById('addSolve-tiempo').value, document.getElementById('addSolve-scramble').value);">
+				<label>Scramble</label>
+				<input type="text" id="addSolve-scramble" class="input-100" autocomplete="off" required>
+				<label>Tiempo</label>
+				<input type="text" id="addSolve-tiempo" autocomplete="off" required>
+				<button type="submit" class="btn-guardar">Guardar</button>
+				<span id="add-solve-modal-error" style="color:red; display:none;">El tiempo introducido no es válido.</span>
+			</form>
+		</div>
+	</div>
 	<div id="solveModal" class="modal">
-		<div id="solveModal-content" class="modal-content">
-			<h2>Crear nueva sesión</h2>
+		<div class="modal-content modal-30">
+			<h2>Tiempo</h2>
 			<form class="modalForm" onsubmit="event.preventDefault();borrarTiempo(document.getElementById('hidden-id').value)">
 				<input id="hidden-id" name="hidden-id" type="hidden">
 				<label for="scrambleInput">Scramble</label>
-				<input type="text" id="scrambleInput" name="scrambleInput" disabled>
-				<div class="d-flex flex-column justify-content-center">
-					<label for="fecha">Fecha</label>
-					<input type="text" id="fecha" name="fecha" disabled>
-					<label for="tiempo">Tiempo</label>
-					<input type="text" id="tiempo" name="tiempo" disabled>
-				</div>
-				<div class="d-flex justify-content-end">
+				<input type="text" id="scrambleInput" class="input-100" name="scrambleInput" disabled>
+				<label for="fecha">Fecha</label>
+				<input type="text" id="fecha" name="fecha" disabled>
+				<label for="tiempo">Tiempo</label>
+				<input type="text" id="tiempo" name="tiempo" disabled>
+				<div class="w-100 d-flex justify-content-end">
 					<button type="submit" id="solveBtn-eliminar">Eliminar</button>
 				</div>
 				<span id="solve-modal-error" style="color:red; display:none;">Ha ocurrido un error al borrar el tiempo.</span>
 			</form>
 		</div>
 	</div>
-	
-	
-	
 	<div id="avgModal" class="modal">
 		<div id="avgModal-content" class="modal-content">
 			<h2 id="avgModal-title"></h2>
@@ -86,22 +92,19 @@
 				<label for="scrambleInput">Media</label>
 				<input type="text" id="avg-tiempo" name="avg-tiempo" disabled>
 				<label>Tiempos</label>
-				<div id="avgTiempos-container">
+				<div id="avgTiempos-container" class="w-100">
 					<table id="avg-table"></table>
 				</div>
 			</form>
 		</div>
 	</div>
-	
-	
-	
-	
 	<img id="config-btn" src="images/config-icon.png"/>
 	<div id="config-container" style="display:none;">
    		<ul id="config-menu">
-   			<li id="custom-scramble" class="list-item"><img id="custom-icon" class="config-icon" src="images/personalizar.png"/>Mezcla personalizada</li>
+   			<li id="custom-scramble" class="list-item"><img class="config-icon" src="images/personalizar.png"/>Mezcla personalizada</li>
 			<li id="previus-scramble" class="list-item-disabled"><img id="previus-icon" class="config-icon" src="images/previus-disabled.png"/>Mezcla anterior</li>
-			<li id="next-scramble" class="list-item"><img id="next-icon" class="config-icon" src="images/next.png"/>Mezcla siguiente</li>
+			<li id="next-scramble" class="list-item"><img class="config-icon" src="images/next.png"/>Mezcla siguiente</li>
+			<li id="add-solve" class="list-item"><img class="config-icon" src="images/add.png"/>Agregar tiempo</li>
 			<hr>
 			<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="images/logout.png"/>Cerrar sesión</li>
 		</ul>
