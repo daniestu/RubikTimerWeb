@@ -249,6 +249,24 @@ function validarNombreSesion(nombreSesion) {
 	return true;
 }
 
+function validarTiempo(tiempo, scramble) {
+	let ok = false;
+	const regex = /^(0[0-9]|[1-5][0-9]):(0[0-9]|[1-5][0-9]):([0-9][0-9])$/;
+	
+	if (regex.test(tiempo)) {
+		if (validarScramble(scramble)) {
+			ok = true;
+		}
+	}
+	
+	if (ok) {
+		guardarTiempo(tiempo, scramble);
+		document.getElementById("add-solve-modal").style.display = "none";
+	}else {
+		document.getElementById("add-solve-modal-error").style.display = "block";
+	}
+}
+
 function formatJsonTiempos(json, accion) {
 	if(accion == 0) {
 		for (let i = 0; i < json.length; i++) {
