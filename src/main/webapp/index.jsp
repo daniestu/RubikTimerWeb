@@ -123,11 +123,11 @@
 				</tr>
 				<tr>
 					<th>Mejor</th>
-					<td id="mejor"></td>
+					<td id="mejor" class="solve"></td>
 				</tr>
 				<tr>
 					<th>Peor</th>
-					<td id="peor"></td>
+					<td id="peor" class="solve"></td>
 				</tr>
 				<tr>
 					<th>Ao5</th>

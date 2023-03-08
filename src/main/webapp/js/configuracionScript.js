@@ -6,6 +6,8 @@ $(document).ready(function() {
     var solveModal = $("#solveModal-content");
     var avgModal = $("#avgModal-content");
     var avgTable = $(".average");
+    var solveTd = $(".solve");
+    var tablaTiempos = $("#tablaTiempos");
     var scramblePersonalizadoModal = $("#scramble-personalizado-modal-content");
     var sesionSelect = $("#sesion_select");
 
@@ -38,7 +40,9 @@ $(document).ready(function() {
 			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0) {
 				$("#borrarSesion-modal").hide();
 		}
-		if (!solveModal.is(event.target) && solveModal.has(event.target).length === 0) {
+		if (!solveModal.is(event.target) && solveModal.has(event.target).length === 0
+			&& !solveTd.is(event.target) && solveTd.has(event.target).length === 0
+			&& !tablaTiempos.is(event.target) && tablaTiempos.has(event.target).length === 0) {
 				$("#solveModal").hide();
 		}
 		if (!avgModal.is(event.target) && avgModal.has(event.target).length === 0
