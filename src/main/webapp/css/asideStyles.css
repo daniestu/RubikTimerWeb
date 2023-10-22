@@ -82,6 +82,8 @@
 	height: 62%;
 	margin-top: 2vh;
 	overflow: auto;
+	scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
+  	-ms-overflow-style: none; /* Oculta la barra de desplazamiento en Internet Explorer */
 }
 
 #tiempos_container::-webkit-scrollbar {

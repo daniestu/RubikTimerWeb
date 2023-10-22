@@ -26,7 +26,9 @@ function getEstadisticasSesion(tiempos) {
 	fetch('GetEstadisticasServlet', options)
 		.then(response => response.json())
 		.then(estadisticas => {
+			
 			document.getElementById("total").textContent = estadisticas.total;
+			document.getElementById("info-total").value = estadisticas.total;
 			
 			if (estadisticas.hasOwnProperty("mejor")) {
 				const mejor = estadisticas.mejor;
@@ -34,9 +36,15 @@ function getEstadisticasSesion(tiempos) {
 				document.getElementById("mejor").onclick = function() {
 					mostrarTiempo(mejor);
 				}
+				document.getElementById("info-best").value = mejor.tiempo;
+				document.getElementById("info-best").onclick = function() {
+					mostrarTiempo(mejor);
+				}
 			}else {
 				document.getElementById("mejor").textContent = "";
 				document.getElementById("mejor").onclick = null;
+				document.getElementById("info-best").value = "";
+				document.getElementById("info-best").onclick = null;
 			}
 			
 			if (estadisticas.hasOwnProperty("peor")) {
@@ -45,9 +53,15 @@ function getEstadisticasSesion(tiempos) {
 				document.getElementById("peor").onclick = function() {
 					mostrarTiempo(peor);
 				}
+				document.getElementById("info-worst").value = peor.tiempo;
+				document.getElementById("info-worst").onclick = function() {
+					mostrarTiempo(peor);
+				}
 			}else {
 				document.getElementById("peor").textContent = "";
 				document.getElementById("peor").onclick = null;
+				document.getElementById("info-worst").value = "";
+				document.getElementById("info-worst").onclick = null;
 			}
 			
 			if (estadisticas.hasOwnProperty("ao5")) {
@@ -56,9 +70,15 @@ function getEstadisticasSesion(tiempos) {
 				document.getElementById("ao5").onclick = function() {
 					mostrarAvg(ao5);
 				}
+				document.getElementById("info-ao5").value = ao5.tiempo;
+				document.getElementById("info-ao5").onclick = function() {
+					mostrarAvg(ao5);
+				}
 			}else {
 				document.getElementById("ao5").textContent = "";
 				document.getElementById("ao5").onclick = null;
+				document.getElementById("info-ao5").value = "";
+				document.getElementById("info-ao5").onclick = null;
 			}
 			
 			if (estadisticas.hasOwnProperty("ao12")) {
@@ -67,23 +87,72 @@ function getEstadisticasSesion(tiempos) {
 				document.getElementById("ao12").onclick = function() {
 					mostrarAvg(ao12);
 				}
+				document.getElementById("info-ao12").value = ao12.tiempo;
+				document.getElementById("info-ao12").onclick = function() {
+					mostrarAvg(ao12);
+				}
 			}else {
 				document.getElementById("ao12").textContent = "";
 				document.getElementById("ao12").onclick = null;
+				document.getElementById("info-ao12").value = "";
+				document.getElementById("info-ao12").onclick = null;
 			}
 			
 			if (estadisticas.hasOwnProperty("ao100")) {
 				const ao100 = estadisticas.ao100;
 				document.getElementById("ao100").textContent = ao100.tiempo;
-				document.getElementById("ao12").onclick = function() {
+				document.getElementById("ao100").onclick = function() {
+					mostrarAvg(ao100);
+				}
+				document.getElementById("info-ao100").value = ao100.tiempo;
+				document.getElementById("info-ao100").onclick = function() {
 					mostrarAvg(ao100);
 				}
 			}else {
 				document.getElementById("ao100").textContent = "";
 				document.getElementById("ao100").onclick = null;
+				document.getElementById("info-ao100").value = "";
+				document.getElementById("info-ao100").onclick = null;
 			}
 			
+			if (estadisticas.hasOwnProperty("bestao5")) {
+				
+				const bestao5 = estadisticas.bestao5;
+				document.getElementById("info-bestao5").value = bestao5.tiempo;
+				document.getElementById("info-bestao5").onclick = function() {
+					mostrarAvg(bestao5);
+				}
+			}else {
+				document.getElementById("info-bestao5").value = "";
+				document.getElementById("info-bestao5").onclick = null;
+			}
+			
+			if (estadisticas.hasOwnProperty("bestao12")) {
+				const bestao12 = estadisticas.bestao12;
+				document.getElementById("info-bestao12").value = bestao12.tiempo;
+				document.getElementById("info-bestao12").onclick = function() {
+					mostrarAvg(bestao12);
+				}
+			}else {
+				document.getElementById("info-bestao12").value = "";
+				document.getElementById("info-bestao12").onclick = null;
+			}
+			
+			if (estadisticas.hasOwnProperty("bestao100")) {
+				const bestao100 = estadisticas.bestao100;
+				document.getElementById("info-bestao100").value = bestao100.tiempo;
+				document.getElementById("info-bestao100").onclick = function() {
+					mostrarAvg(bestao100);
+				}
+			}else {
+				document.getElementById("info-bestao100").value = "";
+				document.getElementById("info-bestao100").onclick = null;
+			}
+			
+			document.getElementById("info-desv").value = estadisticas.desv;
+			
 			document.getElementById("media").textContent = estadisticas.media;
+			document.getElementById("info-avg").value = estadisticas.media;
 		})
 }
 
@@ -123,7 +192,6 @@ function getTiemposSesion(sesion) {
 
 function mostrarTiempo(tiempo) {
 	tiempo = formatJsonTiempos(tiempo, 1);
-	console.log(tiempo);
 	document.getElementById("hidden-id").value = tiempo.id;
 	document.getElementById("scrambleInput").value = tiempo.scramble;
 	document.getElementById("fecha").value = tiempo.fecha;
@@ -222,8 +290,8 @@ function crearSesion(nombreSesion) {
 	}
 }
 
-function borrarSesion() {
-	fetch('BorrarSesionServlet?sesion=' + originalSelectedOption)
+function borrarSesion(nombreSesion) {
+	fetch('BorrarSesionServlet?sesion=' + nombreSesion)
 		.then(response => response.json())
 		.then(data => {
 			if(data.eliminado) {
@@ -237,6 +305,10 @@ function borrarSesion() {
 		.catch(function() {
 			document.getElementById("borrarSesion-modal-error").style.display = "block";
 		});
+}
+
+function actualizarSesion() {
+	console.log("entra");
 }
 
 function validarNombreSesion(nombreSesion) {
