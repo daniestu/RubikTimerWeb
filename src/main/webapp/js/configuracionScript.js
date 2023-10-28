@@ -11,6 +11,7 @@ $(document).ready(function() {
     var scramblePersonalizadoModal = $("#scramble-personalizado-modal-content");
     var addSolve = $("#add-solve-modal-content");
     var sesionSelect = $("#sesion_select");
+    var sessionInfo = $("#session-info-modal-content");
 
     function toggleConfigContainer() {
         configContainer.toggle();
@@ -58,6 +59,10 @@ $(document).ready(function() {
 			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
 				$("#add-solve-modal").hide();
 		}
+		if (!sessionInfo.is(event.target) && sessionInfo.has(event.target).length === 0
+			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
+				$("#session-info-modal").hide();
+		}
 	});
 	
 	function logout() {
@@ -101,6 +106,12 @@ $(document).ready(function() {
 		document.getElementById("add-solve-modal").style.display = "flex";
 		toggleConfigContainer();
 	});
-
+	
+	$("#session-info").click(function(event) {
+		document.getElementById("session-info-modal-error").style.display = "none";
+		document.getElementById("info-name").value = document.getElementById("sesion_select").value;
+		document.getElementById("session-info-modal").style.display = "flex";
+		toggleConfigContainer();
+	});
+	
 });
-

@@ -17,9 +17,13 @@ public class SesionUtils {
 		AVG ao5 = avg(tiempos, 5);
 		AVG ao12 = avg(tiempos, 12);
 		AVG ao100 = avg(tiempos, 100);
+		AVG bestao5 = bestavg(tiempos, 5);
+		AVG bestao12 = bestavg(tiempos, 12);
+		AVG bestao100 = bestavg(tiempos, 100);
 		String media = media(tiempos);
+		double desv = calcularDesviacion(tiempos, media);
 		
-		return new Estadisticas(total, mejor, peor, ao5, ao12, ao100, media);
+		return new Estadisticas(total, mejor, peor, ao5, ao12, ao100, bestao5, bestao12, bestao100, media, desv);
 	}
 
 	private String media(List<Solve> tiempos) {
@@ -36,6 +40,35 @@ public class SesionUtils {
 		
 		return media;
 	}
+	
+	private static double calcularDesviacion(List<Solve> solves, String avg) {
+        int suma = 0, media, size = 0;
+        
+        try {
+            media = convertirTiempoMs(avg);
+        } catch (Exception e) {
+            return 0;
+        }
+        
+        double diferencia;
+        for (Solve i : solves) {
+            if (!i.isDnf()) {
+                size++;
+                
+                if (media < convertirTiempoMs(i.getTiempo())) {
+                    diferencia = convertirTiempoMs(i.getTiempo()) - media;
+                }else{
+                    diferencia = media - convertirTiempoMs(i.getTiempo());
+                }
+
+                suma += (diferencia*diferencia);
+            }
+            
+        }
+        suma = suma / (size - 1);
+        diferencia = Math.sqrt(suma)/100;
+        return Math.round(diferencia*100.0)/100.0;
+    }
 
 	private AVG avg(List<Solve> tiempos, int numero_avg) {
 		AVG avgFinal = null;
@@ -64,6 +97,108 @@ public class SesionUtils {
 		}
 		
 		return avgFinal;
+	}
+	
+	private AVG bestavg(List<Solve> tiempos, int num) {
+		ArrayList <Solve> al = new ArrayList<Solve>();
+        ArrayList <Solve> alMejores = new ArrayList<Solve>();
+        int suma;
+        String mejoravg = "";
+        
+        for (Solve i : tiempos) {
+            int dnfCont = 0;
+            boolean dnf=false;
+            al.add(i);
+            suma=0;
+            if (al.size()==num+1) {
+                al.remove(0);
+                String mejorTiempo = al.get(0).getTiempo();
+                String peorTiempo = al.get(0).getTiempo();
+                for (Solve j : al) {
+                    
+                    if (dnf) {
+                        if (!j.isDnf()) {
+                            if (esMejorTiempo(mejorTiempo, j.getTiempo())) {
+                                mejorTiempo = j.getTiempo();
+                            }
+                        }else{
+                            dnfCont++;
+                        }
+
+                    }else{
+                        if (j.isDnf()) {
+                            dnfCont++;
+                            dnf = true;
+                            peorTiempo = j.getTiempo();
+                        }else{
+                            if (esMejorTiempo(mejorTiempo, j.getTiempo())) {
+                                mejorTiempo = j.getTiempo();
+                            }
+
+                            if (esPeorTiempo(peorTiempo, j.getTiempo())) {
+                                peorTiempo = j.getTiempo();
+                            }
+                        }
+                    }
+                    suma += convertirTiempoMs(j.getTiempo());
+                }
+                suma = suma - (convertirTiempoMs(mejorTiempo) + convertirTiempoMs(peorTiempo) );
+                if (dnfCont<2) {
+                    if (esMejorTiempo(mejoravg, convertirMsTiempo(suma/(num - 2)))) {
+                        mejoravg = convertirMsTiempo(suma/(num - 2));
+                        alMejores = new ArrayList<Solve>(al);
+                    }
+                }
+            }else{
+                if (al.size()==num) {
+                    String mejorTiempo = al.get(0).getTiempo();
+                    String peorTiempo = al.get(0).getTiempo();
+                    for (Solve j : al) {
+                        if (dnf) {
+                            if (!j.isDnf()) {
+                                if (esMejorTiempo(mejorTiempo, j.getTiempo())) {
+                                    mejorTiempo = j.getTiempo();
+                                }
+                            }else{
+                                dnfCont++;
+                            }
+                            
+                        }else{
+                            if (j.isDnf()) {
+                                dnfCont++;
+                                dnf = true;
+                                peorTiempo = j.getTiempo();
+                            }else{
+                                if (esMejorTiempo(mejorTiempo, j.getTiempo())) {
+                                    mejorTiempo = j.getTiempo();
+                                }
+
+                                if (esPeorTiempo(peorTiempo, j.getTiempo())) {
+                                    peorTiempo = j.getTiempo();
+                                }
+                            }
+                        }
+                        
+                        
+                        suma += convertirTiempoMs(j.getTiempo());
+                    }
+                    if (dnfCont>=2) {
+                        mejoravg = "DNF";
+                    }else{
+                        suma = suma - (convertirTiempoMs(mejorTiempo) + convertirTiempoMs(peorTiempo) );
+                        mejoravg = convertirMsTiempo(suma/(num - 2));
+                    }
+                    alMejores = new ArrayList<Solve>(al);
+                }
+            }
+        }
+        AVG avg;
+        if (mejoravg.equals("DNF")) {
+            avg = new AVG(mejoravg, alMejores, true);
+        }else{
+            avg = new AVG(mejoravg, alMejores, false);
+        }
+        return avg;
 	}
 
 	private Solve peorTiempo(List<Solve> tiempos) {
@@ -188,5 +323,4 @@ public class SesionUtils {
             }
         }
     }
-	
 }

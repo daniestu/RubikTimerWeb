@@ -90,6 +90,12 @@
   	<description></description>
   	<servlet-class>controller.EstablecerCuboServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>UpdateSession</servlet-name>
+  	<display-name>UpdateSession</display-name>
+  	<description></description>
+  	<servlet-class>controller.UpdateSession</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>GuardaTiempoServlet</servlet-name>
   	<url-pattern>/GuardaTiempoServlet</url-pattern>
@@ -137,5 +143,9 @@
   <servlet-mapping>
   	<servlet-name>EstablecerCuboServlet</servlet-name>
   	<url-pattern>/EstablecerCuboServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UpdateSession</servlet-name>
+  	<url-pattern>/UpdateSession</url-pattern>
   </servlet-mapping>
 </web-app>
