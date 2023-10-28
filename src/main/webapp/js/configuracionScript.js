@@ -108,6 +108,7 @@ $(document).ready(function() {
 	});
 	
 	$("#session-info").click(function(event) {
+		document.getElementById("session-info-modal-error").style.display = "none";
 		document.getElementById("info-name").value = document.getElementById("sesion_select").value;
 		document.getElementById("session-info-modal").style.display = "flex";
 		toggleConfigContainer();

@@ -307,8 +307,24 @@ function borrarSesion(nombreSesion) {
 		});
 }
 
-function actualizarSesion() {
-	console.log("entra");
+function actualizarSesion(newName) {
+	var name = document.getElementById("sesion_select").value;
+	
+	fetch('UpdateSession?name=' + name + '&newName=' + newName)
+		.then(response => response.text())
+		.then(data => {
+			if(data == "true") {
+				originalSelectedOption = newName;
+				getSesiones();
+				$("#session-info-modal").hide();
+				
+			}else {
+				document.getElementById("session-info-modal-error").style.display = "block";
+			}
+		})
+		.catch(function() {
+			document.getElementById("session-info-modal-error").style.display = "block";
+		});
 }
 
 function validarNombreSesion(nombreSesion) {
@@ -363,4 +379,15 @@ function formatJsonTiempos(json, accion) {
 
 function ocultarBorrarSesionModal() {
 	document.getElementById("borrarSesion-modal").style.display = "none";
+}
+
+function confirmDelete(nombreSesion) {
+	var confirmacion = window.confirm("¿Estás seguro de que deseas eliminar esta sesión?");
+
+	if (confirmacion) {
+		borrarSesion(nombreSesion);
+	}
+	
+	$("#session-info-modal").hide();
+	
 }

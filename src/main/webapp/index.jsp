@@ -156,7 +156,8 @@
 	            	</div>
             	</div>
 				<button type="submit" class="btn btn-guardar">Aceptar</button>
-				<button type="submit" class="btn btn-danger ml-1" onclick="event.preventDefault();borrarSesion(document.getElementById('sesion_select').value)">Eliminar</button>
+				<button type="submit" class="btn btn-danger ml-1" onclick="event.preventDefault();confirmDelete(document.getElementById('sesion_select').value);">Eliminar</button>
+				<span id="session-info-modal-error" style="color:red; display:none; margin-top:2%;">Ha ocurrido un error al actualizar la sesión.</span>
 			</form>
 		</div>
 	</div>

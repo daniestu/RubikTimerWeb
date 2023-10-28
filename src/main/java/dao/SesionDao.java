@@ -123,4 +123,25 @@ public class SesionDao implements Persistencia<Sesion>{
         }
 	}
 	
+	public boolean update(Sesion sesion) {
+        String sql = "UPDATE sesion SET nombre = ? WHERE id = ? AND usuario_id = ?";
+		AccesoBBDD accesoBBDD = new AccesoBBDD();
+		Properties prop = accesoBBDD.cargarFichero();
+		
+        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            
+        	statement.setString(1, sesion.getNombre());
+        	statement.setInt(2, sesion.getId());
+        	statement.setInt(3, sesion.getUsuario_id());
+            statement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+		return true;
+	}
+	
 }
