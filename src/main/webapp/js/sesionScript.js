@@ -23,7 +23,7 @@ function getEstadisticasSesion(tiempos) {
 	  body: JSON.stringify(tiempos)
 	};
 
-	fetch('GetEstadisticasServlet', options)
+	fetch('session/getData', options)
 		.then(response => response.json())
 		.then(estadisticas => {
 			
@@ -158,7 +158,7 @@ function getEstadisticasSesion(tiempos) {
 
 function getTiemposSesion(sesion) {
 	originalSelectedOption = sesion;
-	fetch('GetTiemposServlet?sesion=' + sesion)
+	fetch('solve/get?sesion=' + sesion)
 		.then(response => response.json())
 		.then(json => {
 			if(json.usuario == "nulo") {
@@ -221,7 +221,7 @@ function mostrarAvg(avg) {
 }
 
 function borrarTiempo(id) {
-	fetch('EliminarSolveServlet?id=' + id)
+	fetch('solve/delete?id=' + id)
 		.then(response => response.json())
 		.then(data => {
 			if(data.eliminado) {
@@ -237,7 +237,7 @@ function borrarTiempo(id) {
 }
 
 function getSesiones() {
-  fetch('GetSesionesServlet')
+  fetch('session/get')
     .then(response => response.json())
     .then(sesiones => {
       if (sesiones.length == 0) {
@@ -278,7 +278,7 @@ function getSesiones() {
 
 function crearSesion(nombreSesion) {
 	if(validarNombreSesion(nombreSesion)) {
-		fetch('CrearSesionServlet?sesion=' + nombreSesion)
+		fetch('session/add?sesion=' + nombreSesion)
 			.then(response => response.json())
 			.then(sesion => {
 				originalSelectedOption = sesion.nombre;
@@ -291,7 +291,7 @@ function crearSesion(nombreSesion) {
 }
 
 function borrarSesion(nombreSesion) {
-	fetch('BorrarSesionServlet?sesion=' + nombreSesion)
+	fetch('session/delete?sesion=' + nombreSesion)
 		.then(response => response.json())
 		.then(data => {
 			if(data.eliminado) {
@@ -310,7 +310,7 @@ function borrarSesion(nombreSesion) {
 function actualizarSesion(newName) {
 	var name = document.getElementById("sesion_select").value;
 	
-	fetch('UpdateSession?name=' + name + '&newName=' + newName)
+	fetch('session/update?name=' + name + '&newName=' + newName)
 		.then(response => response.text())
 		.then(data => {
 			if(data == "true") {

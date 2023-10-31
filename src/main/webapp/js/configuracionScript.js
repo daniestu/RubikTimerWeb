@@ -66,7 +66,7 @@ $(document).ready(function() {
 	});
 	
 	function logout() {
-		fetch('LogoutServlet')
+		fetch('user/logout')
 			.then(response => {
 				if (response.redirected) {
 					window.location.href = response.url;

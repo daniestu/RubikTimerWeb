@@ -4,12 +4,12 @@
 <html>
   <head>
     <jsp:include page="head.jsp" />
-    <link rel="stylesheet" type="text/css" href="css/loginStyles.css">
+    <link rel="stylesheet" type="text/css" href="../css/loginStyles.css">
   </head>
   <body>
     <div class="login-container">
       <h1>Registro de usuario</h1>
-      <form action="RegistroServlet" method="post">
+      <form action="register" method="post">
       	<label for="correo">Correo:</label>
         <input type="email" name="correo" id="correo" required>
         <label for="username">Usuario:</label>
@@ -27,7 +27,7 @@
 			%>
 		</span>
       </form>
-      <p>¿Ya tienes una cuenta? <a href="login.jsp">Inicia sesión aquí</a></p>
+      <p>¿Ya tienes una cuenta? <a href="login">Inicia sesión aquí</a></p>
     </div>
   </body>
 </html>

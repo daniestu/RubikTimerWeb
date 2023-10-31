@@ -16,136 +16,46 @@
   </filter>
   <filter-mapping>
   	<filter-name>AuthenticationFilter</filter-name>
-  	<url-pattern>/index.jsp</url-pattern>
+  	<url-pattern>/*</url-pattern>
   </filter-mapping>
   <servlet>
-  	<servlet-name>GuardaTiempoServlet</servlet-name>
-  	<display-name>GuardaTiempoServlet</display-name>
+  	<servlet-name>Session</servlet-name>
+  	<display-name>Session</display-name>
   	<description></description>
-  	<servlet-class>controller.GuardaTiempoServlet</servlet-class>
+  	<servlet-class>restController.SessionController</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>LoginServlet</servlet-name>
-  	<display-name>LoginServlet</display-name>
+  	<servlet-name>Solve</servlet-name>
+  	<display-name>Solve</display-name>
   	<description></description>
-  	<servlet-class>controller.LoginServlet</servlet-class>
+  	<servlet-class>restController.SolveController</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>RegistroServlet</servlet-name>
-  	<display-name>RegistroServlet</display-name>
+  	<servlet-name>Cube</servlet-name>
+  	<display-name>Cube</display-name>
   	<description></description>
-  	<servlet-class>controller.RegistroServlet</servlet-class>
+  	<servlet-class>restController.CubeController</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>GenerarScrambleServlet</servlet-name>
-  	<display-name>GenerarScrambleServlet</display-name>
+  	<servlet-name>User</servlet-name>
+  	<display-name>User</display-name>
   	<description></description>
-  	<servlet-class>controller.GenerarScrambleServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>GetEstadisticasServlet</servlet-name>
-  	<display-name>GetEstadisticasServlet</display-name>
-  	<description></description>
-  	<servlet-class>controller.GetEstadisticasServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>GetTiemposServlet</servlet-name>
-  	<display-name>GetTiemposServlet</display-name>
-  	<description></description>
-  	<servlet-class>controller.GetTiemposServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>GetSesionesServlet</servlet-name>
-  	<display-name>GetSesionesServlet</display-name>
-  	<description></description>
-  	<servlet-class>controller.GetSesionesServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>CrearSesionServlet</servlet-name>
-  	<display-name>CrearSesionServlet</display-name>
-  	<description></description>
-  	<servlet-class>controller.CrearSesionServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>LogoutServlet</servlet-name>
-  	<display-name>LogoutServlet</display-name>
-  	<description></description>
-  	<servlet-class>controller.LogoutServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>BorrarSesionServlet</servlet-name>
-  	<display-name>BorrarSesionServlet</display-name>
-  	<description></description>
-  	<servlet-class>controller.BorrarSesionServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>EliminarSolveServlet</servlet-name>
-  	<display-name>EliminarSolveServlet</display-name>
-  	<description></description>
-  	<servlet-class>controller.EliminarSolveServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>EstablecerCuboServlet</servlet-name>
-  	<display-name>EstablecerCuboServlet</display-name>
-  	<description></description>
-  	<servlet-class>controller.EstablecerCuboServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>UpdateSession</servlet-name>
-  	<display-name>UpdateSession</display-name>
-  	<description></description>
-  	<servlet-class>controller.UpdateSession</servlet-class>
+  	<servlet-class>controller.UserController</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>GuardaTiempoServlet</servlet-name>
-  	<url-pattern>/GuardaTiempoServlet</url-pattern>
+  	<servlet-name>Session</servlet-name>
+  	<url-pattern>/session/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>LoginServlet</servlet-name>
-  	<url-pattern>/LoginServlet</url-pattern>
+  	<servlet-name>Solve</servlet-name>
+  	<url-pattern>/solve/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>RegistroServlet</servlet-name>
-  	<url-pattern>/RegistroServlet</url-pattern>
+  	<servlet-name>Cube</servlet-name>
+  	<url-pattern>/cube/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>GenerarScrambleServlet</servlet-name>
-  	<url-pattern>/GenerarScrambleServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>GetEstadisticasServlet</servlet-name>
-  	<url-pattern>/GetEstadisticasServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>GetTiemposServlet</servlet-name>
-  	<url-pattern>/GetTiemposServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>GetSesionesServlet</servlet-name>
-  	<url-pattern>/GetSesionesServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>CrearSesionServlet</servlet-name>
-  	<url-pattern>/CrearSesionServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>LogoutServlet</servlet-name>
-  	<url-pattern>/LogoutServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>BorrarSesionServlet</servlet-name>
-  	<url-pattern>/BorrarSesionServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>EliminarSolveServlet</servlet-name>
-  	<url-pattern>/EliminarSolveServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>EstablecerCuboServlet</servlet-name>
-  	<url-pattern>/EstablecerCuboServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>UpdateSession</servlet-name>
-  	<url-pattern>/UpdateSession</url-pattern>
+  	<servlet-name>User</servlet-name>
+  	<url-pattern>/user/*</url-pattern>
   </servlet-mapping>
 </web-app>
