@@ -132,6 +132,18 @@
 	background-color: #e60000;
 }
 
+.solveBtn {
+	border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 1.5% 10px;
+    color: #4A6572;
+}
+
+.solveBtn:hover, .solveBtn-clicked {
+	background-color: #AEAEAE;
+}
+
 #avgTiempos-container {
 	display:flex;
 	align-items: flex-start;

@@ -29,3 +29,9 @@ body {
 p, td, th {
 	cursor: default;
 }
+
+button:focus {
+	outline: none;
+	-webkit-tap-highlight-color: transparent;
+	box-shadow: none;
+}

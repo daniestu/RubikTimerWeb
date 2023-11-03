@@ -32,11 +32,17 @@ function getEstadisticasSesion(tiempos) {
 			
 			if (estadisticas.hasOwnProperty("mejor")) {
 				const mejor = estadisticas.mejor;
-				document.getElementById("mejor").textContent = mejor.tiempo;
+				
+				if (mejor.dnf == 1) {
+					document.getElementById("mejor").textContent = "DNF";
+					document.getElementById("info-best").value = "DNF(" + mejor.tiempo + ")";
+				}else {
+					document.getElementById("mejor").textContent = (mejor.mas_2 == 0) ? mejor.tiempo : (sumarMas2(mejor.tiempo) + "+");
+					document.getElementById("info-best").value = (mejor.mas_2 == 0) ? mejor.tiempo : (sumarMas2(mejor.tiempo) + "+");
+				}
 				document.getElementById("mejor").onclick = function() {
 					mostrarTiempo(mejor);
 				}
-				document.getElementById("info-best").value = mejor.tiempo;
 				document.getElementById("info-best").onclick = function() {
 					mostrarTiempo(mejor);
 				}
@@ -49,11 +55,18 @@ function getEstadisticasSesion(tiempos) {
 			
 			if (estadisticas.hasOwnProperty("peor")) {
 				const peor = estadisticas.peor;
-				document.getElementById("peor").textContent = peor.tiempo;
+				
+				if (peor.dnf == 1) {
+					document.getElementById("peor").textContent = "DNF";
+					document.getElementById("info-worst").value = "DNF(" + peor.tiempo + ")";
+				}else {
+					document.getElementById("peor").textContent = (peor.mas_2 == 0) ? peor.tiempo : (sumarMas2(peor.tiempo) + "+");
+					document.getElementById("info-worst").value = (peor.mas_2 == 0) ? peor.tiempo : (sumarMas2(peor.tiempo) + "+");
+				}
+				
 				document.getElementById("peor").onclick = function() {
 					mostrarTiempo(peor);
 				}
-				document.getElementById("info-worst").value = peor.tiempo;
 				document.getElementById("info-worst").onclick = function() {
 					mostrarTiempo(peor);
 				}
@@ -177,7 +190,13 @@ function getTiemposSesion(sesion) {
 					tr.appendChild(idTd);
 					
 					const tiempoTd = document.createElement('td');
-					tiempoTd.textContent = tiempo.tiempo;
+					
+					if (tiempo.dnf == 1) {
+						tiempoTd.textContent = "DNF";
+					}else {
+						tiempoTd.textContent = (tiempo.mas_2 == 0) ? tiempo.tiempo : (sumarMas2(tiempo.tiempo) + "+");
+					}
+					
 					tiempoTd.classList.add('tablaTiempos-tiempo');
 					tiempoTd.onclick = function() {
 						mostrarTiempo(tiempo);
@@ -195,7 +214,21 @@ function mostrarTiempo(tiempo) {
 	document.getElementById("hidden-id").value = tiempo.id;
 	document.getElementById("scrambleInput").value = tiempo.scramble;
 	document.getElementById("fecha").value = tiempo.fecha;
-	document.getElementById("tiempo").value = tiempo.tiempo;
+	
+	if (tiempo.mas_2 == 0) {
+		document.getElementById("solveBtn-mas2").classList.remove("solveBtn-clicked");
+	}else {
+		document.getElementById("solveBtn-mas2").classList.add("solveBtn-clicked");
+	}
+	
+	if (tiempo.dnf == 0) {
+		document.getElementById("solveBtn-dnf").classList.remove("solveBtn-clicked");
+		document.getElementById("tiempo").value = (tiempo.mas_2 == 0) ? tiempo.tiempo : (sumarMas2(tiempo.tiempo) + "+");
+	}else {
+		document.getElementById("solveBtn-dnf").classList.add("solveBtn-clicked");
+		document.getElementById("tiempo").value = "DNF(" + tiempo.tiempo + ")";;
+	}
+	
 	document.getElementById("solve-modal-error").style.display = "none";
 	document.getElementById("solveModal").style.display = "flex";
 }
@@ -212,7 +245,7 @@ function mostrarAvg(avg) {
 		
 		const tr = document.createElement('tr');
 		const solveTd = document.createElement('td');
-		solveTd.textContent = solve.tiempo;
+		solveTd.textContent = (solve.mas_2 == 0) ? solve.tiempo : (sumarMas2(solve.tiempo) + "+");
 		
 		tr.appendChild(solveTd);
 		tabla.appendChild(tr);
@@ -391,3 +424,109 @@ function confirmDelete(nombreSesion) {
 	$("#session-info-modal").hide();
 	
 }
+
+function addMas2(id) {
+	event.preventDefault();
+	var action;
+	if (document.getElementById("solveBtn-mas2").classList.contains("solveBtn-clicked")) {
+		action = 0;
+	} else {
+		action = 1;
+	}
+	fetch('solve/updateMas2?id=' + id + '&action=' + action)
+	.then(response => response.json())
+	.then(data => {
+		if (data.actualizado) {
+			if (action == 0) {
+				document.getElementById("solveBtn-mas2").classList.remove("solveBtn-clicked");
+				document.getElementById("tiempo").value = restarMas2(document.getElementById("tiempo").value);
+			}else {
+				document.getElementById("solveBtn-mas2").classList.add("solveBtn-clicked");
+				document.getElementById("solveBtn-dnf").classList.remove("solveBtn-clicked");
+				var tiempo = document.getElementById("tiempo").value;
+				
+				if (tiempo.includes('DNF')) {
+					tiempo = tiempo.replace(/^DNF\((.*?)\)$/, '$1');
+				}
+				
+				document.getElementById("tiempo").value = sumarMas2(tiempo) + "+";
+				
+			}
+			getSesiones();
+		}
+	});
+}
+
+function addDnf(id) {
+	event.preventDefault();
+	var action;
+	if (document.getElementById("solveBtn-dnf").classList.contains("solveBtn-clicked")) {
+		action = 0;
+	} else {
+		action = 1;
+	}
+	fetch('solve/updateDnf?id=' + id + '&action=' + action)
+	.then(response => response.json())
+	.then(data => {
+		if (data.actualizado) {
+			if (action == 0) {
+				document.getElementById("solveBtn-dnf").classList.remove("solveBtn-clicked");
+				document.getElementById("tiempo").value = document.getElementById("tiempo").value.replace(/^DNF\((.*?)\)$/, '$1');
+				
+			}else {
+				document.getElementById("solveBtn-dnf").classList.add("solveBtn-clicked");
+				document.getElementById("solveBtn-mas2").classList.remove("solveBtn-clicked");
+				
+				var tiempo = document.getElementById("tiempo").value;
+				
+				if (tiempo.includes('+')) {
+					tiempo = restarMas2(tiempo);
+				}
+				document.getElementById("tiempo").value = "DNF(" + tiempo + ")";
+			}
+			getSesiones();
+		}
+	});
+}
+
+function sumarMas2(tiempoOriginal) {
+	var tiempoPartes = tiempoOriginal.split(":");
+	var minutos = parseInt(tiempoPartes[0]);
+  	var segundos = parseInt(tiempoPartes[1]);
+  	
+  	segundos += 2;
+  	
+  	if (segundos >= 60) {
+	    minutos += Math.floor(segundos / 60);
+	    segundos %= 60;
+  	}
+  	
+  	var minutosFormateados = minutos.toString().padStart(2, "0");
+  	var segundosFormateados = segundos.toString().padStart(2, "0");
+  	
+  	var nuevoTiempo = minutosFormateados + ":" + segundosFormateados + ":" + tiempoPartes[2];
+
+  	return nuevoTiempo;
+}
+
+function restarMas2(tiempoOriginal) {
+	var tiempoPartes = tiempoOriginal.split(":");
+	var minutos = parseInt(tiempoPartes[0]);
+  	var segundos = parseInt(tiempoPartes[1]);
+  	
+  	segundos -= 2;
+  	
+	if (segundos < 0) {
+		minutos += Math.floor(segundos / 60);
+		segundos = 60 + (segundos % 60);
+	}
+  	
+  	var minutosFormateados = minutos.toString().padStart(2, "0");
+  	var segundosFormateados = segundos.toString().padStart(2, "0");
+  	
+  	var nuevoTiempo = minutosFormateados + ":" + segundosFormateados + ":" + tiempoPartes[2].slice(0, -1);
+  	
+  	return nuevoTiempo;
+}
+
+

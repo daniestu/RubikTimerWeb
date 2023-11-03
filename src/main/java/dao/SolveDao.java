@@ -175,5 +175,42 @@ public class SolveDao implements Persistencia<Solve>{
             return false;
         }
 	}
-
+	
+	public boolean updateMas2(int id, int action) {
+		String sql = "UPDATE tiempos SET mas_dos = " + action + ", dnf = 0 WHERE id = ?";
+		
+		AccesoBBDD accesoBBDD = new AccesoBBDD();
+		Properties prop = accesoBBDD.cargarFichero();
+		
+        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            
+            return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+	}
+	
+	public boolean updateDnf(int id, int action) {
+		String sql = "UPDATE tiempos SET dnf = " + action + ", mas_dos = 0 WHERE id = ?";
+		
+		AccesoBBDD accesoBBDD = new AccesoBBDD();
+		Properties prop = accesoBBDD.cargarFichero();
+		
+        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            
+            return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+	}
 }

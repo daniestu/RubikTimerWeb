@@ -33,4 +33,14 @@ public class SolveService {
 		SolveDao solveDao = new SolveDao();
 		return solveDao.delete(id);
 	}
+	
+	public boolean updateDnf(int id, int action) {
+		SolveDao solveDao = new SolveDao();
+		return solveDao.updateDnf(id, action);
+	}
+	
+	public boolean updateMas2(int id, int action) {
+		SolveDao solveDao = new SolveDao();
+		return solveDao.updateMas2(id, action);
+	}
 }

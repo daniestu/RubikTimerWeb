@@ -28,17 +28,27 @@ public class SesionUtils {
 
 	private String media(List<Solve> tiempos) {
 		String media = "";
-		
-		if (tiempos.size() > 0) {
-			int suma = tiempos.stream()
-			    .mapToInt(tiempo -> convertirTiempoMs(tiempo.getTiempo()))
-			    .sum();
-			    
-			suma = suma/tiempos.size();
-			media = convertirMsTiempo(suma);
-		}
-		
-		return media;
+		int dnfCount = 0;
+
+	    if (!tiempos.isEmpty()) {
+	        int suma = 0;
+	        for (Solve tiempo : tiempos) {
+	        	String tiempoACalcular = (tiempo.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(tiempo.getTiempo()) + 200) : tiempo.getTiempo();
+	        	
+	        	if (tiempo.isDnf()) {
+	        		dnfCount++;
+				}else {
+		            suma += convertirTiempoMs(tiempoACalcular);
+				}
+	        }
+	        
+	        if ((tiempos.size() - dnfCount) != 0) {
+	        	int promedio = suma / (tiempos.size() - dnfCount);
+		        media = convertirMsTiempo(promedio);
+			}
+	    }
+
+	    return media;
 	}
 	
 	private static double calcularDesviacion(List<Solve> solves, String avg) {
@@ -52,19 +62,23 @@ public class SesionUtils {
         
         double diferencia;
         for (Solve i : solves) {
+        	String tiempoACalcular = (i.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(i.getTiempo()) + 200) : i.getTiempo();
             if (!i.isDnf()) {
                 size++;
                 
-                if (media < convertirTiempoMs(i.getTiempo())) {
-                    diferencia = convertirTiempoMs(i.getTiempo()) - media;
+                if (media < convertirTiempoMs(tiempoACalcular)) {
+                    diferencia = convertirTiempoMs(tiempoACalcular) - media;
                 }else{
-                    diferencia = media - convertirTiempoMs(i.getTiempo());
+                    diferencia = media - convertirTiempoMs(tiempoACalcular);
                 }
 
                 suma += (diferencia*diferencia);
             }
             
         }
+        if (size < 2) {
+        	return 0;
+		}
         suma = suma / (size - 1);
         diferencia = Math.sqrt(suma)/100;
         return Math.round(diferencia*100.0)/100.0;
@@ -75,25 +89,36 @@ public class SesionUtils {
 		
 		if (tiempos.size() >= numero_avg) {
 			avgFinal = new AVG();
+			int dnfCount = 0;
+			
 			List<Solve> avgSolves = new ArrayList<Solve>();
 			Collections.sort(tiempos);
-			String mejor = tiempos.get(0).getTiempo();
-			String peor = tiempos.get(0).getTiempo();
+			Solve mejor = tiempos.get(0);
+			Solve peor = tiempos.get(0);
 			int suma = 0;
 			for (int i = 0; i < numero_avg; i++) {
+				String mejorATM = (mejor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(mejor.getTiempo()) + 200) : mejor.getTiempo();
+				String peorATM = (peor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(peor.getTiempo()) + 200) : peor.getTiempo();
+				String tiempoACalcular = (tiempos.get(i).isMas_2()) ? convertirMsTiempo(convertirTiempoMs(tiempos.get(i).getTiempo()) + 200) : tiempos.get(i).getTiempo();
+				
+				dnfCount = (tiempos.get(i).isDnf()) ? dnfCount+1 : dnfCount;
 				avgSolves.add(tiempos.get(i));
-				suma += convertirTiempoMs(tiempos.get(i).getTiempo());
-				if (esPeorTiempo(peor, tiempos.get(i).getTiempo())) {
-					peor = tiempos.get(i).getTiempo();
+				suma += convertirTiempoMs(tiempoACalcular);
+				if (!peor.isDnf() && (tiempos.get(i).isDnf() || esPeorTiempo(peorATM, tiempoACalcular)) ) {
+					peor = tiempos.get(i);
 				}
-				if (esMejorTiempo(mejor, tiempos.get(i).getTiempo())) {
-					mejor = tiempos.get(i).getTiempo();
+				if (mejor.isDnf() || ( !(tiempos.get(i).isDnf()) && esMejorTiempo(mejorATM, tiempoACalcular)) ) {
+					mejor = tiempos.get(i);
 				}
 			}
 			
-			suma = (suma - convertirTiempoMs(peor) - convertirTiempoMs(mejor)) / (numero_avg-2);
+			String tiempoPeor = (peor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(peor.getTiempo()) + 200) : peor.getTiempo();
+			String tiempoMejor = (mejor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(mejor.getTiempo()) + 200) : mejor.getTiempo();
+			
+			suma = (suma - convertirTiempoMs(tiempoPeor) - convertirTiempoMs(tiempoMejor)) / (numero_avg-2);
 			avgFinal.setSolves(avgSolves);
-			avgFinal.setTiempo(convertirMsTiempo(suma));
+			avgFinal.setDnf(dnfCount >=2);
+			avgFinal.setTiempo( (dnfCount >=2) ? "DNF" : convertirMsTiempo(suma) );
 		}
 		
 		return avgFinal;
@@ -112,14 +137,16 @@ public class SesionUtils {
             suma=0;
             if (al.size()==num+1) {
                 al.remove(0);
-                String mejorTiempo = al.get(0).getTiempo();
-                String peorTiempo = al.get(0).getTiempo();
+                Solve mejor = al.get(0);
+                Solve peor = al.get(0);
                 for (Solve j : al) {
-                    
+                    String mejorAtm = (mejor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(mejor.getTiempo()) + 200) : mejor.getTiempo();
+                    String peorAtm = (peor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(peor.getTiempo()) + 200) : peor.getTiempo();
+                    String tiempoACalcular = (j.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(j.getTiempo()) + 200) : j.getTiempo();
                     if (dnf) {
                         if (!j.isDnf()) {
-                            if (esMejorTiempo(mejorTiempo, j.getTiempo())) {
-                                mejorTiempo = j.getTiempo();
+                            if (mejor.isDnf() || esMejorTiempo(mejorAtm, tiempoACalcular)) {
+                                mejor = j;
                             }
                         }else{
                             dnfCont++;
@@ -129,35 +156,41 @@ public class SesionUtils {
                         if (j.isDnf()) {
                             dnfCont++;
                             dnf = true;
-                            peorTiempo = j.getTiempo();
+                            peor = j;
                         }else{
-                            if (esMejorTiempo(mejorTiempo, j.getTiempo())) {
-                                mejorTiempo = j.getTiempo();
+                            if (mejor.isDnf() || esMejorTiempo(mejorAtm, tiempoACalcular)) {
+                                mejor = j;
                             }
-
-                            if (esPeorTiempo(peorTiempo, j.getTiempo())) {
-                                peorTiempo = j.getTiempo();
+                            
+                        	if (!peor.isDnf() && esPeorTiempo(peorAtm, tiempoACalcular)) {
+                                peor = j;
                             }
                         }
                     }
-                    suma += convertirTiempoMs(j.getTiempo());
+                    suma += convertirTiempoMs(tiempoACalcular);
                 }
-                suma = suma - (convertirTiempoMs(mejorTiempo) + convertirTiempoMs(peorTiempo) );
+                String tiempoPeor = (peor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(peor.getTiempo()) + 200) : peor.getTiempo();
+    			String tiempoMejor = (mejor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(mejor.getTiempo()) + 200) : mejor.getTiempo();
+    			
+                suma = suma - (convertirTiempoMs(tiempoMejor) + convertirTiempoMs(tiempoPeor) );
                 if (dnfCont<2) {
-                    if (esMejorTiempo(mejoravg, convertirMsTiempo(suma/(num - 2)))) {
+                    if (mejoravg.equals("DNF") || esMejorTiempo(mejoravg, convertirMsTiempo(suma/(num - 2)))) {
                         mejoravg = convertirMsTiempo(suma/(num - 2));
                         alMejores = new ArrayList<Solve>(al);
                     }
                 }
             }else{
                 if (al.size()==num) {
-                    String mejorTiempo = al.get(0).getTiempo();
-                    String peorTiempo = al.get(0).getTiempo();
+                    Solve mejor = al.get(0);
+                    Solve peor = al.get(0);
                     for (Solve j : al) {
+                    	String mejorAtm = (mejor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(mejor.getTiempo()) + 200) : mejor.getTiempo();
+                        String peorAtm = (peor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(peor.getTiempo()) + 200) : peor.getTiempo();
+                        String tiempoACalcular = (j.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(j.getTiempo()) + 200) : j.getTiempo();
                         if (dnf) {
                             if (!j.isDnf()) {
-                                if (esMejorTiempo(mejorTiempo, j.getTiempo())) {
-                                    mejorTiempo = j.getTiempo();
+                                if (mejor.isDnf() || esMejorTiempo(mejorAtm, tiempoACalcular)) {
+                                    mejor = j;
                                 }
                             }else{
                                 dnfCont++;
@@ -167,25 +200,27 @@ public class SesionUtils {
                             if (j.isDnf()) {
                                 dnfCont++;
                                 dnf = true;
-                                peorTiempo = j.getTiempo();
+                                peor = j;
                             }else{
-                                if (esMejorTiempo(mejorTiempo, j.getTiempo())) {
-                                    mejorTiempo = j.getTiempo();
+                                if (mejor.isDnf() || esMejorTiempo(mejorAtm, tiempoACalcular)) {
+                                    mejor = j;
                                 }
-
-                                if (esPeorTiempo(peorTiempo, j.getTiempo())) {
-                                    peorTiempo = j.getTiempo();
+                                
+                            	if (!peor.isDnf() && esPeorTiempo(peorAtm, tiempoACalcular)) {
+                                    peor = j;
                                 }
                             }
                         }
                         
-                        
-                        suma += convertirTiempoMs(j.getTiempo());
+                        suma += convertirTiempoMs(tiempoACalcular);
                     }
+                    String tiempoPeor = (peor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(peor.getTiempo()) + 200) : peor.getTiempo();
+        			String tiempoMejor = (mejor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(mejor.getTiempo()) + 200) : mejor.getTiempo();
+        			
                     if (dnfCont>=2) {
                         mejoravg = "DNF";
                     }else{
-                        suma = suma - (convertirTiempoMs(mejorTiempo) + convertirTiempoMs(peorTiempo) );
+                        suma = suma - (convertirTiempoMs(tiempoMejor) + convertirTiempoMs(tiempoPeor) );
                         mejoravg = convertirMsTiempo(suma/(num - 2));
                     }
                     alMejores = new ArrayList<Solve>(al);
@@ -206,8 +241,13 @@ public class SesionUtils {
 		if (tiempos.size() != 0) {
 			peor = tiempos.get(0);
 			for (Solve solve : tiempos) {
-				if (esPeorTiempo(peor.getTiempo(), solve.getTiempo())) {
-					peor = solve;
+				if (!solve.isDnf()) {
+					String peorAtm = (peor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(peor.getTiempo()) + 200) : peor.getTiempo();
+					String tiempoACalcular = (solve.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(solve.getTiempo()) + 200) : solve.getTiempo();
+					
+					if (peor.isDnf() || esPeorTiempo(peorAtm, tiempoACalcular)) {
+						peor = solve;
+					}
 				}
 			}
 		}
@@ -220,8 +260,13 @@ public class SesionUtils {
 		if (tiempos.size() != 0) {
 			mejor = tiempos.get(0);
 			for (Solve solve : tiempos) {
-				if (esMejorTiempo(mejor.getTiempo(), solve.getTiempo())) {
-					mejor = solve;
+				if (!solve.isDnf()) {
+					String mejorAtm = (mejor.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(mejor.getTiempo()) + 200) : mejor.getTiempo();
+					String tiempoACalcular = (solve.isMas_2()) ? convertirMsTiempo(convertirTiempoMs(solve.getTiempo()) + 200) : solve.getTiempo();
+					
+					if (mejor.isDnf() || esMejorTiempo(mejorAtm, tiempoACalcular)) {
+						mejor = solve;
+					}
 				}
 			}
 		}

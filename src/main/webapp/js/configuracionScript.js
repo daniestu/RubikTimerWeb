@@ -12,6 +12,8 @@ $(document).ready(function() {
     var addSolve = $("#add-solve-modal-content");
     var sesionSelect = $("#sesion_select");
     var sessionInfo = $("#session-info-modal-content");
+    var mas2Btn = $("#solveBtn-mas2");
+    var dnfBtn = $("#solveBtn-dnf");
 
     function toggleConfigContainer() {
         configContainer.toggle();
@@ -44,7 +46,9 @@ $(document).ready(function() {
 		}
 		if (!solveModal.is(event.target) && solveModal.has(event.target).length === 0
 			&& !solveTd.is(event.target) && solveTd.has(event.target).length === 0
-			&& !tablaTiempos.is(event.target) && tablaTiempos.has(event.target).length === 0) {
+			&& !tablaTiempos.is(event.target) && tablaTiempos.has(event.target).length === 0
+			&& !mas2Btn.is(event.target) && mas2Btn.has(event.target).length === 0
+			&& !dnfBtn.is(event.target) && dnfBtn.has(event.target).length === 0) {
 				$("#solveModal").hide();
 		}
 		if (!avgModal.is(event.target) && avgModal.has(event.target).length === 0

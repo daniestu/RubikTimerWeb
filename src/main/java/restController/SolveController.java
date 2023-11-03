@@ -39,12 +39,15 @@ public class SolveController extends HttpServlet {
 		
 		Sesion sesion = null;
 		String json;
+		int id;
+		int action;
+		boolean ok;
 		
 		String path = request.getPathInfo();
 		
 		switch (path) {
 		case "/delete":
-			int id = Integer.parseInt(request.getParameter("id"));
+			id = Integer.parseInt(request.getParameter("id"));
 			boolean eliminado = solveService.eliminar(id);
 			
 			resultado.put("eliminado", eliminado);
@@ -100,6 +103,32 @@ public class SolveController extends HttpServlet {
 				response.setContentType("text/plain");
 				response.getWriter().write("Ha ocurrido un error al guardar el tiempo.");
 			}
+			break;
+		case "/updateMas2":
+			id = Integer.parseInt(request.getParameter("id"));
+			action = Integer.parseInt(request.getParameter("action"));
+			
+			ok = solveService.updateMas2(id, action);
+			resultado.put("actualizado", ok);
+			
+			json = new Gson().toJson(resultado);
+			
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
+			break;
+		case "/updateDnf":
+			id = Integer.parseInt(request.getParameter("id"));
+			action = Integer.parseInt(request.getParameter("action"));
+			
+			ok = solveService.updateDnf(id, action);	
+			resultado.put("actualizado", ok);
+			
+			json = new Gson().toJson(resultado);
+			
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
 			break;
 		default:
 			break;

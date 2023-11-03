@@ -70,7 +70,7 @@
 		</div>
 	</div>
 	<div id="solveModal" class="modal">
-		<div class="modal-content modal-30">
+		<div id="solveModal-content" class="modal-content modal-30">
 			<h2>Tiempo</h2>
 			<form class="modalForm" onsubmit="event.preventDefault();borrarTiempo(document.getElementById('hidden-id').value)">
 				<input id="hidden-id" name="hidden-id" type="hidden">
@@ -80,7 +80,11 @@
 				<input type="text" id="fecha" name="fecha" disabled>
 				<label for="tiempo">Tiempo</label>
 				<input type="text" id="tiempo" name="tiempo" disabled>
-				<div class="w-100 d-flex justify-content-end">
+				<div class="mt-1">
+					<button id="solveBtn-mas2" class="solveBtn" onclick="addMas2(document.getElementById('hidden-id').value);">+2</button>
+					<button id="solveBtn-dnf" class="solveBtn" onclick="addDnf(document.getElementById('hidden-id').value);">DNF</button>
+				</div>
+				<div class="w-100 d-flex justify-content-end mt-3">
 					<button type="submit" id="solveBtn-eliminar">Eliminar</button>
 				</div>
 				<span id="solve-modal-error" style="color:red; display:none;">Ha ocurrido un error al borrar el tiempo.</span>
