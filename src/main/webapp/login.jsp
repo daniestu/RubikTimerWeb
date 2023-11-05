@@ -25,6 +25,7 @@
 		</span>
       </form>
       <p>¿No tienes una cuenta? <a href="register">Regístrate aquí</a></p>
+      <p><a href="forgotPassword">¿Olvidaste tu contraseña?</a></p>
     </div>
     <script>
     	autocompletarLogin();

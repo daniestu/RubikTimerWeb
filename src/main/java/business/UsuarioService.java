@@ -38,4 +38,14 @@ public class UsuarioService {
 		UsuarioDao usuarioDao = new UsuarioDao();
 		return usuarioDao.add(usuario);
 	}
+	
+	public Usuario getByEmail(String correo) throws SQLException {
+		UsuarioDao usuarioDao = new UsuarioDao();
+		return usuarioDao.getByEmail(correo);
+	}
+
+	public boolean restablecerContraseña(Integer usuarioId, String password) {
+		UsuarioDao usuarioDao = new UsuarioDao();
+		return usuarioDao.restablecerContraseña(usuarioId, password);
+	}
 }

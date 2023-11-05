@@ -13,15 +13,15 @@ import java.util.Properties;
 
 import dao.contracts.Persistencia;
 import models.Sesion;
-import utils.AccesoBBDD;
+import utils.AccesoProperties;
 
 public class SesionDao implements Persistencia<Sesion>{
 
 	@Override
 	public Sesion add(Sesion sesion) throws IOException, SQLException {
 		String sql = "INSERT INTO sesion (nombre, usuario_id) VALUES (?, ?)";
-		AccesoBBDD accesoBBDD = new AccesoBBDD();
-		Properties prop = accesoBBDD.cargarFichero();
+		AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		
 		int generatedId = -1;
 		ResultSet rs = null;
@@ -56,8 +56,8 @@ public class SesionDao implements Persistencia<Sesion>{
 		List<Sesion> sesiones = new ArrayList<>();
 	    String query = "SELECT id, nombre, usuario_id FROM sesion";
 	    
-	    AccesoBBDD accesoBBDD = new AccesoBBDD();
-		Properties prop = accesoBBDD.cargarFichero();
+	    AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
 
 	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
 	         Statement stmt = conn.createStatement();
@@ -78,8 +78,8 @@ public class SesionDao implements Persistencia<Sesion>{
 	public Sesion getByName(String nombreSesion, int id_usuario) throws IOException, SQLException {
 	    String query = "SELECT id, nombre, usuario_id FROM sesion WHERE nombre = ? AND usuario_id = ?";
 	    
-	    AccesoBBDD accesoBBDD = new AccesoBBDD();
-		Properties prop = accesoBBDD.cargarFichero();
+	    AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		
 		Sesion sesion = null;
 		ResultSet rs = null;
@@ -107,8 +107,8 @@ public class SesionDao implements Persistencia<Sesion>{
 
 	public boolean remove(int id_sesion) {
 		String sql = "DELETE FROM sesion WHERE id = ?";
-		AccesoBBDD accesoBBDD = new AccesoBBDD();
-		Properties prop = accesoBBDD.cargarFichero();
+		AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		
         try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -125,8 +125,8 @@ public class SesionDao implements Persistencia<Sesion>{
 	
 	public boolean update(Sesion sesion) {
         String sql = "UPDATE sesion SET nombre = ? WHERE id = ? AND usuario_id = ?";
-		AccesoBBDD accesoBBDD = new AccesoBBDD();
-		Properties prop = accesoBBDD.cargarFichero();
+		AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		
         try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
              PreparedStatement statement = connection.prepareStatement(sql)) {

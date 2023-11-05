@@ -37,11 +37,9 @@ public class AuthenticationFilter implements Filter {
         
         boolean isAllowed = allowedPages.contains(url);
         
-//        System.out.println(url + " " + ((isAllowed) ? "true" : "false"));
-        
         if (!isAllowed) {
         	if (session == null || session.getAttribute("usuario") == null) {
-            	res.sendRedirect("user/login");
+            	res.sendRedirect("/rubikTimerWeb/user/login");
             } else {
                 chain.doFilter(request, response);
             }
@@ -60,6 +58,8 @@ public class AuthenticationFilter implements Filter {
 		allowedPages.add("/rubikTimerWeb/user/images/favicon.ico");
 		allowedPages.add("/rubikTimerWeb/images/favicon.ico");
 		allowedPages.add("/rubikTimerWeb/user/checkAuthentication");
+		allowedPages.add("/rubikTimerWeb/user/forgotPassword");
+		allowedPages.add("/rubikTimerWeb/user/resetPassword");
 	}
 
 }

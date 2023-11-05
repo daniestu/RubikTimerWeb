@@ -13,15 +13,15 @@ import java.util.Properties;
 
 import dao.contracts.Persistencia;
 import models.Usuario;
-import utils.AccesoBBDD;
+import utils.AccesoProperties;
 
 public class UsuarioDao implements Persistencia<Usuario>{
 
 	@Override
 	public Usuario add(Usuario usuario) throws IOException{
 		String sql = "INSERT INTO usuario (usuario, contrasena, correo) VALUES (?, ?, ?)";
-		AccesoBBDD accesoBBDD = new AccesoBBDD();
-		Properties prop = accesoBBDD.cargarFichero();
+		AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
         
 		int generatedId = -1;
         try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
@@ -52,8 +52,8 @@ public class UsuarioDao implements Persistencia<Usuario>{
 		List<Usuario> usuarios = new ArrayList<>();
 	    String query = "SELECT id, usuario, correo FROM usuario";
 	    
-	    AccesoBBDD accesoBBDD = new AccesoBBDD();
-		Properties prop = accesoBBDD.cargarFichero();
+	    AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
 
 	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
 	         Statement stmt = conn.createStatement();
@@ -72,8 +72,8 @@ public class UsuarioDao implements Persistencia<Usuario>{
 	}
 	
 	public Usuario getByUsernamePwd(String username, String password) throws IOException, SQLException {
-	    AccesoBBDD accesoBBDD = new AccesoBBDD();
-		Properties prop = accesoBBDD.cargarFichero();
+	    AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
 
 		Usuario usuario = null;
 		
@@ -93,6 +93,49 @@ public class UsuarioDao implements Persistencia<Usuario>{
 	    }
 
 	    return usuario;
+	}
+	
+	public Usuario getByEmail(String correo) throws SQLException {
+	    AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
+
+		Usuario usuario = null;
+		
+		String sql = "SELECT id, usuario, correo FROM usuario WHERE correo = ?";
+	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    	stmt.setString(1, correo);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	        	usuario = new Usuario();
+	            usuario.setIdUsuario(rs.getInt("id"));
+	            usuario.setNombreUsuario(rs.getString("usuario"));
+	            usuario.setCorreo(rs.getString("correo"));
+	        }
+	        rs.close();
+	    }
+
+	    return usuario;
+	}
+
+	public boolean restablecerContraseña(Integer usuarioId, String password) {
+		String sql = "UPDATE usuario SET contrasena = ? WHERE id = ?";
+		AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
+		
+        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            
+        	statement.setString(1, password);
+        	statement.setInt(2, usuarioId);
+            statement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+		return true;
 	}
 
 }

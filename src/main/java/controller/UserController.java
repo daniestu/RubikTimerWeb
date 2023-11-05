@@ -8,8 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import business.TokenService;
 import business.UsuarioService;
+import models.Token;
 import models.Usuario;
+import utils.TokenUtils;
+import utils.UserUtils;
 
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -49,6 +53,19 @@ public class UserController extends HttpServlet {
 	        response.getWriter().write("{\"authenticated\":" + isAuthenticated + "}");
 	        
 			break;
+		case "/forgotPassword":
+			request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
+			break;
+		case "/resetPassword":
+			String token = request.getParameter("token");
+			request.setAttribute("token", token);
+			
+			boolean caducado = TokenUtils.verificarCaducidad(token);
+			
+			request.setAttribute("caducado", (caducado) ? true : false);
+			
+			request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+			break;
 		default:
 			break;
 		}
@@ -57,6 +74,8 @@ public class UserController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String passwordConfirmation = request.getParameter("confirm-password");
+        String correo = request.getParameter("correo");
         
         Usuario usuario;
         UsuarioService usuarioService = new UsuarioService();
@@ -68,7 +87,7 @@ public class UserController extends HttpServlet {
 	    	usuario = null;
 	        
 	        try {
-	        	usuario = usuarioService.verificarUsuario(username, password);
+	        	usuario = usuarioService.verificarUsuario(username, UserUtils.encryptPassword(password));
 	        	
 	        	if (usuario == null || usuario.getIdUsuario() == null) {
 	    			request.setAttribute("error", "Credenciales inválidas. Intente nuevamente.");
@@ -96,18 +115,15 @@ public class UserController extends HttpServlet {
 			doGet(request, response);
 			break;
 		case "/register":
-	        String passwordConfirmation = request.getParameter("confirm-password");
-	        String correo = request.getParameter("correo");
-	        
 	        if (!password.equals(passwordConfirmation)) {
 	            request.setAttribute("error", "Las contraseñas no coinciden.");
 	            request.getRequestDispatcher("../register.jsp").forward(request, response);
 	            return;
 	        }
 	        
-	        usuario = new Usuario(username, password, correo);
-	    	
 	        try {
+	        	usuario = new Usuario(username, UserUtils.encryptPassword(password), correo);
+	        	
 	        	if (usuarioService.usuarioExiste(usuario, 0)) {
 	            	request.setAttribute("error", "El nombre de usuario ya existe.");
 	                request.getRequestDispatcher("../register.jsp").forward(request, response);
@@ -135,6 +151,72 @@ public class UserController extends HttpServlet {
 	        HttpSession session = request.getSession();
 	        session.setAttribute("usuario", usuario);
 	        response.sendRedirect("../");
+			break;
+		case "/forgotPassword":
+			try {
+	        	usuario = usuarioService.getByEmail(correo);
+	        	
+	            if (usuario == null || usuario.getIdUsuario() == null || usuario.getIdUsuario() == 0) {
+	            	request.setAttribute("error", "El correo introducido no existe.");
+	                request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
+	                return;
+	    		}
+	            
+	            if (UserUtils.enviarMailConfirmacionReset(usuario)) {
+	            	request.setAttribute("confirmation", "ok");
+				}else {
+					request.setAttribute("error", "Ha ocurrido un error al enviar el Correo.");
+				}
+	            
+                request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+				request.setAttribute("error", "Ha ocurrido un error al enviar el Correo.");
+	            request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
+	            return;
+			}
+			break;
+		case "/resetPassword":
+			try {
+				String uuid = request.getParameter("token");
+				request.setAttribute("token", uuid);
+				boolean caducado = TokenUtils.verificarCaducidad(uuid);
+				
+				if (caducado) {
+					request.setAttribute("caducado", true);
+					request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+					return;
+				}else {
+					request.setAttribute("caducado", false);
+				}
+				
+				if (!password.equals(passwordConfirmation)) {
+		            request.setAttribute("error", "Las contraseñas no coinciden.");
+		            request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+		            return;
+		        }
+				
+				TokenService tokenService = new TokenService();
+				Token token = tokenService.getByUUID(uuid);
+				
+				if (!usuarioService.restablecerContraseña(token.getUsuarioId(), UserUtils.encryptPassword(password))) {
+					request.setAttribute("error", "Ha ocurrido un error al restablecer la contraseña.");
+		            request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+		            return;
+				}
+
+				tokenService.caducarTokens(token.getUsuarioId());
+				
+				request.setAttribute("confirmation", "ok");
+				request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+				request.setAttribute("error", "Ha ocurrido un error al restablecer la contraseña.");
+				request.setAttribute("caducado", false);
+	            request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+	            return;
+			}
+			
 			break;
 		default:
 			break;
