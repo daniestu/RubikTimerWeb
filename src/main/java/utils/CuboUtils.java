@@ -1,10 +1,17 @@
 package utils;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import models.Cubo;
 
 public class CuboUtils {
+	
+	private static final String[] MOVIMIENTOS = {
+		"U", "U2", "U'", "D", "D2", "D'", "R", "R2", "R'", "L", "L2", "L'", "F", "F2", "F'", "B", "B2", "B'"
+	};
 	
 	public Cubo generarCubo (String scramble){
 		String blanco = "rgb(" + Color.white.getRed() + ", " + Color.white.getGreen() + ", " + Color.white.getBlue() + ")";
@@ -30,6 +37,63 @@ public class CuboUtils {
         return c;
     }
 	
+	public static String generarScramble() {
+	    List<String> movimientos = new ArrayList<>();
+	    Random random = new Random();
+	    String ultimoMovimiento = "";
+	    String penultimoMovimiento = "";
+
+	    for (int i = 0; i < 20; i++) {
+	        String movimiento = MOVIMIENTOS[random.nextInt(MOVIMIENTOS.length)];
+	        
+	        while (movimientoCancela(ultimoMovimiento, penultimoMovimiento, movimiento)) {
+	            movimiento = MOVIMIENTOS[random.nextInt(MOVIMIENTOS.length)];
+	        }
+
+	        movimientos.add(movimiento);
+	        penultimoMovimiento = ultimoMovimiento;
+	        ultimoMovimiento = movimiento;
+	    }
+
+	    return String.join(" ", movimientos);
+	}
+
+	public static boolean movimientoCancela(String ultimoMovimiento, String penultimoMovimiento, String movimiento) {
+	    if (ultimoMovimiento.isEmpty()) {
+	        return false;
+	    }
+	    
+	    char capaUltimo = ultimoMovimiento.charAt(0);
+	    char capaMovimiento = movimiento.charAt(0);
+	    
+	    if (penultimoMovimiento.isEmpty()) {
+	    	if (capaMovimiento == capaUltimo) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+	    
+	    char capaPenultimo = penultimoMovimiento.charAt(0);
+	    
+	    if (capaMovimiento == capaUltimo) {
+			return true;
+		}
+	    
+	    if (capaMovimiento == capaPenultimo) {
+			if ((capaMovimiento == 'R' && capaUltimo == 'L') || 
+				(capaMovimiento == 'L' && capaUltimo == 'R') || 
+				(capaMovimiento == 'U' && capaUltimo == 'D') || 
+				(capaMovimiento == 'D' && capaUltimo == 'U') || 
+				(capaMovimiento == 'B' && capaUltimo == 'F') || 
+				(capaMovimiento == 'F' && capaUltimo == 'B')) {
+				return true;
+			}
+		}
+
+	    return false;
+	}
+
 	public static Cubo generarMovimiento(Cubo c_ant, String mov){
         String colores[] = new String[21];
         Cubo c_new = c_ant;
