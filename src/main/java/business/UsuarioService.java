@@ -11,7 +11,13 @@ public class UsuarioService {
 
 	public Usuario verificarUsuario(String nombre, String pwd) throws IOException, SQLException{
 		UsuarioDao usuarioDao = new UsuarioDao();
-		return usuarioDao.getByUsernamePwd(nombre, pwd);
+		
+		Usuario usuario = usuarioDao.getByUsernamePwd(nombre, pwd);
+		if (usuario == null || usuario.getIdUsuario() == null) {
+			usuario = usuarioDao.getByEmailPwd(nombre, pwd);
+		}
+		
+		return usuario;
 	}
 	
 	public boolean usuarioExiste(Usuario usuario, int accion) throws IOException, SQLException{

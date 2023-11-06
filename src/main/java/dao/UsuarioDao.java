@@ -95,6 +95,30 @@ public class UsuarioDao implements Persistencia<Usuario>{
 	    return usuario;
 	}
 	
+	public Usuario getByEmailPwd(String email, String password) throws SQLException {
+		AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
+
+		Usuario usuario = null;
+		
+		String sql = "SELECT id, usuario, correo FROM usuario WHERE correo = ? AND contrasena = ?";
+	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    	stmt.setString(1, email);
+	        stmt.setString(2, password);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	        	usuario = new Usuario();
+	            usuario.setIdUsuario(rs.getInt("id"));
+	            usuario.setNombreUsuario(rs.getString("usuario"));
+	            usuario.setCorreo(rs.getString("correo"));
+	        }
+	        rs.close();
+	    }
+
+	    return usuario;
+	}
+	
 	public Usuario getByEmail(String correo) throws SQLException {
 	    AccesoProperties accesoBBDD = new AccesoProperties();
 		Properties prop = accesoBBDD.cargarFicheroBBDD();
@@ -137,5 +161,5 @@ public class UsuarioDao implements Persistencia<Usuario>{
         
 		return true;
 	}
-
+	
 }
