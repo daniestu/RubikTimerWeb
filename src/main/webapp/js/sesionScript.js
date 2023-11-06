@@ -273,38 +273,37 @@ function getSesiones() {
   fetch('session/get')
     .then(response => response.json())
     .then(sesiones => {
-      if (sesiones.length == 0) {
-        crearSesion("Default");
-      } else {
-        const select = document.getElementById("sesion_select");
-        select.innerHTML = "";
-
-        for (var i = 0; i < sesiones.length; i++) {
-          const option = document.createElement("option");
-          option.text = sesiones[i].nombre;
-          option.value = sesiones[i].nombre;
-
-          select.add(option);
-        }
-
-        const separator = document.createElement("optgroup");
-        separator.label = "\u2014\u2014\u2014\u2014\u2014\u2014\u2014";
-        select.add(separator);
-
-        const nuevaSesion = document.createElement("option");
-        nuevaSesion.text = "Nueva sesión";
-        nuevaSesion.value = "selectOptionNew";
-        select.add(nuevaSesion);
-        
-        const borrarSesion = document.createElement("option");
-        borrarSesion.text = "Eliminar sesión";
-        borrarSesion.value = "selectOptionDelete";
-        select.add(borrarSesion);
-
-		if ( !(originalSelectedOption === undefined) ) {
-			select.value = originalSelectedOption;
-		}
-        getTiemposSesion(select.value);
+		const select = document.getElementById("sesion_select");
+		select.innerHTML = "";
+		if (sesiones.length == 0) {
+			crearSesion("Default");
+		} else {
+			for (var i = 0; i < sesiones.length; i++) {
+				const option = document.createElement("option");
+				option.text = sesiones[i].nombre;
+				option.value = sesiones[i].nombre;
+				
+				select.add(option);
+			}
+			
+			const separator = document.createElement("optgroup");
+			separator.label = "\u2014\u2014\u2014\u2014\u2014\u2014\u2014";
+			select.add(separator);
+			
+			const nuevaSesion = document.createElement("option");
+			nuevaSesion.text = "Nueva sesión";
+			nuevaSesion.value = "selectOptionNew";
+			select.add(nuevaSesion);
+			
+			const borrarSesion = document.createElement("option");
+			borrarSesion.text = "Eliminar sesión";
+			borrarSesion.value = "selectOptionDelete";
+			select.add(borrarSesion);
+			
+			if ( !(originalSelectedOption === undefined) ) {
+				select.value = originalSelectedOption;
+			}
+			getTiemposSesion(select.value);
       }
     });
 }
