@@ -11,6 +11,10 @@ function sesionChanged(sesion){
 		document.getElementById("borrarSesion-modal-error").style.display = "none";
 		document.getElementById("borrarSesion-modal").style.display = "flex";
 	}else {
+		fetch('session/updateDefault?sesion=' + sesion)
+		.catch(function() {
+			console.error("Ha ocurrido un error al actualizar la sesión");
+		});
 		getTiemposSesion(sesion);
 	}
 	document.getElementById("sesion_select").blur();
@@ -283,6 +287,10 @@ function getSesiones() {
 				option.text = sesiones[i].nombre;
 				option.value = sesiones[i].nombre;
 				
+				if (sesiones[i].default_sesion) {
+		        	option.selected = true;
+			    }
+				
 				select.add(option);
 			}
 			
@@ -300,9 +308,6 @@ function getSesiones() {
 			borrarSesion.value = "selectOptionDelete";
 			select.add(borrarSesion);
 			
-			if ( !(originalSelectedOption === undefined) ) {
-				select.value = originalSelectedOption;
-			}
 			getTiemposSesion(select.value);
       }
     });

@@ -125,6 +125,9 @@ public class SessionController extends HttpServlet {
 		case "/getData":
 			doPost(request, response);
 			break;
+		case "/updateDefault":
+			sesionService.updateDefault(nombre_sesion, usuario);
+			break;
 		default:
 			break;
 		}
@@ -138,6 +141,7 @@ public class SessionController extends HttpServlet {
 		case "/delete":
 		case "/get":
 		case "/update":
+		case "/updateDefault":
 			doGet(request, response);
 			break;
 		case "/getData":

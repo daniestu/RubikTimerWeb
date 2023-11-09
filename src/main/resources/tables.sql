@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS sesion (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(50) NOT NULL,
   usuario_id INT NOT NULL,
+  default_sesion TINYINT(1) DEFAULT '0',
   FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 

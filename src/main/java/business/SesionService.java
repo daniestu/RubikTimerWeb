@@ -33,6 +33,7 @@ public class SesionService {
 		
 		SesionDao sesionDao = new SesionDao();
 		sesion = sesionDao.add(sesion);
+		sesionDao.updateDefault(nombre_sesion, usuario.getIdUsuario());
 		return sesion;
 	}
 	
@@ -45,5 +46,10 @@ public class SesionService {
 		SesionDao sesionDao = new SesionDao();
 		
 		return sesionDao.update(sesion);
+	}
+
+	public void updateDefault(String nombre_sesion, Usuario usuario) {
+		SesionDao sesionDao = new SesionDao();
+		sesionDao.updateDefault(nombre_sesion, usuario.getIdUsuario());
 	}
 }

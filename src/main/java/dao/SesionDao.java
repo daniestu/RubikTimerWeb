@@ -19,7 +19,7 @@ public class SesionDao implements Persistencia<Sesion>{
 
 	@Override
 	public Sesion add(Sesion sesion) throws IOException, SQLException {
-		String sql = "INSERT INTO sesion (nombre, usuario_id) VALUES (?, ?)";
+		String sql = "INSERT INTO sesion (nombre, usuario_id, default_sesion) VALUES (?, ?, 0)";
 		AccesoProperties accesoBBDD = new AccesoProperties();
 		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		
@@ -54,7 +54,7 @@ public class SesionDao implements Persistencia<Sesion>{
 	@Override
 	public List<Sesion> getAll() throws IOException, SQLException {
 		List<Sesion> sesiones = new ArrayList<>();
-	    String query = "SELECT id, nombre, usuario_id FROM sesion";
+	    String query = "SELECT id, nombre, usuario_id, default_sesion FROM sesion";
 	    
 	    AccesoProperties accesoBBDD = new AccesoProperties();
 		Properties prop = accesoBBDD.cargarFicheroBBDD();
@@ -66,8 +66,9 @@ public class SesionDao implements Persistencia<Sesion>{
 	            int id = rs.getInt("id");
 	            String nombre = rs.getString("nombre");
 	            int usuario_id = rs.getInt("usuario_id");
+	            boolean default_sesion = rs.getBoolean("default_sesion");
 
-	            Sesion s = new Sesion(id, nombre, usuario_id);
+	            Sesion s = new Sesion(id, nombre, usuario_id, default_sesion);
 	            sesiones.add(s);
 	        }
 	    }
@@ -76,7 +77,7 @@ public class SesionDao implements Persistencia<Sesion>{
 	}
 	
 	public Sesion getByName(String nombreSesion, int id_usuario) throws IOException, SQLException {
-	    String query = "SELECT id, nombre, usuario_id FROM sesion WHERE nombre = ? AND usuario_id = ?";
+	    String query = "SELECT id, nombre, usuario_id, default_sesion FROM sesion WHERE nombre = ? AND usuario_id = ?";
 	    
 	    AccesoProperties accesoBBDD = new AccesoProperties();
 		Properties prop = accesoBBDD.cargarFicheroBBDD();
@@ -93,8 +94,9 @@ public class SesionDao implements Persistencia<Sesion>{
 	            int id = rs.getInt("id");
 	            String nombre = rs.getString("nombre");
 	            int usuario_id = rs.getInt("usuario_id");
+	            boolean default_sesion = rs.getBoolean("default_sesion");
 
-	            sesion = new Sesion(id, nombre, usuario_id);
+	            sesion = new Sesion(id, nombre, usuario_id, default_sesion);
 	        }
 	    }finally {
 	    	if (rs != null) {
@@ -142,6 +144,30 @@ public class SesionDao implements Persistencia<Sesion>{
         }
         
 		return true;
+	}
+
+	public void updateDefault(String nombre_sesion, int usuario_id) {
+		String sql = "UPDATE sesion "
+					+ "SET default_Sesion = "
+					+ "CASE WHEN nombre = ? AND usuario_id = ? THEN 1 "
+					+ "WHEN nombre <> ? AND usuario_id = ? THEN 0 "
+					+ "ELSE default_Sesion "
+					+ "END";
+		AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
+		
+        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            
+        	statement.setString(1, nombre_sesion);
+        	statement.setInt(2, usuario_id);
+        	statement.setString(3, nombre_sesion);
+        	statement.setInt(4, usuario_id);
+            statement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 	}
 	
 }
