@@ -14,6 +14,8 @@ $(document).ready(function() {
     var sessionInfo = $("#session-info-modal-content");
     var mas2Btn = $("#solveBtn-mas2");
     var dnfBtn = $("#solveBtn-dnf");
+	var previewModal = $("#preview-modal-content");
+	var previewMain = $("#preview-container");
 
     function toggleConfigContainer() {
         configContainer.toggle();
@@ -67,6 +69,10 @@ $(document).ready(function() {
 			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
 				$("#session-info-modal").hide();
 		}
+		if (!previewModal.is(event.target) && previewModal.has(event.target).length === 0
+			&& !previewMain.is(event.target) && previewMain.has(event.target).length === 0) {
+				$("#preview-modal").hide();
+		}
 	});
 	
 	function logout() {
@@ -116,6 +122,12 @@ $(document).ready(function() {
 		document.getElementById("info-name").value = document.getElementById("sesion_select").value;
 		document.getElementById("session-info-modal").style.display = "flex";
 		toggleConfigContainer();
+	});
+	
+	
+	
+	previewMain.click(function(event) {
+		document.getElementById("preview-modal").style.display = "flex";
 	});
 	
 });

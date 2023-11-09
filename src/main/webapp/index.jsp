@@ -166,6 +166,10 @@
 		</div>
 	</div>
 	
+	<div id="preview-modal" class=modal>
+		<jsp:include page="modalPreview.jsp" />
+	</div>
+	
 	<%--FIN MODALES --%>
 	
 	<img id="config-btn" src="images/config-icon.png"/>

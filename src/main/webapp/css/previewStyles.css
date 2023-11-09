@@ -1,4 +1,4 @@
-#preview-container {
+.preview-main {
 	position: fixed;
 	bottom: 0;
 	right: 0;
@@ -19,33 +19,6 @@
     max-width: 33.333333%;
 	border: 1px solid black;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #u-container {
 	position:absolute;
@@ -92,3 +65,77 @@
 	border-right: 1px solid black;
 }
 
+/***************/
+/*MODAL PREVIEW*/
+/***************/
+
+.preview-modal {
+	bottom: 0;
+	right: 0;
+	width: 83.5vh;
+	height:65vh;
+	padding: 5vh 5vh;
+}
+
+.modal-layout-container {
+	display:flex;
+    flex-wrap: wrap;
+	width: 18vh;
+	height:18vh;
+}
+
+.modal-layout {
+	flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+	border: 1px solid black;
+}
+
+#modal-u-container {
+	position: absolute;
+	top:5vh;
+	left:23.5vh;
+	border-top: 1px solid black;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+}
+
+#modal-l-container {
+	position: absolute;
+	top:23.5vh;
+	left:5vh;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px solid black;
+}
+
+#modal-f-container {
+	position: absolute;
+	top:23.5vh;
+	left:23.5vh;
+}
+
+#modal-r-container {
+	position: absolute;
+	top:23.5vh;
+	left:42vh;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+#modal-b-container {
+	position: absolute;
+	top:23.5vh;
+	left:60.5vh;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+}
+
+#modal-d-container {
+	position: absolute;
+	top:42vh;
+	left:23.5vh;
+	border-left: 1px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+}

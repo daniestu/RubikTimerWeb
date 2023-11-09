@@ -1,4 +1,4 @@
-<div id="preview-container">
+<div id="preview-container" class="preview-main">
 	<div id="u-container" class="layout-container">
 		<div id="u1" class="layout"></div>
 		<div id="u2" class="layout"></div>

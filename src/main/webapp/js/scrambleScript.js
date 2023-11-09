@@ -128,6 +128,70 @@ function establecerCubo(scramble) {
 					$("#d7").css("background-color", json.d7);
 					$("#d8").css("background-color", json.d8);
 					$("#d9").css("background-color", json.d9);
+					
+					/*******************/
+					/* CUBO DEL MODAL */
+					/*******************/
+					
+					$("#modal-u1").css("background-color", json.u1);
+					$("#modal-u2").css("background-color", json.u2);
+					$("#modal-u3").css("background-color", json.u3);
+					$("#modal-u4").css("background-color", json.u4);
+					$("#modal-u5").css("background-color", json.u5);
+					$("#modal-u6").css("background-color", json.u6);
+					$("#modal-u7").css("background-color", json.u7);
+					$("#modal-u8").css("background-color", json.u8);
+					$("#modal-u9").css("background-color", json.u9);
+					
+					$("#modal-l1").css("background-color", json.l1);
+					$("#modal-l2").css("background-color", json.l2);
+					$("#modal-l3").css("background-color", json.l3);
+					$("#modal-l4").css("background-color", json.l4);
+					$("#modal-l5").css("background-color", json.l5);
+					$("#modal-l6").css("background-color", json.l6);
+					$("#modal-l7").css("background-color", json.l7);
+					$("#modal-l8").css("background-color", json.l8);
+					$("#modal-l9").css("background-color", json.l9);
+					
+					$("#modal-f1").css("background-color", json.f1);
+					$("#modal-f2").css("background-color", json.f2);
+					$("#modal-f3").css("background-color", json.f3);
+					$("#modal-f4").css("background-color", json.f4);
+					$("#modal-f5").css("background-color", json.f5);
+					$("#modal-f6").css("background-color", json.f6);
+					$("#modal-f7").css("background-color", json.f7);
+					$("#modal-f8").css("background-color", json.f8);
+					$("#modal-f9").css("background-color", json.f9);
+					
+					$("#modal-r1").css("background-color", json.r1);
+					$("#modal-r2").css("background-color", json.r2);
+					$("#modal-r3").css("background-color", json.r3);
+					$("#modal-r4").css("background-color", json.r4);
+					$("#modal-r5").css("background-color", json.r5);
+					$("#modal-r6").css("background-color", json.r6);
+					$("#modal-r7").css("background-color", json.r7);
+					$("#modal-r8").css("background-color", json.r8);
+					$("#modal-r9").css("background-color", json.r9);
+					
+					$("#modal-b1").css("background-color", json.b1);
+					$("#modal-b2").css("background-color", json.b2);
+					$("#modal-b3").css("background-color", json.b3);
+					$("#modal-b4").css("background-color", json.b4);
+					$("#modal-b5").css("background-color", json.b5);
+					$("#modal-b6").css("background-color", json.b6);
+					$("#modal-b7").css("background-color", json.b7);
+					$("#modal-b8").css("background-color", json.b8);
+					$("#modal-b9").css("background-color", json.b9);
+					
+					$("#modal-d1").css("background-color", json.d1);
+					$("#modal-d2").css("background-color", json.d2);
+					$("#modal-d3").css("background-color", json.d3);
+					$("#modal-d4").css("background-color", json.d4);
+					$("#modal-d5").css("background-color", json.d5);
+					$("#modal-d6").css("background-color", json.d6);
+					$("#modal-d7").css("background-color", json.d7);
+					$("#modal-d8").css("background-color", json.d8);
+					$("#modal-d9").css("background-color", json.d9);
 				});
 			}
 		});
