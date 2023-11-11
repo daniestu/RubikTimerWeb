@@ -28,7 +28,7 @@
 				<label for="nombre_sesion">Nombre de la sesión</label>
 				<input type="text" class="input-100" id="nombre_sesion" autocomplete="off" onchange="document.getElementById('nuevaSesion-modal-error').style.display = 'none'" required>
 				<button type="submit" class="btn btn-guardar">Guardar</button>
-				<span id="nuevaSesion-modal-error" style="color:red; display:none;">Ya existe una sesión con ese nombre.</span>
+				<span id="nuevaSesion-modal-error" style="color:#B00C0C; display:none;">Ya existe una sesión con ese nombre.</span>
 			</form>
 		</div>
 	</div>
@@ -42,7 +42,7 @@
 				<button id="sesionBtn-aceptar" onclick="borrarSesion(originalSelectedOption)">Aceptar</button>
             	<button id="sesionBtn-cancelar" onclick="ocultarBorrarSesionModal()">Cancelar</button>
 	        </div>
-	        <span id="borrarSesion-modal-error" style="color:red; display:none;">Ha ocurrido un error al borrar la sesión.</span>
+	        <span id="borrarSesion-modal-error" style="color:#B00C0C; display:none;">Ha ocurrido un error al borrar la sesión.</span>
 		</div>
 	</div>
 	<div id="scramble-personalizado-modal" class="modal">
@@ -52,7 +52,7 @@
 				<label for="scramble-text">Scramble</label>
 				<input type="text" id="scramble-text" class="input-100" autocomplete="off" required>
 				<button type="submit" class=" btn btn-guardar">Guardar</button>
-				<span id="scramble-personalizado-modal-error" style="color:red; display:none;">El scramble introducido no es válido.</span>
+				<span id="scramble-personalizado-modal-error" style="color:#B00C0C; display:none;">El scramble introducido no es válido.</span>
 			</form>
 		</div>
 	</div>
@@ -65,7 +65,7 @@
 				<label>Tiempo</label>
 				<input type="text" id="addSolve-tiempo" autocomplete="off" required>
 				<button type="submit" class="btn btn-guardar">Guardar</button>
-				<span id="add-solve-modal-error" style="color:red; display:none;">El tiempo introducido no es válido.</span>
+				<span id="add-solve-modal-error" style="color:#B00C0C; display:none;">El tiempo introducido no es válido.</span>
 			</form>
 		</div>
 	</div>
@@ -87,7 +87,7 @@
 				<div class="w-100 d-flex justify-content-end mt-3">
 					<button type="submit" id="solveBtn-eliminar">Eliminar</button>
 				</div>
-				<span id="solve-modal-error" style="color:red; display:none;">Ha ocurrido un error al borrar el tiempo.</span>
+				<span id="solve-modal-error" style="color:#B00C0C; display:none;">Ha ocurrido un error al borrar el tiempo.</span>
 			</form>
 		</div>
 	</div>
@@ -161,7 +161,7 @@
             	</div>
 				<button type="submit" class="btn btn-guardar">Aceptar</button>
 				<button type="submit" class="btn btn-danger ml-1" onclick="event.preventDefault();confirmDelete(document.getElementById('sesion_select').value);">Eliminar</button>
-				<span id="session-info-modal-error" style="color:red; display:none; margin-top:2%;">Ha ocurrido un error al actualizar la sesión.</span>
+				<span id="session-info-modal-error" style="color:#B00C0C; display:none; margin-top:2%;">Ha ocurrido un error al actualizar la sesión.</span>
 			</form>
 		</div>
 	</div>
@@ -170,8 +170,18 @@
 		<jsp:include page="modalPreview.jsp" />
 	</div>
 	
+	<div id="importModal" class="modal">
+	    <div id="importModal-content" class="modal-content modal-30">
+	        <h2>Importar tiempos</h2>
+	        <form id="importForm" class="modalForm" enctype="multipart/form-data">
+	            <input type="hidden" name="sesion" id="importSesion" />
+	            <input type="file" id="importFile" name="importFile" required />
+	            <button type="button" onclick="importSolves()" class="btn btn-guardar mt-3">Importar</button>
+	            <span id="import-modal-error" class="mt-2" style="color:#B00C0C; display:none;">Ha ocurrido un error al importar los tiempos.</span>
+	        </form>
+	    </div>
+	</div>
 	<%--FIN MODALES --%>
-	
 	<img id="config-btn" src="images/config-icon.png"/>
 	<div id="config-container" style="display:none;">
    		<ul id="config-menu">
@@ -180,6 +190,8 @@
 			<li id="next-scramble" class="list-item"><img class="config-icon" src="images/next.png"/>Mezcla siguiente</li>
 			<li id="add-solve" class="list-item"><img class="config-icon" src="images/add.png"/>Agregar tiempo</li>
 			<li id="session-info" class="list-item"><img class="config-icon" src="images/info.png"/>Información de la sesión</li>
+			<li id="export-solves" class="list-item-disabled"><img id="export-icon" class="config-icon" src="images/export-disabled.png"/>Exportar tiempos</li>
+			<li id="import-solves" class="list-item"><img class="config-icon" src="images/import.png"/>Importar tiempos</li>
 			<hr>
 			<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="images/logout.png"/>Cerrar sesión</li>
 		</ul>

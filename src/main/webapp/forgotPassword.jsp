@@ -14,7 +14,7 @@
         <label for="correo">Correo:</label>
         <input type="email" name="correo" required>
         <input type="submit" value="Enviar solicitud">
-        <span style="color:red">
+        <span style="color:#B00C0C">
 			<% 
 				if(request.getAttribute("error") != null){
 					out.print(request.getAttribute("error"));  

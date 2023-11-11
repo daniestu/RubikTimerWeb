@@ -181,6 +181,11 @@ function getTiemposSesion(sesion) {
 			if(json.usuario == "nulo") {
 				window.location.href = "./login.jsp";
 			}else {
+				
+				$('#export-icon').attr('src', (json.length != 0) ? 'images/export.png' : 'images/export-disabled.png');
+				$("#export-solves").removeClass((json.length != 0) ? "list-item-disabled" : "list-item");
+				$("#export-solves").addClass((json.length != 0) ? "list-item" : "list-item-disabled");
+				
 				json = formatJsonTiempos(json, 0);
 				getEstadisticasSesion(json);
 				const tbody = document.querySelector('#tablaTiempos tbody');
@@ -533,4 +538,29 @@ function restarMas2(tiempoOriginal) {
   	return nuevoTiempo;
 }
 
+function exportSolves (sesion) {
+	window.location.href = 'session/export?sesion=' + sesion;
+}
 
+function importSolves () {
+	var form = document.getElementById('importForm');
+    var formData = new FormData(form);
+
+    fetch('session/import', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.importado) {
+			getSesiones();
+			document.getElementById("importModal").style.display = "none";
+		}else {
+			document.getElementById('import-modal-error').style.display = 'block';
+		}
+    })
+    .catch(error => {
+        console.error('Error al importar el archivo:', error);
+        document.getElementById('import-modal-error').style.display = 'block';
+    });
+}

@@ -21,7 +21,7 @@
         <label for="confirm-password">Confirmar contraseña:</label>
         <input type="password" name="confirm-password" required>
         <input type="submit" value="Restablecer contraseña">
-        <span style="color:red">
+        <span style="color:#B00C0C">
 			<% 
 				if(request.getAttribute("error") != null){
 					out.print(request.getAttribute("error"));  

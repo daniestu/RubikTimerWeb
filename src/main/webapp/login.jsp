@@ -16,7 +16,7 @@
         <label for="password">Contraseña:</label>
         <input type="password" name="password" id="password" autocomplete="current-password" required>
         <input type="submit" value="Iniciar sesión">
-        <span style="color:red">
+        <span style="color:#B00C0C">
 			<% 
 				if(request.getAttribute("error") != null){
 					out.print(request.getAttribute("error"));  

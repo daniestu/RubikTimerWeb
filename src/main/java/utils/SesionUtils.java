@@ -1,8 +1,17 @@
 package utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.Part;
 
 import models.AVG;
 import models.Estadisticas;
@@ -367,5 +376,58 @@ public class SesionUtils {
                 return "00:00:" + ms;
             }
         }
+    }
+    
+	public static boolean verificarFicheroImportacion(Part filePart) {
+		try (BufferedReader bfr = new BufferedReader(new InputStreamReader(filePart.getInputStream()))) {
+			String line;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            
+            while ((line = bfr.readLine()) != null) {
+            	String[] parts = line.split(";");
+            	if (parts.length != 6 || 
+        			Integer.parseInt(parts[0]) < 0 || 
+        			!verificarScramble(parts[1]) || 
+        			!esFormatoTiempoValido(parts[3]) || 
+        			(Integer.parseInt(parts[4]) != 0 && Integer.parseInt(parts[4]) != 1) 
+        			|| (Integer.parseInt(parts[5]) != 0 && Integer.parseInt(parts[5]) != 1)) {
+            		
+					return false;
+				}
+            	
+                sdf.parse(parts[2]);
+            }
+        } catch (IOException | ParseException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean verificarScramble (String scramble) {
+		String regex = "^([UDLRFB]('?2?)\\s?)+$";
+        return Pattern.matches(regex, scramble);
+	}
+	
+	public static boolean esFormatoTiempoValido(String tiempo) {
+		String regex = "^([0-9]+):([0-5][0-9]):([0-9][0-9])$";
+
+        Pattern pattern = Pattern.compile(regex);
+
+        Matcher matcher = pattern.matcher(tiempo);
+
+        if (matcher.matches()) {
+            int minutos = Integer.parseInt(matcher.group(1));
+            int segundos = Integer.parseInt(matcher.group(2));
+            int milis = Integer.parseInt(matcher.group(3));
+
+            if (minutos < 0 || segundos >= 60 || milis > 99) {
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

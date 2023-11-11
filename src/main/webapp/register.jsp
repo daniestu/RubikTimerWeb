@@ -19,7 +19,7 @@
         <label for="confirm-password">Confirmar contraseña:</label>
         <input type="password" name="confirm-password" id="confirm-password" required>
         <input type="submit" value="Registrarse">
-        <span style="color:red">
+        <span style="color:#B00C0C">
 			<% 
 				if(request.getAttribute("error") != null){
 					out.print(request.getAttribute("error"));  

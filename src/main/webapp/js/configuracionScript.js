@@ -16,6 +16,7 @@ $(document).ready(function() {
     var dnfBtn = $("#solveBtn-dnf");
 	var previewModal = $("#preview-modal-content");
 	var previewMain = $("#preview-container");
+	var importModal = $("#importModal-content");
 
     function toggleConfigContainer() {
         configContainer.toggle();
@@ -73,6 +74,10 @@ $(document).ready(function() {
 			&& !previewMain.is(event.target) && previewMain.has(event.target).length === 0) {
 				$("#preview-modal").hide();
 		}
+		if (!importModal.is(event.target) && importModal.has(event.target).length === 0
+			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
+				$("#importModal").hide();
+		}
 	});
 	
 	function logout() {
@@ -128,6 +133,20 @@ $(document).ready(function() {
 	
 	previewMain.click(function(event) {
 		document.getElementById("preview-modal").style.display = "flex";
+	});
+	
+	$("#export-solves").click(function(event) {
+		if ($('#export-solves').hasClass('list-item')) {
+            exportSolves(document.getElementById("sesion_select").value);
+        }
+	});
+	
+	$("#import-solves").click(function(event) {
+		document.getElementById("importSesion").value = document.getElementById("sesion_select").value;
+		document.getElementById("importFile").value = "";
+		document.getElementById("import-modal-error").style.display = "none";
+		document.getElementById("importModal").style.display = "flex";
+		toggleConfigContainer();
 	});
 	
 });
