@@ -17,6 +17,7 @@ $(document).ready(function() {
 	var previewModal = $("#preview-modal-content");
 	var previewMain = $("#preview-container");
 	var importModal = $("#importModal-content");
+	var configModal = $("#configModal-content");
 
     function toggleConfigContainer() {
         configContainer.toggle();
@@ -77,6 +78,10 @@ $(document).ready(function() {
 		if (!importModal.is(event.target) && importModal.has(event.target).length === 0
 			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
 				$("#importModal").hide();
+		}
+		if (!configModal.is(event.target) && configModal.has(event.target).length === 0
+			&& !configContainer.is(event.target) && configContainer.has(event.target).length === 0) {
+				$("#configModal").hide();
 		}
 	});
 	
@@ -149,4 +154,9 @@ $(document).ready(function() {
 		toggleConfigContainer();
 	});
 	
+	$("#preferences").click(function(event) {
+		document.getElementById("config-modal-error").style.display = "none";
+		document.getElementById("configModal").style.display = "flex";
+		toggleConfigContainer();
+	});
 });
