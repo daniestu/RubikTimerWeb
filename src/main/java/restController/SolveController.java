@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import business.SesionService;
 import business.SolveService;
@@ -73,7 +74,8 @@ public class SolveController extends HttpServlet {
 			if (usuario == null) {
 				json = "{\"usuario\":\"nulo\"}";
 			}else {
-				json = new Gson().toJson(solves);
+				Gson gson = new GsonBuilder().setDateFormat("MMM dd, yyyy").create();
+				json = gson.toJson(solves);
 			}
 			
 			response.setContentType("application/json");
