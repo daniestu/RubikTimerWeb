@@ -10,9 +10,14 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import business.UsuarioService;
+import models.Usuario;
+import utils.UserUtils;
 
 public class AuthenticationFilter implements Filter {
 	
@@ -39,7 +44,46 @@ public class AuthenticationFilter implements Filter {
         
         if (!isAllowed) {
         	if (session == null || session.getAttribute("usuario") == null) {
-            	res.sendRedirect("/rubikTimerWeb/user/login");
+        		
+        		HttpServletRequest httpRequest = (HttpServletRequest) request;
+        		HttpServletResponse httpResponse = (HttpServletResponse) response;
+        		
+        		Cookie[] cookies = httpRequest.getCookies();
+        		String username = null;
+        		String password = null;
+        		if (cookies != null) {
+        		    for (Cookie cookie : cookies) {
+        		    	//System.out.println("dominio: " + cookie.getDomain() + ", nombre: " + cookie.getName() + ", Valor: " + cookie.getValue() + ", Path: " + cookie.getPath() + ", version: " + cookie.getVersion() + ", Max age: " + cookie.getMaxAge() + ", Comment: " + cookie.getComment());
+        		        if (cookie.getName().equals("RubikTimerUsername")) {
+        		            username = cookie.getValue();
+        		        } else if (cookie.getName().equals("RubikTimerPassword")) {
+        		            password = cookie.getValue();
+        		        }
+        		    }
+        		}
+        		
+        		if (username != null && password != null) {
+					
+        			Usuario usuario = null;
+        			UsuarioService usuarioService = new UsuarioService();
+        			
+        	        try {
+        	        	usuario = usuarioService.verificarUsuario(username, UserUtils.encryptPassword(password));
+        	        	
+        	        	if (usuario != null && usuario.getIdUsuario() != null) {
+        	    			httpRequest.getSession().setAttribute("usuario", usuario);
+        	            	chain.doFilter(request, response);
+        	    		}else {
+        	    			res.sendRedirect("/rubikTimerWeb/user/login");
+        	    		}
+        			} catch (Exception e) {
+        				res.sendRedirect("/rubikTimerWeb/user/login");
+        			}
+        	        
+				}else {
+	            	res.sendRedirect("/rubikTimerWeb/user/login");
+				}
+        		
             } else {
                 chain.doFilter(request, response);
             }
