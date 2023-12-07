@@ -84,6 +84,7 @@ public class UserController extends HttpServlet {
 		
 		switch (path) {
 		case "/login":
+			
 	    	usuario = null;
 	        
 	        try {
@@ -97,10 +98,16 @@ public class UserController extends HttpServlet {
 	    			
 	    			Cookie usernameCookie = new Cookie("RubikTimerUsername", username);
 	            	usernameCookie.setMaxAge(7 * 24 * 60 * 60);
+	            	usernameCookie.setComment("user to rubikTimerWeb");
+	            	usernameCookie.setPath("/");
+	            	//usernameCookie.setDomain("localhost:8080");
 	            	response.addCookie(usernameCookie);
 
 	            	Cookie passwordCookie = new Cookie("RubikTimerPassword", password);
 	            	passwordCookie.setMaxAge(7 * 24 * 60 * 60);
+	            	passwordCookie.setComment("password to rubikTimerWeb");
+	            	passwordCookie.setPath("/");
+	            	//passwordCookie.setDomain("localhost:8080");
 	            	response.addCookie(passwordCookie);
 	            	
 	            	response.sendRedirect("../");
