@@ -71,7 +71,7 @@ public class UsuarioDao implements Persistencia<Usuario>{
 	    return usuarios;
 	}
 	
-	public Usuario getByUsernamePwd(String username, String password) throws IOException, SQLException {
+	public Usuario getByUsernamePwd(String username, String password) throws SQLException {
 	    AccesoProperties accesoBBDD = new AccesoProperties();
 		Properties prop = accesoBBDD.cargarFicheroBBDD();
 
