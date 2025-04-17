@@ -1,23 +1,30 @@
 var originalSelectedOption;
 
 function sesionChanged(sesion){
+    const select = document.getElementById("sesion_select");
+    const select_mobile = document.getElementById("sesion_select_mobile");
 	if(sesion == "selectOptionNew") {
-		document.getElementById("sesion_select").value = originalSelectedOption;
+		select.value = originalSelectedOption;
+		select_mobile.value = originalSelectedOption;
 		document.getElementById("nombre_sesion").value = "";
 		document.getElementById("nuevaSesion-modal-error").style.display = "none";
 		document.getElementById("nuevaSesion-modal").style.display = "flex";
 	}else if(sesion == "selectOptionDelete") {
-		document.getElementById("sesion_select").value = originalSelectedOption;
+		select.value = originalSelectedOption;
+		select_mobile.value = originalSelectedOption;
 		document.getElementById("borrarSesion-modal-error").style.display = "none";
 		document.getElementById("borrarSesion-modal").style.display = "flex";
 	}else {
+	    select.value = sesion;
+	    select_mobile.value = sesion;
 		fetch('session/updateDefault?sesion=' + sesion)
 		.catch(function() {
 			console.error("Ha ocurrido un error al actualizar la sesión");
 		});
 		getTiemposSesion(sesion);
 	}
-	document.getElementById("sesion_select").blur();
+	select.blur();
+	select_mobile.blur();
 }
 
 function getEstadisticasSesion(tiempos) {
@@ -32,6 +39,7 @@ function getEstadisticasSesion(tiempos) {
 		.then(estadisticas => {
 			
 			document.getElementById("total").textContent = estadisticas.total;
+			document.getElementById("total_mobile").textContent = estadisticas.total;
 			document.getElementById("info-total").value = estadisticas.total;
 			
 			if (estadisticas.hasOwnProperty("mejor")) {
@@ -39,9 +47,11 @@ function getEstadisticasSesion(tiempos) {
 				
 				if (mejor.dnf == 1) {
 					document.getElementById("mejor").textContent = "DNF";
+					document.getElementById("mejor_mobile").textContent = "DNF";
 					document.getElementById("info-best").value = "DNF(" + mejor.tiempo + ")";
 				}else {
 					document.getElementById("mejor").textContent = (mejor.mas_2 == 0) ? mejor.tiempo : (sumarMas2(mejor.tiempo) + "+");
+					document.getElementById("mejor_mobile").textContent = (mejor.mas_2 == 0) ? mejor.tiempo : (sumarMas2(mejor.tiempo) + "+");
 					document.getElementById("info-best").value = (mejor.mas_2 == 0) ? mejor.tiempo : (sumarMas2(mejor.tiempo) + "+");
 				}
 				document.getElementById("mejor").onclick = function() {
@@ -52,6 +62,7 @@ function getEstadisticasSesion(tiempos) {
 				}
 			}else {
 				document.getElementById("mejor").textContent = "";
+				document.getElementById("mejor_mobile").textContent = "--";
 				document.getElementById("mejor").onclick = null;
 				document.getElementById("info-best").value = "";
 				document.getElementById("info-best").onclick = null;
@@ -84,6 +95,7 @@ function getEstadisticasSesion(tiempos) {
 			if (estadisticas.hasOwnProperty("ao5")) {
 				const ao5 = estadisticas.ao5;
 				document.getElementById("ao5").textContent = ao5.tiempo;
+				document.getElementById("ao5_mobile").textContent = ao5.tiempo;
 				document.getElementById("ao5").onclick = function() {
 					mostrarAvg(ao5);
 				}
@@ -93,6 +105,7 @@ function getEstadisticasSesion(tiempos) {
 				}
 			}else {
 				document.getElementById("ao5").textContent = "";
+				document.getElementById("ao5_mobile").textContent = "--";
 				document.getElementById("ao5").onclick = null;
 				document.getElementById("info-ao5").value = "";
 				document.getElementById("info-ao5").onclick = null;
@@ -101,6 +114,7 @@ function getEstadisticasSesion(tiempos) {
 			if (estadisticas.hasOwnProperty("ao12")) {
 				const ao12 = estadisticas.ao12;
 				document.getElementById("ao12").textContent = ao12.tiempo;
+				document.getElementById("ao12_mobile").textContent = ao12.tiempo;
 				document.getElementById("ao12").onclick = function() {
 					mostrarAvg(ao12);
 				}
@@ -110,6 +124,7 @@ function getEstadisticasSesion(tiempos) {
 				}
 			}else {
 				document.getElementById("ao12").textContent = "";
+				document.getElementById("ao12_mobile").textContent = "--";
 				document.getElementById("ao12").onclick = null;
 				document.getElementById("info-ao12").value = "";
 				document.getElementById("info-ao12").onclick = null;
@@ -118,6 +133,7 @@ function getEstadisticasSesion(tiempos) {
 			if (estadisticas.hasOwnProperty("ao100")) {
 				const ao100 = estadisticas.ao100;
 				document.getElementById("ao100").textContent = ao100.tiempo;
+				document.getElementById("ao100_mobile").textContent = ao100.tiempo;
 				document.getElementById("ao100").onclick = function() {
 					mostrarAvg(ao100);
 				}
@@ -127,6 +143,7 @@ function getEstadisticasSesion(tiempos) {
 				}
 			}else {
 				document.getElementById("ao100").textContent = "";
+				document.getElementById("ao100_mobile").textContent = "--";
 				document.getElementById("ao100").onclick = null;
 				document.getElementById("info-ao100").value = "";
 				document.getElementById("info-ao100").onclick = null;
@@ -165,10 +182,21 @@ function getEstadisticasSesion(tiempos) {
 				document.getElementById("info-bestao100").value = "";
 				document.getElementById("info-bestao100").onclick = null;
 			}
-			
+
+			if (estadisticas.hasOwnProperty("desv")) {
+			    document.getElementById("desviacion_mobile").textContent = estadisticas.desv;
+			}else {
+			    document.getElementById("desviacion_mobile").textContent = "--";
+			}
 			document.getElementById("info-desv").value = estadisticas.desv;
-			
+
+			if (estadisticas.hasOwnProperty("media") && estadisticas.media) {
+			    document.getElementById("media_mobile").textContent = estadisticas.media;
+			}else {
+			    document.getElementById("media_mobile").textContent = "--";
+			}
 			document.getElementById("media").textContent = estadisticas.media;
+
 			document.getElementById("info-avg").value = estadisticas.media;
 		})
 }
@@ -283,38 +311,55 @@ function getSesiones() {
     .then(response => response.json())
     .then(sesiones => {
 		const select = document.getElementById("sesion_select");
+		const select_mobile = document.getElementById("sesion_select_mobile");
 		select.innerHTML = "";
 		if (sesiones.length == 0) {
 			crearSesion("Default");
 		} else {
 			for (var i = 0; i < sesiones.length; i++) {
 				const option = document.createElement("option");
+				const option_mobile = document.createElement("option");
 				option.text = sesiones[i].nombre;
-				option.value = sesiones[i].nombre;
+				option_mobile.value = sesiones[i].nombre;
+				option_mobile.text = sesiones[i].nombre;
+                				option.value = sesiones[i].nombre;
 				
 				if (sesiones[i].default_sesion) {
 		        	option.selected = true;
+		        	option_mobile.selected = true;
 			    }
 				
 				select.add(option);
+				select_mobile.add(option_mobile);
 			}
 			
 			const separator = document.createElement("optgroup");
+			const separator_mobile = document.createElement("optgroup");
 			separator.label = "\u2014\u2014\u2014\u2014\u2014\u2014\u2014";
+			separator_mobile.label = "\u2014\u2014\u2014\u2014\u2014\u2014\u2014";
 			select.add(separator);
-			
+			select_mobile.add(separator_mobile);
+
 			const nuevaSesion = document.createElement("option");
+			const nuevaSesion_mobile = document.createElement("option");
 			nuevaSesion.text = "Nueva sesión";
+			nuevaSesion_mobile.text = "Nueva sesión";
 			nuevaSesion.value = "selectOptionNew";
+			nuevaSesion_mobile.value = "selectOptionNew";
 			select.add(nuevaSesion);
-			
+			select_mobile.add(nuevaSesion_mobile);
+
 			const borrarSesion = document.createElement("option");
+			const borrarSesion_mobile = document.createElement("option");
 			borrarSesion.text = "Eliminar sesión";
+			borrarSesion_mobile.text = "Eliminar sesión";
 			borrarSesion.value = "selectOptionDelete";
+			borrarSesion_mobile.value = "selectOptionDelete";
 			select.add(borrarSesion);
-			
+			select_mobile.add(borrarSesion_mobile);
+
 			getTiemposSesion(select.value);
-      }
+        }
     });
 }
 

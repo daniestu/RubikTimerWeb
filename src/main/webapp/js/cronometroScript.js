@@ -11,6 +11,9 @@ var detenido = false;
 var spacePressedForOneSecond = false;
 var presionando_espacio = false;
 
+const elementosNoPermitidos = ['aside', 'nav', 'section', 'footer', 'ol', 'ul', 'li', 'a', 'i', 'img', 'input', 'textarea', 'button', 'select', 'optgroup', 'option'];
+const idsElementosNoPermitidos = ['config-container', 'scramble-container'];
+
 function iniciarCronometro() {
 	tiempo_inicial_cronometro = new Date().getTime();
 	intervalo_cronometro = setInterval(actualizarCronometro, 10);
@@ -95,6 +98,61 @@ document.body.onkeydown = function(e) {
 	}
 }
 
+// Evento para dispositivos móviles (touchstart)
+document.addEventListener('touchstart', function(e) {
+    const targetElement = e.target;
+    let permitido = !elementosNoPermitidos.includes(targetElement.tagName.toLowerCase()) && verificarElementoPermitido(targetElement);
+
+    if (permitido) {
+        var configContainer = $("#config-container");
+        var configBtn = $("#config-btn");
+        if (configContainer.is(":visible")) {
+            configContainer.toggle();
+            configBtn.removeAttr("style");
+            permitido = false;
+        }
+    }
+
+    if (permitido) {
+        e.preventDefault();
+
+        if (!presionando_espacio) {
+            presionando_espacio = true;
+            if (cronometrando) {
+                detenerCronometro();
+                cronometrando = false;
+                detenido = true;
+            } else {
+                tiempo_inicial_espacio = new Date().getTime();
+                intervalo_manteniendo_espacio = setInterval(validar_manteniendo_espacio, 100);
+                document.getElementById("cronometro").textContent = "00:00:00";
+                document.getElementById("cronometro").style.color = "red";
+            }
+        }
+    }
+}, { passive: false });
+
+// Evento para dispositivos móviles (touchend)
+document.addEventListener('touchend', function(e) {
+    const targetElement = e.target;
+    let permitido = !elementosNoPermitidos.includes(targetElement.tagName.toLowerCase()) && verificarElementoPermitido(targetElement);
+
+    if (permitido) {
+        if (!cronometrando && !detenido && spacePressedForOneSecond) {
+            iniciarCronometro();
+            cronometrando = true;
+            detenido = false;
+        } else if (!cronometrando && detenido) {
+            detenido = false;
+        } else if (!spacePressedForOneSecond) {
+            clearInterval(intervalo_manteniendo_espacio);
+        }
+        spacePressedForOneSecond = false;
+        presionando_espacio = false;
+        document.getElementById("cronometro").style.color = "white";
+    }
+}, { passive: false });
+
 function validar_manteniendo_espacio() {
 	if (presionando_espacio) {
 		tiempo_actual_espacio = new Date().getTime();
@@ -104,4 +162,42 @@ function validar_manteniendo_espacio() {
 			clearInterval(intervalo_manteniendo_espacio);
 		}
 	}
+}
+
+function verificarElementoPermitido(elemento) {
+    console.log("entra");
+    if (!elemento.id) {
+        return true;
+    }
+
+    const elementoId = elemento.id;
+
+    if (idsElementosNoPermitidos.includes(elementoId)) {
+        return false;
+    }
+
+    for (const idPadre of idsElementosNoPermitidos) {
+        const elementoPadre = document.getElementById(idPadre);
+        if (elementoPadre) {
+            function verificarEnHijosRecursivo(nodo, idABuscar) {
+                if (nodo.id === idABuscar) {
+                    return true;
+                }
+                if (nodo.children) {
+                    for (const hijo of nodo.children) {
+                        if (verificarEnHijosRecursivo(hijo, idABuscar)) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            if (verificarEnHijosRecursivo(elementoPadre, elementoId)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }

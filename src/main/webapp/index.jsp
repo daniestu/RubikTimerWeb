@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -16,33 +18,37 @@
     <link rel="stylesheet" type="text/css" href="css/previewStyles.css">
   </head>
   <body>
-    <div class="scramble-container">
-      <p id="scramble" onclick="generateScramble()"></p>
+    <div class="scramble-container" id="scramble-container">
+        <div id="sesion_container_mobile">
+            <label id="sesion_label_mobile" class="mb-0" for="sesion_select_mobile">Sesiï¿½n:</label>
+            <select id="sesion_select_mobile" onchange="sesionChanged(this.value)"></select>
+        </div>
+        <p id="scramble" onclick="generateScramble()"></p>
     </div>
     
     <%--MODALES --%>
     <div id="nuevaSesion-modal" class="modal">
 		<div id="nuevaSesion-modal-content" class="modal-content modal-23">
-			<h2>Crear nueva sesión</h2>
+			<h2>Crear nueva sesiï¿½n</h2>
 			<form class="modalForm" onsubmit="event.preventDefault();crearSesion(document.getElementById('nombre_sesion').value)">
-				<label for="nombre_sesion">Nombre de la sesión</label>
+				<label for="nombre_sesion">Nombre de la sesiï¿½n</label>
 				<input type="text" class="input-100" id="nombre_sesion" autocomplete="off" onchange="document.getElementById('nuevaSesion-modal-error').style.display = 'none'" required>
 				<button type="submit" class="btn btn-guardar">Guardar</button>
-				<span id="nuevaSesion-modal-error" style="color:#B00C0C; display:none;">Ya existe una sesión con ese nombre.</span>
+				<span id="nuevaSesion-modal-error" style="color:#B00C0C; display:none;">Ya existe una sesiï¿½n con ese nombre.</span>
 			</form>
 		</div>
 	</div>
 	<div id="borrarSesion-modal" class=modal>
 		<div id="borrarSesion-modal-content" class="modal-content">
-			<h2>Eliminar sesión</h2>
+			<h2>Eliminar sesiï¿½n</h2>
 			<p>
-				Se eliminará la sesión y todos los tiempos asociados. ¿Seguro que desea continuar?
+				Se eliminarï¿½ la sesiï¿½n y todos los tiempos asociados. ï¿½Seguro que desea continuar?
 			</p>
 			<div id="btn-container">
 				<button id="sesionBtn-aceptar" onclick="borrarSesion(originalSelectedOption)">Aceptar</button>
             	<button id="sesionBtn-cancelar" onclick="ocultarBorrarSesionModal()">Cancelar</button>
 	        </div>
-	        <span id="borrarSesion-modal-error" style="color:#B00C0C; display:none;">Ha ocurrido un error al borrar la sesión.</span>
+	        <span id="borrarSesion-modal-error" style="color:#B00C0C; display:none;">Ha ocurrido un error al borrar la sesiï¿½n.</span>
 		</div>
 	</div>
 	<div id="scramble-personalizado-modal" class="modal">
@@ -52,7 +58,7 @@
 				<label for="scramble-text">Scramble</label>
 				<input type="text" id="scramble-text" class="input-100" autocomplete="off" required>
 				<button type="submit" class=" btn btn-guardar">Guardar</button>
-				<span id="scramble-personalizado-modal-error" style="color:#B00C0C; display:none;">El scramble introducido no es válido.</span>
+				<span id="scramble-personalizado-modal-error" style="color:#B00C0C; display:none;">El scramble introducido no es vï¿½lido.</span>
 			</form>
 		</div>
 	</div>
@@ -65,7 +71,7 @@
 				<label>Tiempo</label>
 				<input type="text" id="addSolve-tiempo" autocomplete="off" required>
 				<button type="submit" class="btn btn-guardar">Guardar</button>
-				<span id="add-solve-modal-error" style="color:#B00C0C; display:none;">El tiempo introducido no es válido.</span>
+				<span id="add-solve-modal-error" style="color:#B00C0C; display:none;">El tiempo introducido no es vï¿½lido.</span>
 			</form>
 		</div>
 	</div>
@@ -107,7 +113,7 @@
 	
 	<div id="session-info-modal" class="modal">
 		<div id="session-info-modal-content" class="modal-content">
-			<h2>Información de la sesión</h2>
+			<h2>Informaciï¿½n de la sesiï¿½n</h2>
 			<form id="sessionInfo-form" class="verticalModalForm" onsubmit="event.preventDefault();actualizarSesion(document.getElementById('info-name').value);">
 				<div id="session-info-data">
 					<div class="form-group">
@@ -131,7 +137,7 @@
 		                <input type="tel" class="form-control" id="info-avg" disabled>
 	            	</div>
 	            	<div class="form-group">
-		                <label for="info-desv">Desviación</label>
+		                <label for="info-desv">Desviaciï¿½n</label>
 		                <input type="tel" class="form-control" id="info-desv" disabled>
 	            	</div>
 	            	<div class="form-group">
@@ -161,7 +167,7 @@
             	</div>
 				<button type="submit" class="btn btn-guardar">Aceptar</button>
 				<button type="submit" class="btn btn-danger ml-1" onclick="event.preventDefault();confirmDelete(document.getElementById('sesion_select').value);">Eliminar</button>
-				<span id="session-info-modal-error" style="color:#B00C0C; display:none; margin-top:2%;">Ha ocurrido un error al actualizar la sesión.</span>
+				<span id="session-info-modal-error" style="color:#B00C0C; display:none; margin-top:2%;">Ha ocurrido un error al actualizar la sesiï¿½n.</span>
 			</form>
 		</div>
 	</div>
@@ -189,11 +195,11 @@
 			<li id="previus-scramble" class="list-item-disabled"><img id="previus-icon" class="config-icon" src="images/previus-disabled.png"/>Mezcla anterior</li>
 			<li id="next-scramble" class="list-item"><img class="config-icon" src="images/next.png"/>Mezcla siguiente</li>
 			<li id="add-solve" class="list-item"><img class="config-icon" src="images/add.png"/>Agregar tiempo</li>
-			<li id="session-info" class="list-item"><img class="config-icon" src="images/info.png"/>Información de la sesión</li>
+			<li id="session-info" class="list-item"><img class="config-icon" src="images/info.png"/>Informaciï¿½n de la sesiï¿½n</li>
 			<li id="export-solves" class="list-item-disabled"><img id="export-icon" class="config-icon" src="images/export-disabled.png"/>Exportar tiempos</li>
 			<li id="import-solves" class="list-item"><img class="config-icon" src="images/import.png"/>Importar tiempos</li>
 			<hr>
-			<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="images/logout.png"/>Cerrar sesión</li>
+			<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="images/logout.png"/>Cerrar sesiï¿½n</li>
 		</ul>
    	</div>
    	<jsp:include page="preview.jsp" />
@@ -202,7 +208,7 @@
     		<img id="logo" src="images/logo.png" alt="Rubik timer">
     	</div>
       	<div id="sesion_container">
-			<label id="sesion_label" class="mb-0" for="sesion_select">Sesión:</label>
+			<label id="sesion_label" class="mb-0" for="sesion_select">SesiÃ³n:</label>
 		 	<select id="sesion_select" onchange="sesionChanged(this.value)"></select>
       	</div>
       	<div id="estadisticas_container">
@@ -253,6 +259,53 @@
     <div class="cronometro-container">
 		<p id="cronometro">00:00:00</p>
     </div>
+
+    <div id="estadisticas_container_mobile" class="d-lg-none row w-100 m-0">
+        <div class="col-4">
+            <dl>
+                <div class="d-flex">
+                    <dt>DesviaciÃ³n:</dt>
+                    <dd><span id="desviacion_mobile"></span></dd>
+                </div>
+                <div class="d-flex">
+                    <dt>Media:</dt>
+                    <dd><span id="media_mobile"></span></dd>
+                </div>
+                <div class="d-flex">
+                    <dt>Mejor:</dt>
+                    <dd><span id="mejor_mobile"></span></dd>
+                </div>
+                <div class="d-flex">
+                    <dt>Total:</dt>
+                    <dd><span id="total_mobile"></span></dd>
+                </div>
+            </dl>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4 d-flex justify-content-end align-items-end">
+            <dl>
+                <div class="d-flex">
+                    <dt>Ao5:</dt>
+                    <dd><span id="ao5_mobile"></span></dd>
+                </div>
+                <div class="d-flex">
+                    <dt>Ao12:</dt>
+                    <dd><span id="ao12_mobile"></span></dd>
+                </div>
+                <div class="d-flex">
+                    <dt>Ao100:</dt>
+                    <dd><span id="ao100_mobile"></span></dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <div class="row position-absolute w-100 m-0 d-none" style="bottom: 0; left: 0;">
+        <div class="col-4 border" style="height: 60px;"></div>
+        <div class="col-4 border" style="height: 60px;"></div>
+        <div class="col-4 border" style="height: 60px;"></div>
+    </div>
+
     <script src="js/cronometroScript.js"></script>
     <script>
 	    generateScramble();
