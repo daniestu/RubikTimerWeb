@@ -39,7 +39,6 @@ button:focus {
     position: absolute;
     bottom: 0;
     left: 0;
-    font-size: 12px;
     padding-inline: 5px;
 }
 
@@ -64,6 +63,10 @@ button:focus {
     #cronometro {
         font-size: 3rem;
     }
+
+    #estadisticas_container_mobile {
+        font-size: 12px;
+    }
 }
 
 /* Small devices (landscape phones, 576px and up)  */
@@ -71,6 +74,10 @@ button:focus {
 	#cronometro {
 		font-size: 4rem;
 	}
+
+    #estadisticas_container_mobile {
+        font-size: 14px;
+    }
 }
 
 /* Medium devices (tablets, 768px and up)  */
@@ -78,6 +85,10 @@ button:focus {
 	#cronometro {
 		font-size: 5rem;
 	}
+
+	#estadisticas_container_mobile {
+        font-size: 16px;
+    }
 }
 
 /* Large devices (desktops, 992px and up)  */

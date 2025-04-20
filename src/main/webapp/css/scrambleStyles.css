@@ -30,7 +30,7 @@
 }
 
 #sesion_label_mobile {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 #sesion_select_mobile {
@@ -38,8 +38,8 @@
     border: none;
     border-radius: 5px;
     color: white;
-    font-size: 1.7vh;
-    padding: 1%;
+    font-size: 15px;
+    padding: 2%;
     margin: 0 auto;
     text-align: center;
     width: 92%;
@@ -76,10 +76,11 @@
 /* Small devices (landscape phones, 576px and up)  */
 @media (min-width: 576px) and (max-width: 767.98px) {
     #scramble {
-        font-size: 1rem;
+        font-size: 1.2rem;
         padding-bottom: 5px;
         width: calc(100% - 44px);
         margin: auto;
+        margin-block: 5px;
     }
 
     .scramble-container {
@@ -94,6 +95,7 @@
         padding-bottom: 5px;
         width: calc(100% - 44px);
         margin: auto;
+        margin-block: 8px;
     }
 
     .scramble-container {

@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="utils.MessageUtil" %>
+<%@ page import="java.util.Locale" %>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -9,22 +11,22 @@
   </head>
   <body>
     <div class="login-container">
-      <h1>Olvido de contraseña</h1>
+      <h1><%= MessageUtil.getMessage(new Locale("es", "ES"), "title.olvido_contrasena")%></h1>
       <form action="forgotPassword" method="post">
-        <label for="correo">Correo:</label>
+        <label for="correo"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.correo")%>:</label>
         <input type="email" name="correo" required>
-        <input type="submit" value="Enviar solicitud">
+        <input type="submit" value="<%= MessageUtil.getMessage(new Locale("es", "ES"), "label.enviar_solicitud")%>">
         <span style="color:#B00C0C">
-			<% 
+			<%
 				if(request.getAttribute("error") != null){
-					out.print(request.getAttribute("error"));  
+					out.print(request.getAttribute("error"));
 				}
 			%>
 		</span>
       </form>
-      <p><a href="login">Volver al inicio de sesión</a></p>
+      <p><a href="login"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.volver_login")%></a></p>
 	  <% if (request.getAttribute("confirmation") != null) { %>
-      <p id="confirmation">Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña.</p>
+      <p id="confirmation"><%= MessageUtil.getMessage(new Locale("es", "ES"), "confirmation.olvido_contrasena")%></p>
       <%} %>
     </div>
   </body>
