@@ -12,7 +12,11 @@ var spacePressedForOneSecond = false;
 var presionando_espacio = false;
 
 const elementosNoPermitidos = ['aside', 'nav', 'section', 'footer', 'ol', 'ul', 'li', 'a', 'i', 'img', 'input', 'textarea', 'button', 'select', 'optgroup', 'option'];
-const idsElementosNoPermitidos = ['config-container', 'scramble-container'];
+const idsElementosNoPermitidos = ['config-container', 'scramble-container', 'toggleBox', 'sidePanel'];
+
+let touchStartX = null;
+let touchStartY = null;
+const umbralDeslizamiento = 20;
 
 function iniciarCronometro() {
 	tiempo_inicial_cronometro = new Date().getTime();
@@ -25,6 +29,11 @@ function detenerCronometro() {
 	var scramble = document.getElementById("scramble").textContent;
 	guardarTiempo(tiempoTranscurrido, scramble);
 	generateScramble();
+
+	let mobileIconsContainer = document.getElementById("mobile-icons-container");
+	if (mobileIconsContainer) {
+	    mobileIconsContainer.classList.remove('invisible');
+	}
 }
 
 function actualizarCronometro() {
@@ -98,10 +107,9 @@ document.body.onkeydown = function(e) {
 	}
 }
 
-// Evento para dispositivos móviles (touchstart)
 document.addEventListener('touchstart', function(e) {
     const targetElement = e.target;
-    let permitido = !elementosNoPermitidos.includes(targetElement.tagName.toLowerCase()) && verificarElementoPermitido(targetElement);
+    let permitido = !elementosNoPermitidos.includes(targetElement.tagName.toLowerCase()) && !verificarElementoModal(targetElement) && verificarElementoPermitido(targetElement);
 
     if (permitido) {
         var configContainer = $("#config-container");
@@ -111,10 +119,24 @@ document.addEventListener('touchstart', function(e) {
             configBtn.removeAttr("style");
             permitido = false;
         }
+
+        const toggleBox = document.getElementById('toggleBox');
+        const sidePanel = document.getElementById('sidePanel');
+        const toggleArrow = document.getElementById('toggleArrow');
+
+        if (sidePanel.classList.contains('open')) {
+            sidePanel.classList.remove('open');
+            toggleBox.classList.remove('open');
+
+            toggleArrow.textContent = '➤';
+            permitido = false;
+            isOpen = false;
+        }
     }
 
     if (permitido) {
-        e.preventDefault();
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
 
         if (!presionando_espacio) {
             presionando_espacio = true;
@@ -127,15 +149,43 @@ document.addEventListener('touchstart', function(e) {
                 intervalo_manteniendo_espacio = setInterval(validar_manteniendo_espacio, 100);
                 document.getElementById("cronometro").textContent = "00:00:00";
                 document.getElementById("cronometro").style.color = "red";
+
+                let mobileIconsContainer = document.getElementById("mobile-icons-container");
+                if (mobileIconsContainer) {
+                    mobileIconsContainer.classList.add('invisible');
+                }
+
+                document.getElementById("btn-mobile-delete").classList.remove("d-none");
+                document.getElementById("btn-mobile-dnf").classList.remove("d-none");
+                document.getElementById("btn-mobile-mas_dos").classList.remove("d-none");
+                document.getElementById("btn-mobile-restart_dnf").classList.add("d-none");
+                document.getElementById("btn-mobile-restart_mas_dos").classList.add("d-none");
             }
         }
     }
-}, { passive: false });
+}, { passive: true });
 
-// Evento para dispositivos móviles (touchend)
+document.addEventListener('touchmove', function(e) {
+    if (touchStartX !== null && touchStartY !== null) {
+        const touchMoveX = e.touches[0].clientX;
+        const touchMoveY = e.touches[0].clientY;
+        const deltaX = Math.abs(touchMoveX - touchStartX);
+        const deltaY = Math.abs(touchMoveY - touchStartY);
+
+        if (deltaX > umbralDeslizamiento || deltaY > umbralDeslizamiento) {
+            presionando_espacio = false;
+            spacePressedForOneSecond = false;
+            clearInterval(intervalo_manteniendo_espacio);
+            document.getElementById("cronometro").style.color = "white";
+            touchStartX = null;
+            touchStartY = null;
+        }
+    }
+}, { passive: true });
+
 document.addEventListener('touchend', function(e) {
     const targetElement = e.target;
-    let permitido = !elementosNoPermitidos.includes(targetElement.tagName.toLowerCase()) && verificarElementoPermitido(targetElement);
+    let permitido = !elementosNoPermitidos.includes(targetElement.tagName.toLowerCase()) && !verificarElementoModal(targetElement) && verificarElementoPermitido(targetElement);
 
     if (permitido) {
         if (!cronometrando && !detenido && spacePressedForOneSecond) {
@@ -150,6 +200,20 @@ document.addEventListener('touchend', function(e) {
         spacePressedForOneSecond = false;
         presionando_espacio = false;
         document.getElementById("cronometro").style.color = "white";
+
+        // Condicional para preventDefault basado en el desplazamiento
+        if (touchStartX !== null && touchStartY !== null) {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaX = Math.abs(touchEndX - touchStartX);
+            const deltaY = Math.abs(touchEndY - touchStartY);
+
+            if (deltaX <= umbralDeslizamiento && deltaY <= umbralDeslizamiento) {
+                e.preventDefault();
+            }
+            touchStartX = null;
+            touchStartY = null;
+        }
     }
 }, { passive: false });
 
@@ -164,40 +228,56 @@ function validar_manteniendo_espacio() {
 	}
 }
 
+function verificarElementoModal(elemento) {
+    if (!elemento) return false;
+
+    let actual = elemento;
+
+    while (actual) {
+        if (actual.classList && actual.classList.contains('modal')) {
+            return true;
+        }
+        actual = actual.parentElement;
+    }
+
+    return false;
+}
+
 function verificarElementoPermitido(elemento) {
-    console.log("entra");
-    if (!elemento.id) {
-        return true;
-    }
+    while (elemento) {
+        if (elemento.id) {
+            const elementoId = elemento.id;
 
-    const elementoId = elemento.id;
+            if (idsElementosNoPermitidos.includes(elementoId)) {
+                return false;
+            }
 
-    if (idsElementosNoPermitidos.includes(elementoId)) {
-        return false;
-    }
-
-    for (const idPadre of idsElementosNoPermitidos) {
-        const elementoPadre = document.getElementById(idPadre);
-        if (elementoPadre) {
-            function verificarEnHijosRecursivo(nodo, idABuscar) {
-                if (nodo.id === idABuscar) {
-                    return true;
-                }
-                if (nodo.children) {
-                    for (const hijo of nodo.children) {
-                        if (verificarEnHijosRecursivo(hijo, idABuscar)) {
+            for (const idPadre of idsElementosNoPermitidos) {
+                const elementoPadre = document.getElementById(idPadre);
+                if (elementoPadre) {
+                    function verificarEnHijosRecursivo(nodo, idABuscar) {
+                        if (nodo.id === idABuscar) {
                             return true;
                         }
+                        if (nodo.children) {
+                            for (const hijo of nodo.children) {
+                                if (verificarEnHijosRecursivo(hijo, idABuscar)) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }
+
+                    if (verificarEnHijosRecursivo(elementoPadre, elementoId)) {
+                        return false;
                     }
                 }
-                return false;
             }
-
-            if (verificarEnHijosRecursivo(elementoPadre, elementoId)) {
-                return false;
-            }
+            return true;
+        } else {
+            elemento = elemento.parentElement;
         }
     }
-
     return true;
 }

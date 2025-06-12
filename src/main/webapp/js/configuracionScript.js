@@ -8,6 +8,7 @@ $(document).ready(function() {
     var avgTable = $(".average");
     var solveTd = $(".solve");
     var tablaTiempos = $("#tablaTiempos");
+    var tablaTiempos_mobile = $("#tablaTiempos_mobile");
     var scramblePersonalizadoModal = $("#scramble-personalizado-modal-content");
     var addSolve = $("#add-solve-modal-content");
     var sesionSelect = $("#sesion_select");
@@ -50,6 +51,7 @@ $(document).ready(function() {
 		if (!solveModal.is(event.target) && solveModal.has(event.target).length === 0
 			&& !solveTd.is(event.target) && solveTd.has(event.target).length === 0
 			&& !tablaTiempos.is(event.target) && tablaTiempos.has(event.target).length === 0
+			&& !tablaTiempos_mobile.is(event.target) && tablaTiempos_mobile.has(event.target).length === 0
 			&& !mas2Btn.is(event.target) && mas2Btn.has(event.target).length === 0
 			&& !dnfBtn.is(event.target) && dnfBtn.has(event.target).length === 0) {
 				$("#solveModal").hide();

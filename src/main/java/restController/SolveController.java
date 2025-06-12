@@ -1,6 +1,7 @@
 package restController;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import business.SesionService;
 import business.SolveService;
 import models.Sesion;
+import models.Solve;
 import models.Usuario;
 
 public class SolveController extends HttpServlet {
@@ -36,20 +38,21 @@ public class SolveController extends HttpServlet {
 		SesionService sesionService = new SesionService();
 		SolveService solveService = new SolveService();
 		
-		Map<String, Boolean> resultado = new HashMap<>();
+		Map<String, Object> resultado = new HashMap<>();
 		
 		Sesion sesion = null;
 		String json;
 		int id;
 		int action;
 		boolean ok;
+		boolean eliminado;
 		
 		String path = request.getPathInfo();
 		
 		switch (path) {
 		case "/delete":
 			id = Integer.parseInt(request.getParameter("id"));
-			boolean eliminado = solveService.eliminar(id);
+			eliminado = solveService.eliminar(id);
 			
 			resultado.put("eliminado", eliminado);
 			
@@ -59,7 +62,24 @@ public class SolveController extends HttpServlet {
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(json);
 			break;
-			
+		case "/delete_last":
+			eliminado = false;
+			try {
+				sesion = sesionService.getByName(nombre_sesion, usuario);
+				Solve solve = solveService.getLastSolveBySesion(sesion);
+				eliminado = solveService.eliminar(solve.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			resultado.put("eliminado", eliminado);
+
+			json = new Gson().toJson(resultado);
+
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
+			break;
 		case "/get":
 			List<models.Solve> solves = null;
 			try {
@@ -132,9 +152,49 @@ public class SolveController extends HttpServlet {
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(json);
 			break;
+		case "/updateMas2_last":
+			action = Integer.parseInt(request.getParameter("action"));
+
+			ok = false;
+			try {
+				sesion = sesionService.getByName(nombre_sesion, usuario);
+				Solve solve = solveService.getLastSolveBySesion(sesion);
+				ok = solveService.updateMas2(solve.getId(), action);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			resultado.put("actualizado", ok);
+
+			json = new Gson().toJson(resultado);
+
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
+			break;
+		case "/updateDnf_last":
+			action = Integer.parseInt(request.getParameter("action"));
+
+			ok = false;
+			try {
+				sesion = sesionService.getByName(nombre_sesion, usuario);
+				Solve solve = solveService.getLastSolveBySesion(sesion);
+				resultado.put("tiempo_original", solve.getTiempo());
+				ok = solveService.updateDnf(solve.getId(), action);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			resultado.put("actualizado", ok);
+
+			json = new Gson().toJson(resultado);
+
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
+			break;
 		default:
 			break;
-
 		}
 	}
 

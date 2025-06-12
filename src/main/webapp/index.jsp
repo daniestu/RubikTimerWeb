@@ -82,8 +82,10 @@
     		<h2><%= MessageUtil.getMessage(new Locale("es", "ES"), "title.tiempo")%></h2>
     		<form class="modalForm" onsubmit="event.preventDefault();borrarTiempo(document.getElementById('hidden-id').value)">
     			<input id="hidden-id" name="hidden-id" type="hidden">
-    			<label for="scrambleInput"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.scramble")%></label>
-    			<input type="text" id="scrambleInput" class="input-100" name="scrambleInput" disabled>
+    			<label for="scrambleInput" class="d-none d-lg-block"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.scramble")%></label>
+    			<input type="text" id="scrambleInput" class="input-100 d-none d-lg-block" name="scrambleInput" disabled>
+    			<label for="scrambleInputMobile" class="d-lg-none"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.scramble")%></label>
+                <textarea type="text" id="scrambleInputMobile" class="input-100 scramble-textarea d-lg-none" name="scrambleInputMobile" disabled></textarea>
     			<label for="fecha"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.fecha")%></label>
     			<input type="text" id="fecha" name="fecha" disabled>
     			<label for="tiempo"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.tiempo")%></label>
@@ -206,15 +208,15 @@
     </div>
    	<jsp:include page="preview.jsp" />
     <aside class="aside-container">
-    	<div id="logo_container">
-    		<img id="logo" src="images/logo.png" alt="Rubik timer">
+    	<div id="logo_container" class="logo_container">
+    		<img id="logo" class="logo" src="images/logo.png" alt="Rubik timer">
     	</div>
     	<div id="sesion_container">
     		<label id="sesion_label" class="mb-0" for="sesion_select"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.sesion")%>:</label>
     		<select id="sesion_select" onchange="sesionChanged(this.value)"></select>
     	</div>
-    	<div id="estadisticas_container">
-    		<table id="tablaEstadisticas">
+    	<div id="estadisticas_container" class="estadisticas_container">
+    		<table id="tablaEstadisticas" class="tablaEstadisticas">
     			<tr>
     				<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.total")%></th>
     				<td id="total"></td>
@@ -245,8 +247,8 @@
     			</tr>
     		</table>
     	</div>
-    	<div id="tiempos_container">
-    		<table id="tablaTiempos">
+    	<div id="tiempos_container" class="tiempos_container">
+    		<table id="tablaTiempos" class="tablaTiempos">
     			<thead>
     				<tr>
     					<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.id")%></th>
@@ -258,8 +260,93 @@
     		</table>
     	</div>
     </aside>
+
+    <div class="toggle-box rounded-end d-lg-none" id="toggleBox">
+        <span class="arrow" id="toggleArrow">➤</span>
+    </div>
+
+    <div class="side-panel d-lg-none" id="sidePanel">
+        <div id="logo_container_mobile" class="logo_container">
+            <img id="logo_mobile" class="logo" src="images/logo.png" alt="Rubik timer">
+        </div>
+        <div id="estadisticas_container_mobile_side" class="estadisticas_container">
+            <table id="tablaEstadisticas_mobile" class="tablaEstadisticas">
+                <tr>
+                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.total")%></th>
+                    <td id="total_mobile_side"></td>
+                </tr>
+                <tr>
+                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.mejor")%></th>
+                    <td id="mejor_mobile_side" class="solve"></td>
+                </tr>
+                <tr>
+                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.peor")%></th>
+                    <td id="peor_mobile_side" class="solve"></td>
+                </tr>
+                <tr>
+                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao5")%></th>
+                    <td id="ao5_mobile_side" class="average"></td>
+                </tr>
+                <tr>
+                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao12")%></th>
+                    <td id="ao12_mobile_side" class="average"></td>
+                </tr>
+                <tr>
+                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao100")%></th>
+                    <td id="ao100_mobile_side" class="average"></td>
+                </tr>
+                <tr>
+                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.media")%></th>
+                    <td id="media_mobile_side"></td>
+                </tr>
+            </table>
+        </div>
+        <div id="tiempos_container_mobile" class="tiempos_container">
+            <table id="tablaTiempos_mobile" class="tablaTiempos">
+                <thead>
+                    <tr>
+                        <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.id")%></th>
+                        <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.tiempo_mayus")%></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div class="cronometro-container">
 		<p id="cronometro">00:00:00</p>
+		<div id="mobile-icons-container" class="d-lg-none invisible">
+            <button type="button" id="btn-mobile-delete" class="mobile-action-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                <img class="mobile-action-icon" src="images/delete-solve.png"/>
+            </button>
+            <button type="button" id="btn-mobile-dnf" class="mobile-action-btn" onclick="addDnfUltimoSolveMobile(1)"><img class="mobile-action-icon" src="images/dnf.png"/></button>
+            <button type="button" id="btn-mobile-mas_dos" class="mobile-action-btn" onclick="addMas2UltimoSolveMobile(1)"><img class="mobile-action-icon" src="images/mas_dos.png"/></button>
+
+		    <button type="button" id="btn-mobile-restart_dnf" class="mobile-action-btn" onclick="addDnfUltimoSolveMobile(0)"><img class="mobile-action-icon" src="images/restart.png"/></button>
+		    <button type="button" id="btn-mobile-restart_mas_dos" class="mobile-action-btn" onclick="addMas2UltimoSolveMobile(0)"><img class="mobile-action-icon" src="images/restart.png"/></button>
+		</div>
+    </div>
+
+    <!-- Modal de confirmacion para el borrado de un solve en mobile -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel"><%= MessageUtil.getMessage(new Locale("es", "ES"), "title.confirm_borrado")%></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <%= MessageUtil.getMessage(new Locale("es", "ES"), "confirm.solve_delete")%>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= MessageUtil.getMessage(new Locale("es", "ES"), "forms.cancelar")%></button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton" onclick="borrarUltimoTiempoMobile()"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.confirm_borrado_button")%></button>
+                    <span id="delete-solve-mobile-modal-error" style="color:#B00C0C;" class="d-none"><%= MessageUtil.getMessage(new Locale("es", "ES"), "error.borrar_tiempo")%></span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="estadisticas_container_mobile" class="d-lg-none row w-100 m-0">
@@ -300,12 +387,6 @@
     			</div>
     		</dl>
     	</div>
-    </div>
-
-    <div class="row position-absolute w-100 m-0 d-none" style="bottom: 0; left: 0;">
-        <div class="col-4 border" style="height: 200px;"></div>
-        <div class="col-4 border" style="height: 200px;"></div>
-        <div class="col-4 border" style="height: 200px;"></div>
     </div>
 
     <script src="js/cronometroScript.js"></script>
