@@ -1,4 +1,5 @@
 var originalSelectedOption;
+let isOpen = false;
 
 function sesionChanged(sesion){
     const select = document.getElementById("sesion_select");
@@ -37,9 +38,9 @@ function getEstadisticasSesion(tiempos) {
 	fetch('session/getData', options)
 		.then(response => response.json())
 		.then(estadisticas => {
-			
 			document.getElementById("total").textContent = estadisticas.total;
 			document.getElementById("total_mobile").textContent = estadisticas.total;
+			document.getElementById("total_mobile_side").textContent = estadisticas.total;
 			document.getElementById("info-total").value = estadisticas.total;
 			
 			if (estadisticas.hasOwnProperty("mejor")) {
@@ -47,14 +48,19 @@ function getEstadisticasSesion(tiempos) {
 				
 				if (mejor.dnf == 1) {
 					document.getElementById("mejor").textContent = "DNF";
+					document.getElementById("mejor_mobile_side").textContent = "DNF";
 					document.getElementById("mejor_mobile").textContent = "DNF";
 					document.getElementById("info-best").value = "DNF(" + mejor.tiempo + ")";
 				}else {
 					document.getElementById("mejor").textContent = (mejor.mas_2 == 0) ? mejor.tiempo : (sumarMas2(mejor.tiempo) + "+");
+					document.getElementById("mejor_mobile_side").textContent = (mejor.mas_2 == 0) ? mejor.tiempo : (sumarMas2(mejor.tiempo) + "+");
 					document.getElementById("mejor_mobile").textContent = (mejor.mas_2 == 0) ? mejor.tiempo : (sumarMas2(mejor.tiempo) + "+");
 					document.getElementById("info-best").value = (mejor.mas_2 == 0) ? mejor.tiempo : (sumarMas2(mejor.tiempo) + "+");
 				}
 				document.getElementById("mejor").onclick = function() {
+					mostrarTiempo(mejor);
+				}
+				document.getElementById("mejor_mobile_side").onclick = function() {
 					mostrarTiempo(mejor);
 				}
 				document.getElementById("info-best").onclick = function() {
@@ -62,8 +68,10 @@ function getEstadisticasSesion(tiempos) {
 				}
 			}else {
 				document.getElementById("mejor").textContent = "";
+				document.getElementById("mejor_mobile_side").textContent = "";
 				document.getElementById("mejor_mobile").textContent = "--";
 				document.getElementById("mejor").onclick = null;
+				document.getElementById("mejor_mobile_side").onclick = null;
 				document.getElementById("info-best").value = "";
 				document.getElementById("info-best").onclick = null;
 			}
@@ -73,13 +81,18 @@ function getEstadisticasSesion(tiempos) {
 				
 				if (peor.dnf == 1) {
 					document.getElementById("peor").textContent = "DNF";
+					document.getElementById("peor_mobile_side").textContent = "DNF";
 					document.getElementById("info-worst").value = "DNF(" + peor.tiempo + ")";
 				}else {
 					document.getElementById("peor").textContent = (peor.mas_2 == 0) ? peor.tiempo : (sumarMas2(peor.tiempo) + "+");
+					document.getElementById("peor_mobile_side").textContent = (peor.mas_2 == 0) ? peor.tiempo : (sumarMas2(peor.tiempo) + "+");
 					document.getElementById("info-worst").value = (peor.mas_2 == 0) ? peor.tiempo : (sumarMas2(peor.tiempo) + "+");
 				}
 				
 				document.getElementById("peor").onclick = function() {
+					mostrarTiempo(peor);
+				}
+				document.getElementById("peor_mobile_side").onclick = function() {
 					mostrarTiempo(peor);
 				}
 				document.getElementById("info-worst").onclick = function() {
@@ -87,7 +100,9 @@ function getEstadisticasSesion(tiempos) {
 				}
 			}else {
 				document.getElementById("peor").textContent = "";
+				document.getElementById("peor_mobile_side").textContent = "";
 				document.getElementById("peor").onclick = null;
+				document.getElementById("peor_mobile_side").onclick = null;
 				document.getElementById("info-worst").value = "";
 				document.getElementById("info-worst").onclick = null;
 			}
@@ -95,8 +110,12 @@ function getEstadisticasSesion(tiempos) {
 			if (estadisticas.hasOwnProperty("ao5")) {
 				const ao5 = estadisticas.ao5;
 				document.getElementById("ao5").textContent = ao5.tiempo;
+				document.getElementById("ao5_mobile_side").textContent = ao5.tiempo;
 				document.getElementById("ao5_mobile").textContent = ao5.tiempo;
 				document.getElementById("ao5").onclick = function() {
+					mostrarAvg(ao5);
+				}
+				document.getElementById("ao5_mobile_side").onclick = function() {
 					mostrarAvg(ao5);
 				}
 				document.getElementById("info-ao5").value = ao5.tiempo;
@@ -105,8 +124,10 @@ function getEstadisticasSesion(tiempos) {
 				}
 			}else {
 				document.getElementById("ao5").textContent = "";
+				document.getElementById("ao5_mobile_side").textContent = "";
 				document.getElementById("ao5_mobile").textContent = "--";
 				document.getElementById("ao5").onclick = null;
+				document.getElementById("ao5_mobile_side").onclick = null;
 				document.getElementById("info-ao5").value = "";
 				document.getElementById("info-ao5").onclick = null;
 			}
@@ -114,8 +135,12 @@ function getEstadisticasSesion(tiempos) {
 			if (estadisticas.hasOwnProperty("ao12")) {
 				const ao12 = estadisticas.ao12;
 				document.getElementById("ao12").textContent = ao12.tiempo;
+				document.getElementById("ao12_mobile_side").textContent = ao12.tiempo;
 				document.getElementById("ao12_mobile").textContent = ao12.tiempo;
 				document.getElementById("ao12").onclick = function() {
+					mostrarAvg(ao12);
+				}
+				document.getElementById("ao12_mobile_side").onclick = function() {
 					mostrarAvg(ao12);
 				}
 				document.getElementById("info-ao12").value = ao12.tiempo;
@@ -124,8 +149,10 @@ function getEstadisticasSesion(tiempos) {
 				}
 			}else {
 				document.getElementById("ao12").textContent = "";
+				document.getElementById("ao12_mobile_side").textContent = "";
 				document.getElementById("ao12_mobile").textContent = "--";
 				document.getElementById("ao12").onclick = null;
+				document.getElementById("ao12_mobile_side").onclick = null;
 				document.getElementById("info-ao12").value = "";
 				document.getElementById("info-ao12").onclick = null;
 			}
@@ -133,8 +160,12 @@ function getEstadisticasSesion(tiempos) {
 			if (estadisticas.hasOwnProperty("ao100")) {
 				const ao100 = estadisticas.ao100;
 				document.getElementById("ao100").textContent = ao100.tiempo;
+				document.getElementById("ao100_mobile_side").textContent = ao100.tiempo;
 				document.getElementById("ao100_mobile").textContent = ao100.tiempo;
 				document.getElementById("ao100").onclick = function() {
+					mostrarAvg(ao100);
+				}
+				document.getElementById("ao100_mobile_side").onclick = function() {
 					mostrarAvg(ao100);
 				}
 				document.getElementById("info-ao100").value = ao100.tiempo;
@@ -143,8 +174,10 @@ function getEstadisticasSesion(tiempos) {
 				}
 			}else {
 				document.getElementById("ao100").textContent = "";
+				document.getElementById("ao100_mobile_side").textContent = "";
 				document.getElementById("ao100_mobile").textContent = "--";
 				document.getElementById("ao100").onclick = null;
+				document.getElementById("ao100_mobile_side").onclick = null;
 				document.getElementById("info-ao100").value = "";
 				document.getElementById("info-ao100").onclick = null;
 			}
@@ -196,6 +229,7 @@ function getEstadisticasSesion(tiempos) {
 			    document.getElementById("media_mobile").textContent = "--";
 			}
 			document.getElementById("media").textContent = estadisticas.media;
+			document.getElementById("media_mobile_side").textContent = estadisticas.media;
 
 			document.getElementById("info-avg").value = estadisticas.media;
 		})
@@ -217,47 +251,65 @@ function getTiemposSesion(sesion) {
 				json = formatJsonTiempos(json, 0);
 				getEstadisticasSesion(json);
 				const tbody = document.querySelector('#tablaTiempos tbody');
+				const tbody_mobile = document.querySelector('#tablaTiempos_mobile tbody');
 				tbody.innerHTML = '';
+				tbody_mobile.innerHTML = '';
 				for (let i = json.length-1; i >= 0; i--) {
 					const tiempo = json[i];
 					const tr = document.createElement('tr');
-					
+					const tr_mobile = document.createElement('tr');
+
 					const idTd = document.createElement('td');
+					const idTd_mobile = document.createElement('td');
 					idTd.textContent = i+1;
+					idTd_mobile.textContent = i+1;
 					tr.appendChild(idTd);
-					
+					tr_mobile.appendChild(idTd_mobile);
+
 					const tiempoTd = document.createElement('td');
-					
+					const tiempoTd_mobile = document.createElement('td');
+
 					if (tiempo.dnf == 1) {
 						tiempoTd.textContent = "DNF";
+						tiempoTd_mobile.textContent = "DNF";
 					}else {
 						tiempoTd.textContent = (tiempo.mas_2 == 0) ? tiempo.tiempo : (sumarMas2(tiempo.tiempo) + "+");
+						tiempoTd_mobile.textContent = (tiempo.mas_2 == 0) ? tiempo.tiempo : (sumarMas2(tiempo.tiempo) + "+");
 					}
 					
 					tiempoTd.classList.add('tablaTiempos-tiempo');
+					tiempoTd_mobile.classList.add('tablaTiempos-tiempo');
 					tiempoTd.onclick = function() {
 						mostrarTiempo(tiempo);
 					}
+					tiempoTd_mobile.onclick = function() {
+					    console.log('Click en móvil', tiempo);
+						mostrarTiempo(tiempo);
+					}
 					tr.appendChild(tiempoTd);
-					
+					tr_mobile.appendChild(tiempoTd_mobile);
+
 					tbody.appendChild(tr);
+					tbody_mobile.appendChild(tr_mobile);
 				}
 			}
 		});
 }
 
 function mostrarTiempo(tiempo) {
+    console.log("dentro del mostrar tiempo");
 	tiempo = formatJsonTiempos(tiempo, 1);
 	document.getElementById("hidden-id").value = tiempo.id;
 	document.getElementById("scrambleInput").value = tiempo.scramble;
+	document.getElementById("scrambleInputMobile").value = tiempo.scramble;
 	document.getElementById("fecha").value = tiempo.fecha;
-	
+	console.log("1");
 	if (tiempo.mas_2 == 0) {
 		document.getElementById("solveBtn-mas2").classList.remove("solveBtn-clicked");
 	}else {
 		document.getElementById("solveBtn-mas2").classList.add("solveBtn-clicked");
 	}
-	
+	console.log("2");
 	if (tiempo.dnf == 0) {
 		document.getElementById("solveBtn-dnf").classList.remove("solveBtn-clicked");
 		document.getElementById("tiempo").value = (tiempo.mas_2 == 0) ? tiempo.tiempo : (sumarMas2(tiempo.tiempo) + "+");
@@ -265,9 +317,10 @@ function mostrarTiempo(tiempo) {
 		document.getElementById("solveBtn-dnf").classList.add("solveBtn-clicked");
 		document.getElementById("tiempo").value = "DNF(" + tiempo.tiempo + ")";;
 	}
-	
+	console.log("3");
 	document.getElementById("solve-modal-error").style.display = "none";
 	document.getElementById("solveModal").style.display = "flex";
+	console.log("4");
 }
 
 function mostrarAvg(avg) {
@@ -304,6 +357,39 @@ function borrarTiempo(id) {
 	.catch(function() {
 		document.getElementById("solve-modal-error").style.display = "block";
 	});
+}
+
+function borrarUltimoTiempoMobile() {
+    const select = document.getElementById("sesion_select");
+    fetch('solve/delete_last?sesion=' + select.value)
+        .then(response => response.json())
+        .then(data => {
+            if(data.eliminado) {
+                getSesiones();
+
+                document.getElementById("cronometro").textContent = "00:00:00";
+
+                let mobileIconsContainer = document.getElementById("mobile-icons-container");
+                if (mobileIconsContainer) {
+                    mobileIconsContainer.classList.add('invisible');
+                }
+
+                document.getElementById("btn-mobile-delete").classList.remove("d-none");
+                document.getElementById("btn-mobile-dnf").classList.remove("d-none");
+                document.getElementById("btn-mobile-mas_dos").classList.remove("d-none");
+                document.getElementById("btn-mobile-restart_dnf").classList.add("d-none");
+                document.getElementById("btn-mobile-restart_mas_dos").classList.add("d-none");
+
+                var modalElement = document.getElementById('confirmDeleteModal');
+                var modal = bootstrap.Modal.getInstance(modalElement);
+                modal.hide();
+            }else {
+                document.getElementById("delete-solve-mobile-modal-error").classList.remove('d-none');
+            }
+    })
+    .catch(function() {
+        document.getElementById("delete-solve-mobile-modal-error").classList.remove('d-none');
+    });
 }
 
 function getSesiones() {
@@ -543,6 +629,66 @@ function addDnf(id) {
 	});
 }
 
+function addMas2UltimoSolveMobile(action) {
+    const select = document.getElementById("sesion_select");
+
+	fetch('solve/updateMas2_last?&action=' + action + '&sesion=' + select.value)
+	.then(response => response.json())
+	.then(data => {
+		if (data.actualizado) {
+			if (action == 0) {
+				document.getElementById("btn-mobile-delete").classList.remove("d-none");
+                document.getElementById("btn-mobile-dnf").classList.remove("d-none");
+                document.getElementById("btn-mobile-mas_dos").classList.remove("d-none");
+                document.getElementById("btn-mobile-restart_dnf").classList.add("d-none");
+                document.getElementById("btn-mobile-restart_mas_dos").classList.add("d-none");
+
+				document.getElementById("cronometro").textContent = restarMas2(document.getElementById("cronometro").textContent);
+			}else {
+				document.getElementById("btn-mobile-delete").classList.add("d-none");
+				document.getElementById("btn-mobile-dnf").classList.add("d-none");
+				document.getElementById("btn-mobile-mas_dos").classList.add("d-none");
+				document.getElementById("btn-mobile-restart_dnf").classList.add("d-none");
+				document.getElementById("btn-mobile-restart_mas_dos").classList.remove("d-none");
+				var tiempo = document.getElementById("cronometro").textContent;
+
+				document.getElementById("cronometro").textContent = sumarMas2(tiempo) + "+";
+
+			}
+			getSesiones();
+		}
+	});
+}
+
+function addDnfUltimoSolveMobile(action) {
+    const select = document.getElementById("sesion_select");
+
+	fetch('solve/updateDnf_last?action=' + action + '&sesion=' + select.value)
+	.then(response => response.json())
+	.then(data => {
+		if (data.actualizado) {
+			if (action == 0) {
+				document.getElementById("btn-mobile-delete").classList.remove("d-none");
+                document.getElementById("btn-mobile-dnf").classList.remove("d-none");
+                document.getElementById("btn-mobile-mas_dos").classList.remove("d-none");
+                document.getElementById("btn-mobile-restart_dnf").classList.add("d-none");
+                document.getElementById("btn-mobile-restart_mas_dos").classList.add("d-none");
+
+				document.getElementById("cronometro").textContent = data.tiempo_original;
+			}else {
+				document.getElementById("btn-mobile-delete").classList.add("d-none");
+                document.getElementById("btn-mobile-dnf").classList.add("d-none");
+                document.getElementById("btn-mobile-mas_dos").classList.add("d-none");
+                document.getElementById("btn-mobile-restart_dnf").classList.remove("d-none");
+                document.getElementById("btn-mobile-restart_mas_dos").classList.add("d-none");
+
+				document.getElementById("cronometro").textContent = "DNF";
+			}
+			getSesiones();
+		}
+	});
+}
+
 function sumarMas2(tiempoOriginal) {
 	var tiempoPartes = tiempoOriginal.split(":");
 	var minutos = parseInt(tiempoPartes[0]);
@@ -609,3 +755,32 @@ function importSolves () {
         document.getElementById('import-modal-error').style.display = 'block';
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteSolveMobileModal = document.getElementById('confirmDeleteModal');
+    const toggleBox = document.getElementById('toggleBox');
+    const sidePanel = document.getElementById('sidePanel');
+    const toggleArrow = document.getElementById('toggleArrow');
+
+    deleteSolveMobileModal.addEventListener('click', function (e) {
+        if (e.target.tagName === 'BUTTON' && e.target.closest('.modal')) {
+            e.target.blur();
+        }
+    });
+
+    deleteSolveMobileModal.addEventListener('shown.bs.modal', function () {
+        document.getElementById('delete-solve-mobile-modal-error').classList.add('d-none');
+    });
+
+    deleteSolveMobileModal.addEventListener('hidden.bs.modal', function () {
+        document.getElementById('delete-solve-mobile-modal-error').classList.add('d-none');
+    });
+
+    toggleBox.addEventListener('click', () => {
+        isOpen = !isOpen;
+        sidePanel.classList.toggle('open', isOpen);
+        toggleBox.classList.toggle('open', isOpen);
+
+        toggleArrow.textContent = isOpen ? '◀' : '➤';
+    });
+});
