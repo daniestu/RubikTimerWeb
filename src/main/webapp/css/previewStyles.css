@@ -284,3 +284,43 @@
         right: 0;
     }
 }
+
+@media (max-height: 380px) {
+    .preview-main {
+        left: 50%;
+        bottom: 10px;
+        transform: translateX(-50%);
+        width: 144px;
+        height:112px;
+    }
+
+    .layout-container {
+        width: 32px;
+        height: 32px;
+    }
+
+    #u-container {
+        top: 5px;
+        left: 40px;
+    }
+    #l-container {
+        top: 40px;
+        left: 5px;
+    }
+    #f-container {
+        top: 40px;
+        left: 40px;
+    }
+    #r-container {
+        top: 40px;
+        left: 75px;
+    }
+    #b-container {
+        top: 40px;
+        left: 111px;
+    }
+    #d-container {
+        top: 75px;
+        left: 40px;
+    }
+}

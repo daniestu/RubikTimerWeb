@@ -283,7 +283,7 @@ function getTiemposSesion(sesion) {
 						mostrarTiempo(tiempo);
 					}
 					tiempoTd_mobile.onclick = function() {
-					    console.log('Click en móvil', tiempo);
+					    console.log("Clic en mostrar Tiempo");
 						mostrarTiempo(tiempo);
 					}
 					tr.appendChild(tiempoTd);
@@ -297,19 +297,18 @@ function getTiemposSesion(sesion) {
 }
 
 function mostrarTiempo(tiempo) {
-    console.log("dentro del mostrar tiempo");
 	tiempo = formatJsonTiempos(tiempo, 1);
 	document.getElementById("hidden-id").value = tiempo.id;
 	document.getElementById("scrambleInput").value = tiempo.scramble;
 	document.getElementById("scrambleInputMobile").value = tiempo.scramble;
 	document.getElementById("fecha").value = tiempo.fecha;
-	console.log("1");
+
 	if (tiempo.mas_2 == 0) {
 		document.getElementById("solveBtn-mas2").classList.remove("solveBtn-clicked");
 	}else {
 		document.getElementById("solveBtn-mas2").classList.add("solveBtn-clicked");
 	}
-	console.log("2");
+
 	if (tiempo.dnf == 0) {
 		document.getElementById("solveBtn-dnf").classList.remove("solveBtn-clicked");
 		document.getElementById("tiempo").value = (tiempo.mas_2 == 0) ? tiempo.tiempo : (sumarMas2(tiempo.tiempo) + "+");
@@ -317,10 +316,9 @@ function mostrarTiempo(tiempo) {
 		document.getElementById("solveBtn-dnf").classList.add("solveBtn-clicked");
 		document.getElementById("tiempo").value = "DNF(" + tiempo.tiempo + ")";;
 	}
-	console.log("3");
+
 	document.getElementById("solve-modal-error").style.display = "none";
 	document.getElementById("solveModal").style.display = "flex";
-	console.log("4");
 }
 
 function mostrarAvg(avg) {
@@ -399,6 +397,7 @@ function getSesiones() {
 		const select = document.getElementById("sesion_select");
 		const select_mobile = document.getElementById("sesion_select_mobile");
 		select.innerHTML = "";
+		select_mobile.innerHTML = "";
 		if (sesiones.length == 0) {
 			crearSesion("Default");
 		} else {
@@ -532,6 +531,9 @@ function formatJsonTiempos(json, accion) {
 	if(accion == 0) {
 		for (let i = 0; i < json.length; i++) {
 			let fecha = new Date(json[i].fecha);
+			if (isNaN(fecha)) {
+			    continue;
+			}
 			let dia = fecha.getDate().toString().padStart(2, '0');
 			let mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
 			let anio = fecha.getFullYear().toString();
@@ -540,6 +542,9 @@ function formatJsonTiempos(json, accion) {
 		}
 	}else if(accion == 1) {
 		let fecha = new Date(json.fecha);
+		if (isNaN(fecha)) {
+            return json;
+        }
 		let dia = fecha.getDate().toString().padStart(2, '0');
 		let mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
 		let anio = fecha.getFullYear().toString();

@@ -83,6 +83,10 @@ button:focus {
     box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.2);
 }
 
+input[type="file"] {
+    max-width: 100%;
+}
+
 /* Extra small devices (phones, less than 576px)  */
 @media (max-width: 575.98px) {
     #cronometro {

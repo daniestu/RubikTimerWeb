@@ -12,6 +12,7 @@ $(document).ready(function() {
     var scramblePersonalizadoModal = $("#scramble-personalizado-modal-content");
     var addSolve = $("#add-solve-modal-content");
     var sesionSelect = $("#sesion_select");
+    var sesionSelect_mobile = $("#sesion_select_mobile");
     var sessionInfo = $("#session-info-modal-content");
     var mas2Btn = $("#solveBtn-mas2");
     var dnfBtn = $("#solveBtn-dnf");
@@ -40,12 +41,14 @@ $(document).ready(function() {
 				configBtn.removeAttr("style");
 		}
 		if (!nuevaSesionModal.is(event.target) && nuevaSesionModal.has(event.target).length === 0
-			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0) {
+			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0
+			&& !sesionSelect_mobile.is(event.target) && sesionSelect_mobile.has(event.target).length === 0) {
 				$("#nuevaSesion-modal").hide();
 				$("#nombre_sesion").val("");
 		}
 		if (!borrarSesionModal.is(event.target) && borrarSesionModal.has(event.target).length === 0
-			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0) {
+			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0
+			&& !sesionSelect_mobile.is(event.target) && sesionSelect_mobile.has(event.target).length === 0) {
 				$("#borrarSesion-modal").hide();
 		}
 		if (!solveModal.is(event.target) && solveModal.has(event.target).length === 0
