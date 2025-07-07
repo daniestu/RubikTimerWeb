@@ -19,6 +19,7 @@ public class SesionDao implements Persistencia<Sesion>{
 
 	@Override
 	public Sesion add(Sesion sesion) throws IOException, SQLException {
+		
 		String sql = "INSERT INTO sesion (nombre, usuario_id, default_sesion) VALUES (?, ?, 0)";
 		AccesoProperties accesoBBDD = new AccesoProperties();
 		Properties prop = accesoBBDD.cargarFicheroBBDD();

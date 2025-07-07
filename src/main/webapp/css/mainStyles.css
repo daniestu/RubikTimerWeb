@@ -16,7 +16,6 @@ body {
 
 #cronometro {
 	font-family: Lucida Console, monospace;
-	font-size: 10rem;
 	margin: 0;
 	width: 100%;
 	text-align: center;
@@ -34,4 +33,148 @@ button:focus {
 	outline: none;
 	-webkit-tap-highlight-color: transparent;
 	box-shadow: none;
+}
+
+#estadisticas_container_mobile {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding-inline: 5px;
+}
+
+#estadisticas_container_mobile dl {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.7rem;
+}
+
+#estadisticas_container_mobile dt {
+  font-weight: normal;
+  margin-right: 5px;
+  flex-shrink: 0;
+}
+
+#estadisticas_container_mobile dd {
+    margin-bottom: 5px;
+}
+
+.mobile-action-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: relative;
+}
+
+.mobile-action-btn:focus {
+    outline: none;
+}
+
+.mobile-action-icon {
+    padding: 0.5vh;
+    border-radius: 50%;
+    box-sizing: content-box;
+    transition: box-shadow 0.3s ease;
+}
+
+.mobile-action-btn:active .mobile-action-icon {
+    box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+input[type="file"] {
+    max-width: 100%;
+}
+
+/* Extra small devices (phones, less than 576px)  */
+@media (max-width: 575.98px) {
+    #cronometro {
+        font-size: 3rem;
+    }
+
+    #estadisticas_container_mobile {
+        font-size: 12px;
+    }
+
+    .mobile-action-icon {
+        max-width: 20px;
+    }
+
+    body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overflow-x: hidden;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up)  */
+@media (min-width: 576px) and (max-width: 767.98px) {
+	#cronometro {
+		font-size: 4rem;
+	}
+
+    #estadisticas_container_mobile {
+        font-size: 14px;
+    }
+
+    .mobile-action-icon {
+        max-width: 25px;
+    }
+
+    body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overflow-x: hidden;
+    }
+}
+
+/* Medium devices (tablets, 768px and up)  */
+@media (min-width: 768px) and (max-width: 991.98px) {
+	#cronometro {
+		font-size: 5rem;
+	}
+
+	#estadisticas_container_mobile {
+        font-size: 16px;
+    }
+
+    .mobile-action-icon {
+        max-width: 30px;
+    }
+
+    body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overflow-x: hidden;
+    }
+}
+
+/* Large devices (desktops, 992px and up)  */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+	#cronometro {
+		font-size: 7rem;
+	}
+
+	.cronometro-container {
+        margin-left: 24vh;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up)  */
+@media (min-width: 1200px) {
+	/* Default styles (same as original)  */
+	#cronometro {
+		font-size: 9rem;
+	}
+
+	.cronometro-container {
+    	margin-left: 24vh;
+    }
 }

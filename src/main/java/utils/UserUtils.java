@@ -26,8 +26,10 @@ public class UserUtils {
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.office365.com");
+        //props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.enable", "false");
+        //props.put("mail.smtp.host", "smtp.office365.com");
+        props.put("mail.smtp.host", "localhost");
         props.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(props,
@@ -50,10 +52,10 @@ public class UserUtils {
         		return false;
 			}
         	
-            String emailContent = String.format(template, "http://localhost:8080/rubikTimerWeb/user/resetPassword?token=" + token.getUuid());
-
+            String emailContent = String.format(template, "https://www.der-timer.com/rubikTimerWeb/user/resetPassword?token=" + token.getUuid());
+            
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username, "RubikTimer"));
+            message.setFrom(new InternetAddress(username, "DER Timer"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getCorreo()));
             message.setSubject("Solicitud de restablecimiento de contraseña");
             message.setContent(emailContent, "text/html");

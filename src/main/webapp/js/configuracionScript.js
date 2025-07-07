@@ -8,9 +8,11 @@ $(document).ready(function() {
     var avgTable = $(".average");
     var solveTd = $(".solve");
     var tablaTiempos = $("#tablaTiempos");
+    var tablaTiempos_mobile = $("#tablaTiempos_mobile");
     var scramblePersonalizadoModal = $("#scramble-personalizado-modal-content");
     var addSolve = $("#add-solve-modal-content");
     var sesionSelect = $("#sesion_select");
+    var sesionSelect_mobile = $("#sesion_select_mobile");
     var sessionInfo = $("#session-info-modal-content");
     var mas2Btn = $("#solveBtn-mas2");
     var dnfBtn = $("#solveBtn-dnf");
@@ -40,17 +42,20 @@ $(document).ready(function() {
 				configBtn.removeAttr("style");
 		}
 		if (!nuevaSesionModal.is(event.target) && nuevaSesionModal.has(event.target).length === 0
-			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0) {
+			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0
+			&& !sesionSelect_mobile.is(event.target) && sesionSelect_mobile.has(event.target).length === 0) {
 				$("#nuevaSesion-modal").hide();
 				$("#nombre_sesion").val("");
 		}
 		if (!borrarSesionModal.is(event.target) && borrarSesionModal.has(event.target).length === 0
-			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0) {
+			&& !sesionSelect.is(event.target) && sesionSelect.has(event.target).length === 0
+			&& !sesionSelect_mobile.is(event.target) && sesionSelect_mobile.has(event.target).length === 0) {
 				$("#borrarSesion-modal").hide();
 		}
 		if (!solveModal.is(event.target) && solveModal.has(event.target).length === 0
 			&& !solveTd.is(event.target) && solveTd.has(event.target).length === 0
 			&& !tablaTiempos.is(event.target) && tablaTiempos.has(event.target).length === 0
+			&& !tablaTiempos_mobile.is(event.target) && tablaTiempos_mobile.has(event.target).length === 0
 			&& !mas2Btn.is(event.target) && mas2Btn.has(event.target).length === 0
 			&& !dnfBtn.is(event.target) && dnfBtn.has(event.target).length === 0) {
 				$("#solveModal").hide();

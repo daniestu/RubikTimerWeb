@@ -213,4 +213,29 @@ public class SolveDao implements Persistencia<Solve>{
             return false;
         }
 	}
+
+	public Solve getLastSolveBySesion(Integer sesion_id) throws SQLException {
+		String query = "select * from tiempos where sesion_id = ? order by id desc limit 1";
+
+		AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
+
+		Solve solve = null;
+		ResultSet rs = null;
+		try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+			 PreparedStatement statement = conn.prepareStatement(query)) {
+
+			statement.setInt(1, sesion_id);
+			rs = statement.executeQuery();
+			if (rs.next()) {
+				solve = new Solve(rs.getInt("id"), rs.getString("scramble"), rs.getDate("fecha"), rs.getString("tiempo"), rs.getBoolean("mas_dos"), rs.getBoolean("dnf"), rs.getInt("usuario_id"), rs.getInt("sesion_id"));
+			}
+		}finally {
+			if (rs != null) {
+				rs.close();
+			}
+		}
+
+		return solve;
+	}
 }

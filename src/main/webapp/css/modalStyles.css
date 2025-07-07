@@ -1,7 +1,7 @@
 .modal {
 	display: none;
 	position: fixed;
-	z-index: 1;
+	z-index: 2000;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -12,10 +12,6 @@
 
 .modal-content {
 	background-color: #4A6572;
-	padding: 20px;
-	max-width: 30%;
-	max-height: 75vh;
-	border-radius: 10px;
 	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 	text-align: center;
 	display: flex;
@@ -72,7 +68,6 @@
 .modalForm input[type="text"] {
 	padding: 10px;
 	margin-bottom: 10px;
-	font-size: 0.85vw;
 	border-radius: 5px;
 	border: none;
 }
@@ -155,7 +150,7 @@
     color: #4A6572;
 }
 
-.solveBtn:hover, .solveBtn-clicked {
+.solveBtn-clicked {
 	background-color: #AEAEAE;
 }
 
@@ -194,11 +189,11 @@
   	margin-bottom: 2vh;
 }
 
-/* Para modales con label alineado con el input */
 .form-group {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-block: 0.5rem;
 }
 
 .form-group label {
@@ -272,7 +267,7 @@
 }
 
 .config-check {
-	transform: scale(1.5); /* Ajusta el valor según sea necesario */
+	transform: scale(1.5);
 	margin-right: 8px;
 }
 
@@ -289,4 +284,106 @@
 	display: flex;
 	gap: 10px;
 	justify-content: center;
+}
+
+.scramble-textarea {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: none;
+    resize: none;
+    text-align: center;
+}
+
+/* Extra small devices (phones, less than 576px)  */
+@media (max-width: 575.98px) {
+    .modal-content {
+    	padding: 15px;
+    	max-width: 85%;
+        margin: auto;
+    }
+
+    .modal-30, .modal-23 {
+    	width:85%;
+    }
+
+    .modalForm input[type="text"] {
+        font-size: 15px;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up)  */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .modal-content {
+        padding: 15px;
+        max-width: 85%;
+        margin: auto;
+    }
+
+    .modal-30, .modal-23 {
+    	width:85%;
+    }
+
+    .modalForm input[type="text"] {
+        font-size: 16px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up)  */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .modal-content {
+        padding: 15px;
+        max-width: 85%;
+        margin: auto;
+    }
+
+    .modal-30, .modal-23 {
+    	width:85%;
+    }
+
+    .modalForm input[type="text"] {
+        font-size: 16px;
+    }
+}
+
+/* Large devices (desktops, 992px and up)  */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .modal-content {
+        padding: 20px;
+        max-width: 30%;
+        max-height: 75vh;
+    }
+
+    .modal-content-large {
+        max-width: 100%;
+    }
+
+    .modalForm input[type="text"] {
+        font-size: 0.85vw;
+    }
+
+    .solveBtn:hover {
+        background-color: #AEAEAE;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up)  */
+@media (min-width: 1200px) {
+    .modal-content {
+        padding: 20px;
+        max-width: 30%;
+        max-height: 75vh;
+    }
+
+    .modal-content-large {
+    	max-width: 100%;
+    }
+
+    .modalForm input[type="text"] {
+        font-size: 0.85vw;
+    }
+
+    .solveBtn:hover {
+        background-color: #AEAEAE;
+    }
 }

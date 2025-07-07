@@ -2,11 +2,11 @@
 	position: fixed;
 	top: 0.5vh;
 	right: 0.5vw;
-	width: 3vh;
 	min-width: 20px;
 	padding: 0.5vh;
 	border-radius: 10%;
 	box-sizing: content-box;
+	z-index: 1000;
 }
 
 #config-btn:hover {
@@ -15,11 +15,9 @@
 
 #config-container {
 	position: fixed;
-	top: 5vh;
-	right: 0.5vw;
-	width: 230px;
 	background-color: #4A6572;
 	border-radius: 12px;
+	z-index: 1;
 }
 
 
@@ -79,4 +77,95 @@
 .list-item-disabled:hover {
 	background-color: #4A6572;
 	cursor: default;
+}
+
+/* Extra small devices (phones, less than 576px)  */
+@media (max-width: 575.98px) {
+    #config-container {
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 1001;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .list-item {
+        padding: 8px 10px;
+    }
+
+    #config-btn {
+        width: 22px;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up)  */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    #config-container {
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 1001;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .list-item {
+        padding: 8px 10px;
+    }
+
+    #config-btn {
+        width: 22px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up)  */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    #config-container {
+    	top: 5vh;
+    	right: 0.5vw;
+    	width: 230px;
+    }
+
+    .list-item {
+        padding: 5px 10px;
+    }
+
+    #config-btn {
+        width: 22px;
+    }
+}
+
+/* Large devices (desktops, 992px and up)  */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    #config-container {
+        top: 5vh;
+        right: 0.5vw;
+        width: 230px;
+    }
+
+    .list-item {
+        padding: 5px 10px;
+    }
+
+    #config-btn {
+        width: 3vh;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up)  */
+@media (min-width: 1200px) {
+    #config-container {
+        top: 5vh;
+        right: 0.5vw;
+        width: 230px;
+    }
+
+    .list-item {
+        padding: 5px 10px;
+    }
+
+    #config-btn {
+        width: 3vh;
+    }
 }

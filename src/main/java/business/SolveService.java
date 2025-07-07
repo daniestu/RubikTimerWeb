@@ -29,6 +29,11 @@ public class SolveService {
 		return solveDao.getById(id_tiempo);
 	}
 
+	public Solve getLastSolveBySesion(Sesion sesion) throws SQLException {
+		SolveDao solveDao = new SolveDao();
+		return solveDao.getLastSolveBySesion(sesion.getId());
+	}
+
 	public boolean eliminar(int id) {
 		SolveDao solveDao = new SolveDao();
 		return solveDao.delete(id);
