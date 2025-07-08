@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import business.UsuarioService;
 import models.Usuario;
+import utils.CoockieHandler;
 import utils.UserUtils;
 
 public class AuthenticationFilter implements Filter {
@@ -39,28 +40,16 @@ public class AuthenticationFilter implements Filter {
         HttpSession session = req.getSession(false);
         
         String url = req.getRequestURI();
+
+		System.out.println(url);
         
         boolean isAllowed = allowedPages.contains(url);
         
         if (!isAllowed) {
         	if (session == null || session.getAttribute("usuario") == null) {
-        		
-        		HttpServletRequest httpRequest = (HttpServletRequest) request;
-        		HttpServletResponse httpResponse = (HttpServletResponse) response;
-        		
-        		Cookie[] cookies = httpRequest.getCookies();
-        		String username = null;
-        		String password = null;
-        		if (cookies != null) {
-        		    for (Cookie cookie : cookies) {
-        		    	//System.out.println("dominio: " + cookie.getDomain() + ", nombre: " + cookie.getName() + ", Valor: " + cookie.getValue() + ", Path: " + cookie.getPath() + ", version: " + cookie.getVersion() + ", Max age: " + cookie.getMaxAge() + ", Comment: " + cookie.getComment());
-        		        if (cookie.getName().equals("RubikTimerUsername")) {
-        		            username = cookie.getValue();
-        		        } else if (cookie.getName().equals("RubikTimerPassword")) {
-        		            password = cookie.getValue();
-        		        }
-        		    }
-        		}
+
+				String username = CoockieHandler.findCookie(req, res, "RubikTimerUsername");
+				String password = CoockieHandler.findCookie(req, res, "RubikTimerPassword");
         		
         		if (username != null && password != null) {
 					
@@ -71,7 +60,7 @@ public class AuthenticationFilter implements Filter {
         	        	usuario = usuarioService.verificarUsuario(username, UserUtils.encryptPassword(password));
         	        	
         	        	if (usuario != null && usuario.getIdUsuario() != null) {
-        	    			httpRequest.getSession().setAttribute("usuario", usuario);
+        	    			req.getSession().setAttribute("usuario", usuario);
         	            	chain.doFilter(request, response);
         	    		}else {
         	    			res.sendRedirect("/rubikTimerWeb/user/login");
@@ -104,6 +93,9 @@ public class AuthenticationFilter implements Filter {
 		allowedPages.add("/rubikTimerWeb/user/checkAuthentication");
 		allowedPages.add("/rubikTimerWeb/user/forgotPassword");
 		allowedPages.add("/rubikTimerWeb/user/resetPassword");
+		allowedPages.add("/rubikTimerWeb/bootstrap/css/bootstrap.min.css");
+		allowedPages.add("/rubikTimerWeb/bootstrap/js/bootstrap.bundle.js");
+		allowedPages.add("/rubikTimerWeb/images/logo-2.png");
 	}
 
 }

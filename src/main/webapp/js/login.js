@@ -1,9 +1,13 @@
 function autocompletarLogin() {
 	const username = getCookie('RubikTimerUsername');
 	const password = getCookie('RubikTimerPassword');
-	
-	document.getElementById("username").value = username;
-	document.getElementById("password").value = password;
+
+	if (username && password) {
+        document.getElementById("username").value = username;
+        document.getElementById("password").value = password;
+
+        document.getElementById("rememberMe").checked = true;
+    }
 }
 
 function getCookie(name) {
