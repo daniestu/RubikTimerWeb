@@ -12,6 +12,7 @@ import business.TokenService;
 import business.UsuarioService;
 import models.Token;
 import models.Usuario;
+import utils.CoockieHandler;
 import utils.TokenUtils;
 import utils.UserUtils;
 
@@ -35,6 +36,9 @@ public class UserController extends HttpServlet {
 		    if (session != null) {
 		        session.invalidate();
 		    }
+
+			CoockieHandler.deleteCookie(request, response, "RubikTimerUsername");
+			CoockieHandler.deleteCookie(request, response, "RubikTimerPassword");
 		    
 		    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		    response.setHeader("Pragma", "no-cache");
@@ -76,6 +80,8 @@ public class UserController extends HttpServlet {
         String password = request.getParameter("password");
         String passwordConfirmation = request.getParameter("confirm-password");
         String correo = request.getParameter("correo");
+		String rememberMe = request.getParameter("rememberMe");
+		boolean rememberMeBoolean = rememberMe != null;
         
         Usuario usuario;
         UsuarioService usuarioService = new UsuarioService();
@@ -95,20 +101,11 @@ public class UserController extends HttpServlet {
 	    			request.getRequestDispatcher("../login.jsp").forward(request, response);
 	    		}else {
 	    			request.getSession().setAttribute("usuario", usuario);
-	    			
-	    			Cookie usernameCookie = new Cookie("RubikTimerUsername", username);
-	            	usernameCookie.setMaxAge(7 * 24 * 60 * 60);
-	            	usernameCookie.setComment("user to rubikTimerWeb");
-	            	usernameCookie.setPath("/");
-	            	//usernameCookie.setDomain("localhost:8080");
-	            	response.addCookie(usernameCookie);
 
-	            	Cookie passwordCookie = new Cookie("RubikTimerPassword", password);
-	            	passwordCookie.setMaxAge(7 * 24 * 60 * 60);
-	            	passwordCookie.setComment("password to rubikTimerWeb");
-	            	passwordCookie.setPath("/");
-	            	//passwordCookie.setDomain("localhost:8080");
-	            	response.addCookie(passwordCookie);
+					if (rememberMeBoolean) {
+						CoockieHandler.addCoockie(response, "RubikTimerUsername", username, "user to rubikTimerWeb");
+						CoockieHandler.addCoockie(response, "RubikTimerPassword", password, "password to rubikTimerWeb");
+					}
 	            	
 	            	response.sendRedirect("../");
 	    		}

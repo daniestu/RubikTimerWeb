@@ -1,43 +1,70 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="utils.MessageUtil" %>
 <%@ page import="java.util.Locale" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <jsp:include page="head.jsp" />
-    <link rel="stylesheet" type="text/css" href="../css/loginStyles.css">
-  </head>
-  <body>
-  	<%
-  		String token = (String) request.getAttribute("token");
-  		boolean caducado = (boolean) request.getAttribute("caducado");
-  	%>
-    <div class="login-container">
-      <%if (!caducado) { %>
-      <h1><%= MessageUtil.getMessage(new Locale("es", "ES"), "title.restablecimiento_contrasena")%></h1>
-      <form action="resetPassword" method="post">
-      	<input type="hidden" name="token" value="<%= token %>"/>
-        <label for="password"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.nueva_contrasena")%>:</label>
-        <input type="password" name="password" required>
-        <label for="confirm-password"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.confirm_contrasena")%>:</label>
-        <input type="password" name="confirm-password" required>
-        <input type="submit" value="<%= MessageUtil.getMessage(new Locale("es", "ES"), "label.restablecer_contrasena")%>">
-        <span style="color:#B00C0C">
-			<%
-				if(request.getAttribute("error") != null){
-					out.print(request.getAttribute("error"));
-				}
-			%>
-		</span>
-      </form>
-      <%}else { %>
-      <h1><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.enlace_caducado")%></h1>
-      <%}%>
-      <p><a href="login"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.volver_formulario_login")%></a></p>
-      <% if (request.getAttribute("confirmation") != null) { %>
-      <p id="confirmation"><%= MessageUtil.getMessage(new Locale("es", "ES"), "confirm.contrasena_restablecida")%></p>
-      <%} %>
-    </div>
-  </body>
+<head>
+	<jsp:include page="head.jsp" />
+	<script src="../js/login.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/loginStyles.css">
+</head>
+<body>
+	<section class="py-3 py-md-5">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+					<div class="card border border-light-subtle rounded-3 shadow">
+						<div class="card-body p-3 p-md-4 p-xl-5">
+							<div class="text-center mb-3">
+								<img src="../images/logo-2.png" alt="DER Timer logo" width="99.75" height="57">
+							</div>
+							<h2 class="fs-6 fw-normal text-center text-secondary mb-4"><%= MessageUtil.getMessage(new Locale("es", "ES"), "title.restablecimiento_contrasena") %></h2>
+                            <c:choose>
+                                <c:when test="${not empty confirmation}">
+                                    <div class="text-success text-center m-auto"><p><%= MessageUtil.getMessage(new Locale("es", "ES"), "confirm.contrasena_restablecida")%></p></div>
+                                </c:when>
+                                <c:when test="${caducado}">
+                                    <div class="text-danger fs-5 d-flex text-center m-auto"><p class="m-auto"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.enlace_caducado")%></p></div>
+                                </c:when>
+                                <c:otherwise>
+                                    <form action="resetPassword" method="post">
+                                        <input type="hidden" name="token" value="${token}">
+                                        <div class="row gy-2 overflow-hidden">
+                                            <div class="col-12">
+                                                <div class="form-floating mb-3">
+                                                    <input type="password" class="form-control" name="password" id="password" placeholder="<%= MessageUtil.getMessage(new Locale("es", "ES"), "label.nueva_contrasena")%>" required>
+                                                    <label for="password" class="form-label"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.nueva_contrasena")%></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating mb-3">
+                                                    <input type="password" class="form-control" name="confirm-password" id="confirm-password" placeholder="<%= MessageUtil.getMessage(new Locale("es", "ES"), "label.confirm_contrasena")%>" required>
+                                                    <label for="confirm-password" class="form-label"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.confirm_contrasena")%></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="d-grid my-3">
+                                                    <button class="btn btn-success btn-lg" type="submit"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.restablecer_contrasena")%></button>
+                                                </div>
+                                                <c:if test="${not empty error}">
+                                                    <div class="error w-100 text-center m-auto">${error}</div>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </c:otherwise>
+                            </c:choose>
+                            <div class="mt-2 m-auto back-link">
+                                <a href="login" class="link-success text-underline"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.volver_formulario_login")%></a>
+                            </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
 </html>
