@@ -290,37 +290,37 @@
         left: 50%;
         bottom: 10px;
         transform: translateX(-50%);
-        width: 144px;
-        height:112px;
+        width: 112px;
+        height:86px;
     }
 
     .layout-container {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
     }
 
     #u-container {
         top: 5px;
-        left: 40px;
+        left: 31px;
     }
     #l-container {
-        top: 40px;
+        top: 31px;
         left: 5px;
     }
     #f-container {
-        top: 40px;
-        left: 40px;
+        top: 31px;
+        left: 31px;
     }
     #r-container {
-        top: 40px;
-        left: 75px;
+        top: 31px;
+        left: 57px;
     }
     #b-container {
-        top: 40px;
-        left: 111px;
+        top: 31px;
+        left: 83px;
     }
     #d-container {
-        top: 75px;
-        left: 40px;
+        top: 57px;
+        left: 31px;
     }
 }
