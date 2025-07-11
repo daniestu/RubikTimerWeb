@@ -24,7 +24,7 @@ $(document).ready(function() {
     function toggleConfigContainer() {
         configContainer.toggle();
         if (configContainer.is(":visible")) {
-            configBtn.css("background-color", "#4A6572");
+            configBtn.css("background-color", window.config.colorTerciario);
         } else {
             configBtn.removeAttr("style");
         }

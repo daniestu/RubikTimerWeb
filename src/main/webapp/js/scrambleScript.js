@@ -9,7 +9,7 @@ function generateScramble() {
 			historialScrambles.push(scramble);
 			
 			if(historialScrambles.length > 1) {
-				$('#previus-icon').attr('src', 'images/previus.png');
+				$('#previus-icon').attr('src', window.config.imagePrevius);
 				$("#previus-scramble").removeClass("list-item-disabled");
 				$("#previus-scramble").addClass("list-item");
 			}
@@ -38,7 +38,7 @@ function scramblePersonalizado(scramble) {
 		establecerCubo(scramble);
 		
 		if(historialScrambles.length > 1) {
-			$('#previus-icon').attr('src', 'images/previus.png');
+			$('#previus-icon').attr('src', window.config.imagePrevius);
 			$("#previus-scramble").removeClass("list-item-disabled");
 			$("#previus-scramble").addClass("list-item");
 		}

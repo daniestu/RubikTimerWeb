@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import dao.UsuarioDao;
+import models.Conf;
 import models.Usuario;
+import utils.UserUtils;
 
 public class UsuarioService {
 
@@ -54,4 +56,17 @@ public class UsuarioService {
 		UsuarioDao usuarioDao = new UsuarioDao();
 		return usuarioDao.restablecerContraseña(usuarioId, password);
 	}
+
+	public Conf getConfiguracionUsuario(Usuario usuario) throws SQLException {
+		if (usuario == null) {
+            return UserUtils.getDefaultConf();
+		}
+		UsuarioDao usuarioDao = new UsuarioDao();
+		return usuarioDao.getConfiguracionUsuario(usuario);
+	}
+
+    public boolean actualizarConfiguracionUsuario(Usuario usuario, Conf conf) {
+		UsuarioDao usuarioDao = new UsuarioDao();
+		return usuarioDao.actualizarConfiguracionUsuario(usuario, conf);
+    }
 }

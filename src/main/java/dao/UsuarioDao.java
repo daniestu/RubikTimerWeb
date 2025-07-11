@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Properties;
 
 import dao.contracts.Persistencia;
+import models.Conf;
 import models.Usuario;
 import utils.AccesoProperties;
 
@@ -161,5 +162,57 @@ public class UsuarioDao implements Persistencia<Usuario>{
         
 		return true;
 	}
-	
+
+	public Conf getConfiguracionUsuario(Usuario usuario) throws SQLException {
+		AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
+
+		Conf conf = null;
+
+		String sql = "SELECT conf_tema, conf_idioma, conf_ocultar_elementos, conf_ocultar_visualizacion, conf_pulsacion_larga, conf_cronometro_raton, conf_tiempo_inspeccion, conf_segundos_inspeccion FROM usuario WHERE id = ?";
+		try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+			 PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, usuario.getIdUsuario());
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				conf = new Conf(rs.getInt("conf_tema"), rs.getInt("conf_idioma"),
+						rs.getInt("conf_ocultar_elementos"), rs.getInt("conf_ocultar_visualizacion"),
+						rs.getInt("conf_pulsacion_larga"), rs.getInt("conf_cronometro_raton"),
+						rs.getInt("conf_tiempo_inspeccion"), rs.getInt("conf_segundos_inspeccion"));
+			}
+			rs.close();
+		}
+
+		return conf;
+	}
+
+	public boolean actualizarConfiguracionUsuario(Usuario usuario, Conf conf) {
+		String sql = "UPDATE usuario SET conf_tema = ?, conf_idioma = ?, conf_ocultar_elementos = ?, " +
+				"conf_ocultar_visualizacion = ?, conf_pulsacion_larga = ?, conf_cronometro_raton = ?, " +
+				"conf_tiempo_inspeccion = ?, conf_segundos_inspeccion = ? WHERE id = ?";
+
+		AccesoProperties accesoBBDD = new AccesoProperties();
+		Properties prop = accesoBBDD.cargarFicheroBBDD();
+
+		try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+			 PreparedStatement statement = connection.prepareStatement(sql)) {
+
+			statement.setInt(1, conf.getTema());
+			statement.setInt(2, conf.getIdioma());
+			statement.setInt(3, conf.getOcultarElementos());
+			statement.setInt(4, conf.getOcultarVisualizacion());
+			statement.setInt(5, conf.getPulsacionLarga());
+			statement.setInt(6, conf.getCronometroRaton());
+			statement.setInt(7, conf.getTiempoInspeccion());
+			statement.setInt(8, conf.getSegundosInspeccion());
+			statement.setInt(9, usuario.getIdUsuario());
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
+	}
 }

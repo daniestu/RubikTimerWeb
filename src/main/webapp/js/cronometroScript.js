@@ -85,7 +85,7 @@ document.body.onkeyup = function(e) {
 		}
 		spacePressedForOneSecond = false;
 		presionando_espacio = false;
-		document.getElementById("cronometro").style.color = "white";
+		document.getElementById("cronometro").style.color = window.config.colorTexto;
 	}
 }
 
@@ -176,7 +176,7 @@ document.addEventListener('touchmove', function(e) {
             presionando_espacio = false;
             spacePressedForOneSecond = false;
             clearInterval(intervalo_manteniendo_espacio);
-            document.getElementById("cronometro").style.color = "white";
+            document.getElementById("cronometro").style.color = window.config.colorTexto;
             touchStartX = null;
             touchStartY = null;
         }
@@ -199,7 +199,7 @@ document.addEventListener('touchend', function(e) {
         }
         spacePressedForOneSecond = false;
         presionando_espacio = false;
-        document.getElementById("cronometro").style.color = "white";
+        document.getElementById("cronometro").style.color = window.config.colorTexto;
 
         // Condicional para preventDefault basado en el desplazamiento
         if (touchStartX !== null && touchStartY !== null) {

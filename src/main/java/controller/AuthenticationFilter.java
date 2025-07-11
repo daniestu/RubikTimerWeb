@@ -40,8 +40,6 @@ public class AuthenticationFilter implements Filter {
         HttpSession session = req.getSession(false);
         
         String url = req.getRequestURI();
-
-		System.out.println(url);
         
         boolean isAllowed = allowedPages.contains(url);
         

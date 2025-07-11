@@ -4,7 +4,6 @@
 	left: 0;
 	height: 100%;
 	width: 24vh;
-	background-color: #1c2833;
 	padding: 10px;
 	box-sizing: border-box;
 	text-align: center;
@@ -31,10 +30,8 @@
 }
 
 #sesion_select {
-	background-color: #4A6572;
 	border: none;
 	border-radius: 5px;
-	color: white;
 	font-size: 1.7vh;
 	padding: 1%;
 	margin: 0 auto;
@@ -102,14 +99,12 @@
 
 .tablaTiempos th {
 	text-align: center;
-	color: white;
 	font-weight: bold;
 	border: 1px solid #484747;
 }
 
 .tablaTiempos-tiempo:hover {
 	cursor: pointer;
-	background-color: #4A6572;
 }
 
 .toggle-box {
@@ -118,13 +113,9 @@
     left: 0;
     height: 85px;
     transform: translateY(-50%);
-    background-color: #1c2833;
-    /*border: 4px double #2c3e50;*/
     border-style: double;
     border-width: 4px;
-    border-color: #2c3e50;
     border-left: none;
-    color: white;
     padding: 5px;
     cursor: pointer;
     display: flex;
@@ -139,7 +130,6 @@
     width: 215px;
     height: 100%;
     text-align: center;
-    background-color: #1c2833;
     box-shadow: 2px 0 5px rgba(0,0,0,0.3);
     transition: left 0.5s ease;
     padding: 10px;

@@ -1,3 +1,13 @@
+console.log("=== CONFIGURACIÓN RECIBIDA DESDE BACKEND ===");
+console.log("Tema:", window.config.tema);
+console.log("Idioma:", window.config.idioma);
+console.log("Ocultar Elementos:", window.config.ocultarElementos);
+console.log("Ocultar Visualización:", window.config.ocultarVisualizacion);
+console.log("Pulsación Larga:", window.config.pulsacionLarga);
+console.log("Cronómetro Ratón:", window.config.cronometroRaton);
+console.log("Tiempo de Inspección:", window.config.tiempoInspeccion);
+console.log("Segundos de Inspección:", window.config.segundosInspeccion);
+console.log("=============================================");
 var originalSelectedOption;
 let isOpen = false;
 
@@ -244,7 +254,7 @@ function getTiemposSesion(sesion) {
 				window.location.href = "./login.jsp";
 			}else {
 				
-				$('#export-icon').attr('src', (json.length != 0) ? 'images/export.png' : 'images/export-disabled.png');
+				$('#export-icon').attr('src', (json.length != 0) ? window.config.imageExport : 'images/export-disabled.png');
 				$("#export-solves").removeClass((json.length != 0) ? "list-item-disabled" : "list-item");
 				$("#export-solves").addClass((json.length != 0) ? "list-item" : "list-item-disabled");
 				

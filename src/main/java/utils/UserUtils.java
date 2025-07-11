@@ -13,6 +13,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import business.TokenService;
+import models.Conf;
 import models.Token;
 import models.Usuario;
 
@@ -146,4 +147,8 @@ public class UserUtils {
 			+ "    </div>\r\n"
 			+ "</body>\r\n"
 			+ "</html>";
+
+    public static Conf getDefaultConf() {
+		return new Conf(1, 1, 1, 0, 1 ,0 ,0, 0);
+    }
 }

@@ -8,7 +8,15 @@ CREATE TABLE IF NOT EXISTS usuario (
   id INT AUTO_INCREMENT PRIMARY KEY,
   usuario VARCHAR(50) NOT NULL,
   contrasena VARCHAR(255) NOT NULL,
-  correo VARCHAR(255) DEFAULT NULL
+  correo VARCHAR(255) DEFAULT NULL,
+  conf_tema INT DEFAULT 1,
+  conf_idioma INT DEFAULT 1,
+  conf_ocultar_elementos INT DEFAULT 1,
+  conf_ocultar_visualizacion INT DEFAULT 0,
+  conf_pulsacion_larga INT DEFAULT 1,
+  conf_cronometro_raton INT DEFAULT 0,
+  conf_tiempo_inspeccion INT DEFAULT 0,
+  conf_segundos_inspeccion INT DEFAULT 0
 );
 
 -- Tabla 'sesion'

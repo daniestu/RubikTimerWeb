@@ -3,12 +3,34 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="utils.MessageUtil" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="models.Conf" %>
+<%@ page import="models.TemaConfig" %>
 
+<%
+    Conf conf = (Conf) request.getAttribute("conf");
+    TemaConfig temaConfig = (TemaConfig) request.getAttribute("temaConfig");
+%>
 <!DOCTYPE html>
 <html>
   <head>
-    <jsp:include page="head.jsp" />
+    <jsp:include page="head.jsp"/>
     <meta charset="UTF-8">
+    <script type="text/javascript">
+        window.config = {
+            tema: <%= conf.getTema() %>,
+            idioma: <%= conf.getIdioma() %>,
+            ocultarElementos: <%= conf.getOcultarElementos() %>,
+            ocultarVisualizacion: <%= conf.getOcultarVisualizacion() %>,
+            pulsacionLarga: <%= conf.getPulsacionLarga() %>,
+            cronometroRaton: <%= conf.getCronometroRaton() %>,
+            tiempoInspeccion: <%= conf.getTiempoInspeccion() %>,
+            segundosInspeccion: <%= conf.getSegundosInspeccion() %>,
+            colorTexto: "<%= temaConfig.getColorTextoJS() %>",
+            colorTerciario: "<%= temaConfig.getColorTerciarioJS() %>",
+            imageExport: "<%= temaConfig.getImageExport() %>",
+            imagePrevius: "<%= temaConfig.getImagePrevius() %>"
+        };
+    </script>
     <script src="js/scrambleScript.js" charset="UTF-8"></script>
     <script src="js/sesionScript.js" charset="UTF-8"></script>
     <script src="js/configuracionScript.js" charset="UTF-8"></script>
@@ -18,6 +40,43 @@
     <link rel="stylesheet" type="text/css" href="css/configuracionStyles.css">
     <link rel="stylesheet" type="text/css" href="css/modalStyles.css">
     <link rel="stylesheet" type="text/css" href="css/previewStyles.css">
+    <style>
+        body {
+            background-color: var(<%=temaConfig.getColorPrimario()%>);
+            color: var(<%=temaConfig.getColorTexto()%>);
+        }
+
+        .aside-container, .side-panel, .scramble-container {
+            background-color: var(<%=temaConfig.getColorSecundario()%>);
+        }
+
+        #sesion_select, #sesion_select_mobile {
+            background-color: var(<%=temaConfig.getColorTerciario()%>);
+            color: var(<%=temaConfig.getColorTexto()%>);
+        }
+
+        .tablaTiempos th, .list-item, .modal-content h2 {
+            color: var(<%= temaConfig.getColorTexto() %>);
+        }
+
+        .toggle-box {
+            background-color: var(<%= temaConfig.getColorSecundario() %>);
+            color: var(<%= temaConfig.getColorTexto() %>);
+            border-color: var(<%= temaConfig.getColorPrimario() %>);
+        }
+
+        #config-btn:hover, #config-container, .list-item-disabled:hover, .modal-content, .modal-content-large, .tablaTiempos-tiempo:hover {
+        	background-color: var(<%=temaConfig.getColorTerciario()%>);
+        }
+
+        .list-item:hover {
+            background-color: var(<%=temaConfig.getColorCuaternario()%>);
+        }
+
+        #avgTiempos-container {
+            background-color: var(<%=temaConfig.getColorDisabled()%>);
+        }
+    </style>
   </head>
   <body>
     <div class="scramble-container" id="scramble-container">
@@ -30,19 +89,19 @@
 
     <jsp:include page="modal.jsp" />
 
-	<img id="config-btn" src="images/config-icon.png"/>
+	<img id="config-btn" src="<%=temaConfig.getImageConfigIcon()%>"/>
 	<div id="config-container" style="display:none;">
     	<ul id="config-menu">
-    		<li id="custom-scramble" class="list-item"><img class="config-icon" src="images/personalizar.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.mezcla_personalizada")%></li>
+    		<li id="custom-scramble" class="list-item"><img class="config-icon" src="<%=temaConfig.getImagePersonalizar()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.mezcla_personalizada")%></li>
     		<li id="previus-scramble" class="list-item-disabled"><img id="previus-icon" class="config-icon" src="images/previus-disabled.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.mezcla_anterior")%></li>
-    		<li id="next-scramble" class="list-item"><img class="config-icon" src="images/next.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.mezcla_siguiente")%></li>
-    		<li id="add-solve" class="list-item"><img class="config-icon" src="images/add.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.agregar_tiempo")%></li>
-    		<li id="session-info" class="list-item"><img class="config-icon" src="images/info.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.informacion_sesion")%></li>
+    		<li id="next-scramble" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageNext()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.mezcla_siguiente")%></li>
+    		<li id="add-solve" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageAdd()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.agregar_tiempo")%></li>
+    		<li id="session-info" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageInfo()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.informacion_sesion")%></li>
     		<li id="export-solves" class="list-item-disabled"><img id="export-icon" class="config-icon" src="images/export-disabled.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.exportar_tiempos")%></li>
-    		<li id="import-solves" class="list-item"><img class="config-icon" src="images/import.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.importar_tiempos")%></li>
-    		<li id="preferences" class="list-item"><img class="config-icon" src="images/preferences.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.configuracion")%></li>
+    		<li id="import-solves" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageImport()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.importar_tiempos")%></li>
+    		<li id="preferences" class="list-item"><img class="config-icon" src="<%=temaConfig.getImagePreferences()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.configuracion")%></li>
     		<hr>
-    		<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="images/logout.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.cerrar_sesion")%></li>
+    		<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="<%=temaConfig.getImageLogout()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.cerrar_sesion")%></li>
     	</ul>
     </div>
    	<jsp:include page="preview.jsp" />
@@ -158,13 +217,13 @@
 		<p id="cronometro">00:00:00</p>
 		<div id="mobile-icons-container" class="d-lg-none invisible">
             <button type="button" id="btn-mobile-delete" class="mobile-action-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
-                <img class="mobile-action-icon" src="images/delete-solve.png"/>
+                <img class="mobile-action-icon" src="<%=temaConfig.getImageDeleteSolve()%>"/>
             </button>
-            <button type="button" id="btn-mobile-dnf" class="mobile-action-btn" onclick="addDnfUltimoSolveMobile(1)"><img class="mobile-action-icon" src="images/dnf.png"/></button>
-            <button type="button" id="btn-mobile-mas_dos" class="mobile-action-btn" onclick="addMas2UltimoSolveMobile(1)"><img class="mobile-action-icon" src="images/mas_dos.png"/></button>
+            <button type="button" id="btn-mobile-dnf" class="mobile-action-btn" onclick="addDnfUltimoSolveMobile(1)"><img class="mobile-action-icon" src="<%=temaConfig.getImageDnf()%>"/></button>
+            <button type="button" id="btn-mobile-mas_dos" class="mobile-action-btn" onclick="addMas2UltimoSolveMobile(1)"><img class="mobile-action-icon" src="<%=temaConfig.getImageMasDos()%>"/></button>
 
-		    <button type="button" id="btn-mobile-restart_dnf" class="mobile-action-btn" onclick="addDnfUltimoSolveMobile(0)"><img class="mobile-action-icon" src="images/restart.png"/></button>
-		    <button type="button" id="btn-mobile-restart_mas_dos" class="mobile-action-btn" onclick="addMas2UltimoSolveMobile(0)"><img class="mobile-action-icon" src="images/restart.png"/></button>
+		    <button type="button" id="btn-mobile-restart_dnf" class="mobile-action-btn" onclick="addDnfUltimoSolveMobile(0)"><img class="mobile-action-icon" src="<%=temaConfig.getImageRestart()%>"/></button>
+		    <button type="button" id="btn-mobile-restart_mas_dos" class="mobile-action-btn" onclick="addMas2UltimoSolveMobile(0)"><img class="mobile-action-icon" src="<%=temaConfig.getImageRestart()%>"/></button>
 		</div>
     </div>
 

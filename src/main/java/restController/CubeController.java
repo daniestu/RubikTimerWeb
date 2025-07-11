@@ -45,7 +45,6 @@ public class CubeController extends HttpServlet {
 			break;
 		default:
 			break;
-
 		}
 	}
 

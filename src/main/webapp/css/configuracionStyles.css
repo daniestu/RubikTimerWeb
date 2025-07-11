@@ -9,17 +9,11 @@
 	z-index: 1000;
 }
 
-#config-btn:hover {
-	background-color: #4A6572;
-}
-
 #config-container {
 	position: fixed;
-	background-color: #4A6572;
 	border-radius: 12px;
 	z-index: 1;
 }
-
 
 #config-menu {
     list-style: none;
@@ -31,7 +25,6 @@
 }
 
 .list-item {
-  	color: white;
   	text-align: left;
   	padding-left: 10px;
   	padding: 5px 10px;
@@ -44,7 +37,6 @@
 }
 
 .list-item:hover {
-  background-color: #3F545E;
   cursor: pointer;
 }
 
@@ -75,7 +67,6 @@
 }
 
 .list-item-disabled:hover {
-	background-color: #4A6572;
 	cursor: default;
 }
 

@@ -1,5 +1,10 @@
 <%@ page import="utils.MessageUtil" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="models.Conf" %>
+
+<%
+    Conf conf = (Conf) request.getAttribute("conf");
+%>
 
 <%--MODALES --%>
 <div id="nuevaSesion-modal" class="modal">
@@ -168,49 +173,56 @@
 <div id="configModal" class="modal">
     <div id="configModal-content" class="modal-content modal-30">
         <h2><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.configuracion")%></h2>
-        <form id="configForm" class="configForm">
+        <form id="configForm" class="configForm" action="conf/save" method="post">
             <div class="form-group">
                 <label class="config-label" for="config-theme"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.tema")%></label>
                 <select class="form-control config-select" name="config-theme" id="config-theme">
-                    <option>Opcion 1</option>
-                    <option>Opcion 2</option>
-                    <option>Opcion 3</option>
+                    <option value="1" <% out.print((conf.getTema() == 1) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.tema1")%></option>
+                    <option value="2" <% out.print((conf.getTema() == 2) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.tema2")%></option>
                 </select>
             </div>
             <div class="form-group">
                 <label class="config-label" for="config-lang"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.idioma")%></label>
                 <select class="form-control config-select" name="config-lang" id="config-lang">
-                    <option>Opcion 1</option>
-                    <option>Opcion 2</option>
-                    <option>Opcion 3</option>
+                    <option value="1" <% out.print((conf.getIdioma() == 1) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ingles")%></option>
+                    <option value="2" <% out.print((conf.getIdioma() == 2) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.espanol")%></option>
+                    <option value="3" <% out.print((conf.getIdioma() == 3) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.frances")%></option>
+                    <option value="4" <% out.print((conf.getIdioma() == 4) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.aleman")%></option>
+                    <option value="5" <% out.print((conf.getIdioma() == 5) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.italiano")%></option>
+                    <option value="6" <% out.print((conf.getIdioma() == 6) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.portugues")%></option>
+                    <option value="7" <% out.print((conf.getIdioma() == 7) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.chino")%></option>
+                    <option value="8" <% out.print((conf.getIdioma() == 8) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.arabe")%></option>
+                    <option value="9" <% out.print((conf.getIdioma() == 9) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ruso")%></option>
+                    <option value="10" <% out.print((conf.getIdioma() == 10) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.japones")%></option>
+                    <option value="11" <% out.print((conf.getIdioma() == 11) ? "selected" : "");%>><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.coreano")%></option>
                 </select>
             </div>
             <div class="form-group">
-                <input class="config-check" type="checkbox" name="config-hide-elements" id="config-hide-elements"/>
+                <input class="config-check" type="checkbox" name="config-hide-elements" id="config-hide-elements" <% out.print((conf.getOcultarElementos() == 1) ? "checked" : "");%>/>
                 <label class="check-label" for="config-hide-elements"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ocultar_elementos")%></label>
             </div>
             <div class="form-group">
-                <input class="config-check" type="checkbox" name="config-hide-preview" id="config-hide-preview"/>
+                <input class="config-check" type="checkbox" name="config-hide-preview" id="config-hide-preview" <% out.print((conf.getOcultarVisualizacion() == 1) ? "checked" : "");%>/>
                 <label class="check-label" for="config-hide-preview"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ocultar_visualizacion")%></label>
             </div>
             <div class="form-group">
-                <input class="config-check" type="checkbox" name="config-long-pulse" id="config-long-pulse"/>
+                <input class="config-check" type="checkbox" name="config-long-pulse" id="config-long-pulse" <% out.print((conf.getPulsacionLarga() == 1) ? "checked" : "");%>/>
                 <label class="check-label" for="config-long-pulse"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.pulsacion_larga")%></label>
             </div>
             <div class="form-group">
-                <input class="config-check" type="checkbox" name="config-mouse-timer" id="config-mouse-timer"/>
+                <input class="config-check" type="checkbox" name="config-mouse-timer" id="config-mouse-timer" <% out.print((conf.getCronometroRaton() == 1) ? "checked" : "");%>/>
                 <label class="check-label" for="config-mouse-timer"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.cronometro_raton")%></label>
             </div>
             <div class="form-group">
-                <input class="config-check" type="checkbox" name="config-inspect-time" id="config-inspect-time"/>
+                <input class="config-check" type="checkbox" name="config-inspect-time" id="config-inspect-time" <% out.print((conf.getTiempoInspeccion() == 1) ? "checked" : "");%>/>
                 <label class="check-label" for="config-inspect-time"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.tiempo_inspeccion")%></label>
             </div>
             <div class="form-group">
                 <label class="config-label-large" for="config-inspect-sec"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.segundos_inspeccion")%></label>
-                <input type="number" class="config-number" name="config-inspect-sec" id="config-inspect-sec">
+                <input type="number" class="config-number" name="config-inspect-sec" id="config-inspect-sec" <% out.print((conf.getTiempoInspeccion() == 0) ? "disabled" : "value=\"conf.getSegundosInspeccion()\"");%>>
             </div>
             <div class="config-buttons">
-                <button type="button" class="btn btn-guardar config-btn mt-3"><%= MessageUtil.getMessage(new Locale("es", "ES"), "forms.aceptar")%></button>
+                <button type="submit" class="btn btn-guardar config-btn mt-3"><%= MessageUtil.getMessage(new Locale("es", "ES"), "forms.aceptar")%></button>
                 <button type="button" class="btn btn-guardar config-btn mt-3"><%= MessageUtil.getMessage(new Locale("es", "ES"), "forms.restablecer")%></button>
                 <button type="button" class="btn btn-guardar config-btn mt-3"><%= MessageUtil.getMessage(new Locale("es", "ES"), "forms.cancelar")%></button>
             </div>
