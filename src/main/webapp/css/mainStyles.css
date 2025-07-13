@@ -175,10 +175,6 @@ input[type="file"] {
 	#cronometro {
 		font-size: 7rem;
 	}
-
-	.cronometro-container {
-        margin-left: 24vh;
-    }
 }
 
 /* Extra large devices (large desktops, 1200px and up)  */
@@ -187,8 +183,4 @@ input[type="file"] {
 	#cronometro {
 		font-size: 9rem;
 	}
-
-	.cronometro-container {
-    	margin-left: 24vh;
-    }
 }

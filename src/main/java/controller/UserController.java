@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -26,9 +27,13 @@ public class UserController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String path = request.getPathInfo();
+		Locale locale;
 		
 		switch (path) {
 		case "/login":
+			locale = request.getLocale();
+			request.setAttribute("locale", locale);
+
 			request.getRequestDispatcher("../login.jsp").forward(request, response);
 			break;
 		case "/logout":
@@ -47,6 +52,9 @@ public class UserController extends HttpServlet {
 		    response.sendRedirect("login");
 			break;
 		case "/register":
+			locale = request.getLocale();
+			request.setAttribute("locale", locale);
+
 			request.getRequestDispatcher("../register.jsp").forward(request, response);
 			break;
 		case "/checkAuthentication":
@@ -58,9 +66,15 @@ public class UserController extends HttpServlet {
 	        
 			break;
 		case "/forgotPassword":
+			locale = request.getLocale();
+			request.setAttribute("locale", locale);
+
 			request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
 			break;
 		case "/resetPassword":
+			locale = request.getLocale();
+			request.setAttribute("locale", locale);
+
 			String token = request.getParameter("token");
 			request.setAttribute("token", token);
 			

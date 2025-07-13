@@ -46,6 +46,8 @@ public class LoadConfFilter implements Filter {
 
             TemaConfig config = TemaHelper.getConfig(conf.getTema());
             Locale locale = IdiomaHelper.getLocale(conf.getIdioma());
+            int idiomaNavegador = IdiomaHelper.getIdioma(request.getLocale());
+            request.setAttribute("idiomaNavegador", idiomaNavegador);
             request.setAttribute("locale", locale);
             request.setAttribute("temaConfig", config);
             request.setAttribute("conf", conf);

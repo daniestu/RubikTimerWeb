@@ -9,7 +9,9 @@
 <%
     Conf conf = (Conf) request.getAttribute("conf");
     TemaConfig temaConfig = (TemaConfig) request.getAttribute("temaConfig");
+    Locale locale = (Locale) request.getAttribute("locale");
 %>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -34,6 +36,7 @@
     <script src="js/scrambleScript.js" charset="UTF-8"></script>
     <script src="js/sesionScript.js" charset="UTF-8"></script>
     <script src="js/configuracionScript.js" charset="UTF-8"></script>
+    <script src="js/preferenciasScript.js" charset="UTF-8"></script>
     <link rel="stylesheet" type="text/css" href="css/mainStyles.css">
     <link rel="stylesheet" type="text/css" href="css/asideStyles.css">
     <link rel="stylesheet" type="text/css" href="css/scrambleStyles.css">
@@ -81,7 +84,7 @@
   <body>
     <div class="scramble-container" id="scramble-container">
         <div id="sesion_container_mobile">
-            <label id="sesion_label_mobile" class="mb-0" for="sesion_select_mobile"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.sesion")%>:</label>
+            <label id="sesion_label_mobile" class="mb-0" for="sesion_select_mobile"><%= MessageUtil.getMessage(locale, "label.sesion")%>:</label>
             <select id="sesion_select_mobile" onchange="sesionChanged(this.value)"></select>
         </div>
         <p id="scramble" onclick="generateScramble()"></p>
@@ -92,55 +95,57 @@
 	<img id="config-btn" src="<%=temaConfig.getImageConfigIcon()%>"/>
 	<div id="config-container" style="display:none;">
     	<ul id="config-menu">
-    		<li id="custom-scramble" class="list-item"><img class="config-icon" src="<%=temaConfig.getImagePersonalizar()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.mezcla_personalizada")%></li>
-    		<li id="previus-scramble" class="list-item-disabled"><img id="previus-icon" class="config-icon" src="images/previus-disabled.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.mezcla_anterior")%></li>
-    		<li id="next-scramble" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageNext()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.mezcla_siguiente")%></li>
-    		<li id="add-solve" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageAdd()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.agregar_tiempo")%></li>
-    		<li id="session-info" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageInfo()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.informacion_sesion")%></li>
-    		<li id="export-solves" class="list-item-disabled"><img id="export-icon" class="config-icon" src="images/export-disabled.png"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.exportar_tiempos")%></li>
-    		<li id="import-solves" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageImport()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.importar_tiempos")%></li>
-    		<li id="preferences" class="list-item"><img class="config-icon" src="<%=temaConfig.getImagePreferences()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.configuracion")%></li>
+    		<li id="custom-scramble" class="list-item"><img class="config-icon" src="<%=temaConfig.getImagePersonalizar()%>"/><%= MessageUtil.getMessage(locale, "option.mezcla_personalizada")%></li>
+    		<li id="previus-scramble" class="list-item-disabled"><img id="previus-icon" class="config-icon" src="images/previus-disabled.png"/><%= MessageUtil.getMessage(locale, "option.mezcla_anterior")%></li>
+    		<li id="next-scramble" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageNext()%>"/><%= MessageUtil.getMessage(locale, "option.mezcla_siguiente")%></li>
+    		<li id="add-solve" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageAdd()%>"/><%= MessageUtil.getMessage(locale, "option.agregar_tiempo")%></li>
+    		<li id="session-info" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageInfo()%>"/><%= MessageUtil.getMessage(locale, "option.informacion_sesion")%></li>
+    		<li id="export-solves" class="list-item-disabled"><img id="export-icon" class="config-icon" src="images/export-disabled.png"/><%= MessageUtil.getMessage(locale, "option.exportar_tiempos")%></li>
+    		<li id="import-solves" class="list-item"><img class="config-icon" src="<%=temaConfig.getImageImport()%>"/><%= MessageUtil.getMessage(locale, "option.importar_tiempos")%></li>
+    		<li id="preferences" class="list-item"><img class="config-icon" src="<%=temaConfig.getImagePreferences()%>"/><%= MessageUtil.getMessage(locale, "option.configuracion")%></li>
     		<hr>
-    		<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="<%=temaConfig.getImageLogout()%>"/><%= MessageUtil.getMessage(new Locale("es", "ES"), "option.cerrar_sesion")%></li>
+    		<li id="logout" class="list-item"><img id="logout-icon" class="config-icon" src="<%=temaConfig.getImageLogout()%>"/><%= MessageUtil.getMessage(locale, "option.cerrar_sesion")%></li>
     	</ul>
     </div>
-   	<jsp:include page="preview.jsp" />
-    <aside class="aside-container">
+    <% if (conf.getOcultarVisualizacion() != 1) { %>
+   	    <jsp:include page="preview.jsp" />
+   	<%}%>
+    <aside id="aside-container" class="aside-container">
     	<div id="logo_container" class="logo_container">
     		<img id="logo" class="logo" src="images/logo.png" alt="Rubik timer">
     	</div>
     	<div id="sesion_container">
-    		<label id="sesion_label" class="mb-0" for="sesion_select"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.sesion")%>:</label>
+    		<label id="sesion_label" class="mb-0" for="sesion_select"><%= MessageUtil.getMessage(locale, "label.sesion")%>:</label>
     		<select id="sesion_select" onchange="sesionChanged(this.value)"></select>
     	</div>
     	<div id="estadisticas_container" class="estadisticas_container">
     		<table id="tablaEstadisticas" class="tablaEstadisticas">
     			<tr>
-    				<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.total")%></th>
+    				<th><%= MessageUtil.getMessage(locale, "label.total")%></th>
     				<td id="total"></td>
     			</tr>
     			<tr>
-    				<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.mejor")%></th>
+    				<th><%= MessageUtil.getMessage(locale, "label.mejor")%></th>
     				<td id="mejor" class="solve"></td>
     			</tr>
     			<tr>
-    				<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.peor")%></th>
+    				<th><%= MessageUtil.getMessage(locale, "label.peor")%></th>
     				<td id="peor" class="solve"></td>
     			</tr>
     			<tr>
-    				<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao5")%></th>
+    				<th><%= MessageUtil.getMessage(locale, "label.ao5")%></th>
     				<td id="ao5" class="average"></td>
     			</tr>
     			<tr>
-    				<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao12")%></th>
+    				<th><%= MessageUtil.getMessage(locale, "label.ao12")%></th>
     				<td id="ao12" class="average"></td>
     			</tr>
     			<tr>
-    				<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao100")%></th>
+    				<th><%= MessageUtil.getMessage(locale, "label.ao100")%></th>
     				<td id="ao100" class="average"></td>
     			</tr>
     			<tr>
-    				<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.media")%></th>
+    				<th><%= MessageUtil.getMessage(locale, "label.media")%></th>
     				<td id="media"></td>
     			</tr>
     		</table>
@@ -149,8 +154,8 @@
     		<table id="tablaTiempos" class="tablaTiempos">
     			<thead>
     				<tr>
-    					<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.id")%></th>
-    					<th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.tiempo_mayus")%></th>
+    					<th><%= MessageUtil.getMessage(locale, "label.id")%></th>
+    					<th><%= MessageUtil.getMessage(locale, "label.tiempo_mayus")%></th>
     				</tr>
     			</thead>
     			<tbody>
@@ -170,31 +175,31 @@
         <div id="estadisticas_container_mobile_side" class="estadisticas_container">
             <table id="tablaEstadisticas_mobile" class="tablaEstadisticas">
                 <tr>
-                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.total")%></th>
+                    <th><%= MessageUtil.getMessage(locale, "label.total")%></th>
                     <td id="total_mobile_side"></td>
                 </tr>
                 <tr>
-                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.mejor")%></th>
+                    <th><%= MessageUtil.getMessage(locale, "label.mejor")%></th>
                     <td id="mejor_mobile_side" class="solve"></td>
                 </tr>
                 <tr>
-                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.peor")%></th>
+                    <th><%= MessageUtil.getMessage(locale, "label.peor")%></th>
                     <td id="peor_mobile_side" class="solve"></td>
                 </tr>
                 <tr>
-                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao5")%></th>
+                    <th><%= MessageUtil.getMessage(locale, "label.ao5")%></th>
                     <td id="ao5_mobile_side" class="average"></td>
                 </tr>
                 <tr>
-                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao12")%></th>
+                    <th><%= MessageUtil.getMessage(locale, "label.ao12")%></th>
                     <td id="ao12_mobile_side" class="average"></td>
                 </tr>
                 <tr>
-                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao100")%></th>
+                    <th><%= MessageUtil.getMessage(locale, "label.ao100")%></th>
                     <td id="ao100_mobile_side" class="average"></td>
                 </tr>
                 <tr>
-                    <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.media")%></th>
+                    <th><%= MessageUtil.getMessage(locale, "label.media")%></th>
                     <td id="media_mobile_side"></td>
                 </tr>
             </table>
@@ -203,8 +208,8 @@
             <table id="tablaTiempos_mobile" class="tablaTiempos">
                 <thead>
                     <tr>
-                        <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.id")%></th>
-                        <th><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.tiempo_mayus")%></th>
+                        <th><%= MessageUtil.getMessage(locale, "label.id")%></th>
+                        <th><%= MessageUtil.getMessage(locale, "label.tiempo_mayus")%></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -213,7 +218,7 @@
         </div>
     </div>
 
-    <div class="cronometro-container">
+    <div id="cronometro-container" class="cronometro-container">
 		<p id="cronometro">00:00:00</p>
 		<div id="mobile-icons-container" class="d-lg-none invisible">
             <button type="button" id="btn-mobile-delete" class="mobile-action-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
@@ -232,16 +237,16 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-0">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel"><%= MessageUtil.getMessage(new Locale("es", "ES"), "title.confirm_borrado")%></h5>
+                    <h5 class="modal-title" id="confirmDeleteModalLabel"><%= MessageUtil.getMessage(locale, "title.confirm_borrado")%></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <%= MessageUtil.getMessage(new Locale("es", "ES"), "confirm.solve_delete")%>
+                    <%= MessageUtil.getMessage(locale, "confirm.solve_delete")%>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= MessageUtil.getMessage(new Locale("es", "ES"), "forms.cancelar")%></button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteButton" onclick="borrarUltimoTiempoMobile()"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.confirm_borrado_button")%></button>
-                    <span id="delete-solve-mobile-modal-error" style="color:#B00C0C;" class="d-none"><%= MessageUtil.getMessage(new Locale("es", "ES"), "error.borrar_tiempo")%></span>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= MessageUtil.getMessage(locale, "forms.cancelar")%></button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton" onclick="borrarUltimoTiempoMobile()"><%= MessageUtil.getMessage(locale, "label.confirm_borrado_button")%></button>
+                    <span id="delete-solve-mobile-modal-error" style="color:#B00C0C;" class="d-none"><%= MessageUtil.getMessage(locale, "error.borrar_tiempo")%></span>
                 </div>
             </div>
         </div>
@@ -251,19 +256,19 @@
     	<div class="col-4">
     		<dl>
     			<div class="d-flex">
-    				<dt><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.desviacion")%>:</dt>
+    				<dt><%= MessageUtil.getMessage(locale, "label.desviacion")%>:</dt>
     				<dd><span id="desviacion_mobile"></span></dd>
     			</div>
     			<div class="d-flex">
-    				<dt><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.media")%>:</dt>
+    				<dt><%= MessageUtil.getMessage(locale, "label.media")%>:</dt>
     				<dd><span id="media_mobile"></span></dd>
     			</div>
     			<div class="d-flex">
-    				<dt><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.mejor")%>:</dt>
+    				<dt><%= MessageUtil.getMessage(locale, "label.mejor")%>:</dt>
     				<dd><span id="mejor_mobile"></span></dd>
     			</div>
     			<div class="d-flex">
-    				<dt><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.total")%>:</dt>
+    				<dt><%= MessageUtil.getMessage(locale, "label.total")%>:</dt>
     				<dd><span id="total_mobile"></span></dd>
     			</div>
     		</dl>
@@ -272,15 +277,15 @@
     	<div class="col-4 d-flex justify-content-end align-items-end">
     		<dl>
     			<div class="d-flex">
-    				<dt><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao5")%>:</dt>
+    				<dt><%= MessageUtil.getMessage(locale, "label.ao5")%>:</dt>
     				<dd><span id="ao5_mobile"></span></dd>
     			</div>
     			<div class="d-flex">
-    				<dt><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao12")%>:</dt>
+    				<dt><%= MessageUtil.getMessage(locale, "label.ao12")%>:</dt>
     				<dd><span id="ao12_mobile"></span></dd>
     			</div>
     			<div class="d-flex">
-    				<dt><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.ao100")%>:</dt>
+    				<dt><%= MessageUtil.getMessage(locale, "label.ao100")%>:</dt>
     				<dd><span id="ao100_mobile"></span></dd>
     			</div>
     		</dl>

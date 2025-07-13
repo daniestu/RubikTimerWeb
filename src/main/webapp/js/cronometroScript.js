@@ -1,14 +1,18 @@
 var intervalo_cronometro;
+var intervalo_inspeccion;
 var intervalo_manteniendo_espacio;
 
 var tiempo_inicial_cronometro;
 var tiempo_actual_cronometro;
+var tiempo_inicial_inspeccion;
+var tiempo_actual_inspeccion;
 var tiempo_inicial_espacio;
 var tiempo_actual_espacio;
 
 var cronometrando = false;
+var inspeccionando = false;
 var detenido = false;
-var spacePressedForOneSecond = false;
+var spacePressedForOneSecond = !(window.config.pulsacionLarga == 1);
 var presionando_espacio = false;
 
 const elementosNoPermitidos = ['aside', 'nav', 'section', 'footer', 'ol', 'ul', 'li', 'a', 'i', 'img', 'input', 'textarea', 'button', 'select', 'optgroup', 'option'];
@@ -21,6 +25,11 @@ const umbralDeslizamiento = 20;
 function iniciarCronometro() {
 	tiempo_inicial_cronometro = new Date().getTime();
 	intervalo_cronometro = setInterval(actualizarCronometro, 10);
+}
+
+function iniciarInspeccion() {
+	tiempo_inicial_inspeccion = new Date().getTime();
+	intervalo_inspeccion = setInterval(actualizarInspeccion, 100);
 }
 
 function detenerCronometro() {
@@ -36,9 +45,18 @@ function detenerCronometro() {
 	}
 }
 
+function detenerInspeccion() {
+	clearInterval(intervalo_inspeccion);
+}
+
 function actualizarCronometro() {
 	tiempo_actual_cronometro = new Date().getTime() - tiempo_inicial_cronometro;
 	actualizarTextoCronometro(tiempo_actual_cronometro);
+}
+
+function actualizarInspeccion() {
+	tiempo_actual_inspeccion = new Date().getTime() - tiempo_inicial_inspeccion;
+	actualizarTextoInspeccion(tiempo_actual_inspeccion);
 }
 
 function actualizarTextoCronometro(tiempoTranscurrido) {
@@ -51,6 +69,27 @@ function actualizarTextoCronometro(tiempoTranscurrido) {
 	const textoCronometro = `${pad(minutos, 2)}:${pad(segundos, 2)}:${pad(milisegundos, 2)}`;
 	const cronometro = document.getElementById('cronometro');
 	cronometro.textContent = textoCronometro;
+}
+
+function actualizarTextoInspeccion(tiempoTranscurrido) {
+    let segundosInspeccion = window.config.segundosInspeccion;
+    let minutos = Math.floor(tiempoTranscurrido / (60 * 1000));
+    let segundos = Math.floor((tiempoTranscurrido - (minutos * 60 * 1000)) / 1000);
+    SegundosAMostrar = segundosInspeccion - segundos;
+
+    const cronometro = document.getElementById('cronometro');
+    cronometro.textContent = SegundosAMostrar;
+
+    if (SegundosAMostrar <1) {
+        detenerInspeccion();
+        iniciarCronometro();
+        cronometrando = true;
+        detenido = false;
+        inspeccionando = false;
+        spacePressedForOneSecond = !(window.config.pulsacionLarga == 1);
+        presionando_espacio = false;
+        document.getElementById("cronometro").style.color = window.config.colorTexto;
+    }
 }
 
 function pad(numero, longitud) {
@@ -74,37 +113,83 @@ function guardarTiempo(tiempo, scramble) {
 
 document.body.onkeyup = function(e) {
 	if (e.code === "Space") {
-		if (!cronometrando && !detenido && spacePressedForOneSecond) {
-			iniciarCronometro();
-			cronometrando = true;
-			detenido = false;
-		} else if (!cronometrando && detenido) {
-			detenido = false;
-		} else if (!spacePressedForOneSecond) {
-			clearInterval(intervalo_manteniendo_espacio);
-		}
-		spacePressedForOneSecond = false;
-		presionando_espacio = false;
-		document.getElementById("cronometro").style.color = window.config.colorTexto;
+		keyUp();
 	}
 }
 
 document.body.onkeydown = function(e) {
 	if (e.code === "Space") {
-		if (!presionando_espacio) {
-			presionando_espacio = true;
-			if (cronometrando) {
-				detenerCronometro();
-				cronometrando = false;
-				detenido = true;
-			} else {
-				tiempo_inicial_espacio = new Date().getTime();
-				intervalo_manteniendo_espacio = setInterval(validar_manteniendo_espacio, 100);
-				document.getElementById("cronometro").textContent = "00:00:00";
-				document.getElementById("cronometro").style.color = "red";
-			}
-		}
+		keyDown();
 	}
+}
+
+if (window.config.cronometroRaton == 1) {
+    document.addEventListener("mouseup", function (e) {
+        if (e.button === 0 && e.target.closest("#cronometro-container")) {
+            keyUp();
+        }
+    });
+
+    document.addEventListener("mousedown", function (e) {
+        if (e.button === 0 && e.target.closest("#cronometro-container")) {
+            keyDown();
+        }
+    });
+}
+
+function keyUp() {
+    if (!cronometrando && !detenido && spacePressedForOneSecond) {
+        if (window.config.tiempoInspeccion == 0 || inspeccionando) {
+            detenerInspeccion();
+            iniciarCronometro();
+            cronometrando = true;
+            detenido = false;
+            inspeccionando = false;
+        }else {
+            iniciarInspeccion();
+            inspeccionando = true;
+        }
+    } else if (!cronometrando && detenido) {
+        detenido = false;
+    } else if (!spacePressedForOneSecond) {
+        clearInterval(intervalo_manteniendo_espacio);
+        if (window.config.ocultarElementos == 1) {
+            ocultarElementos(false);
+        }
+    }
+
+    if (!inspeccionando) {
+        spacePressedForOneSecond = !(window.config.pulsacionLarga == 1);
+        presionando_espacio = false;
+        document.getElementById("cronometro").style.color = window.config.colorTexto;
+    }else {
+        document.getElementById("cronometro").style.color = "green";
+    }
+
+}
+
+function keyDown() {
+    if (!presionando_espacio) {
+        presionando_espacio = true;
+        if (cronometrando) {
+            detenerCronometro();
+            cronometrando = false;
+            detenido = true;
+            if (window.config.ocultarElementos == 1) {
+                ocultarElementos(false);
+            }
+        } else {
+            tiempo_inicial_espacio = new Date().getTime();
+            if (window.config.pulsacionLarga == 1) {
+                intervalo_manteniendo_espacio = setInterval(validar_manteniendo_espacio, 100);
+            }
+            document.getElementById("cronometro").textContent = "00:00:00";
+            document.getElementById("cronometro").style.color = (window.config.pulsacionLarga == 1) ? "red" : "green";
+            if (window.config.ocultarElementos == 1) {
+                ocultarElementos(true);
+            }
+        }
+    }
 }
 
 document.addEventListener('touchstart', function(e) {
@@ -144,11 +229,20 @@ document.addEventListener('touchstart', function(e) {
                 detenerCronometro();
                 cronometrando = false;
                 detenido = true;
+                if (window.config.ocultarElementos == 1) {
+                    ocultarElementos(false);
+                }
             } else {
                 tiempo_inicial_espacio = new Date().getTime();
-                intervalo_manteniendo_espacio = setInterval(validar_manteniendo_espacio, 100);
+                if (window.config.pulsacionLarga == 1) {
+                    intervalo_manteniendo_espacio = setInterval(validar_manteniendo_espacio, 100);
+                }
                 document.getElementById("cronometro").textContent = "00:00:00";
-                document.getElementById("cronometro").style.color = "red";
+                document.getElementById("cronometro").style.color = (window.config.pulsacionLarga == 1) ? "red" : "green";
+
+                if (window.config.ocultarElementos == 1) {
+                    ocultarElementos(true);
+                }
 
                 let mobileIconsContainer = document.getElementById("mobile-icons-container");
                 if (mobileIconsContainer) {
@@ -173,12 +267,20 @@ document.addEventListener('touchmove', function(e) {
         const deltaY = Math.abs(touchMoveY - touchStartY);
 
         if (deltaX > umbralDeslizamiento || deltaY > umbralDeslizamiento) {
-            presionando_espacio = false;
-            spacePressedForOneSecond = false;
-            clearInterval(intervalo_manteniendo_espacio);
-            document.getElementById("cronometro").style.color = window.config.colorTexto;
-            touchStartX = null;
-            touchStartY = null;
+            if (!inspeccionando) {
+                presionando_espacio = false;
+                if (window.config.pulsacionLarga == 1) {
+                    spacePressedForOneSecond = false;
+                    clearInterval(intervalo_manteniendo_espacio);
+                }
+                document.getElementById("cronometro").style.color = window.config.colorTexto;
+                touchStartX = null;
+                touchStartY = null;
+
+                if (window.config.ocultarElementos == 1) {
+                    ocultarElementos(false);
+                }
+            }
         }
     }
 }, { passive: true });
@@ -189,17 +291,33 @@ document.addEventListener('touchend', function(e) {
 
     if (permitido) {
         if (!cronometrando && !detenido && spacePressedForOneSecond) {
-            iniciarCronometro();
-            cronometrando = true;
-            detenido = false;
+            if (window.config.tiempoInspeccion == 0 || inspeccionando) {
+                detenerInspeccion();
+                iniciarCronometro();
+                cronometrando = true;
+                detenido = false;
+                inspeccionando = false;
+            }else {
+                iniciarInspeccion();
+                inspeccionando = true;
+            }
+
         } else if (!cronometrando && detenido) {
             detenido = false;
         } else if (!spacePressedForOneSecond) {
             clearInterval(intervalo_manteniendo_espacio);
+            if (window.config.ocultarElementos == 1) {
+                ocultarElementos(false);
+            }
         }
-        spacePressedForOneSecond = false;
-        presionando_espacio = false;
-        document.getElementById("cronometro").style.color = window.config.colorTexto;
+
+        if (!inspeccionando) {
+            spacePressedForOneSecond = !(window.config.pulsacionLarga == 1);
+            presionando_espacio = false;
+            document.getElementById("cronometro").style.color = window.config.colorTexto;
+        }else {
+            document.getElementById("cronometro").style.color = "green";
+        }
 
         // Condicional para preventDefault basado en el desplazamiento
         if (touchStartX !== null && touchStartY !== null) {
@@ -280,4 +398,26 @@ function verificarElementoPermitido(elemento) {
         }
     }
     return true;
+}
+
+function ocultarElementos(ocultar) {
+    if (ocultar) {
+        document.getElementById("aside-container").classList.add("d-none");
+        document.getElementById("scramble-container").classList.add("d-none");
+        document.getElementById("config-btn").classList.add("d-none");
+        document.getElementById("toggleBox").classList.add("d-none");
+        document.getElementById("estadisticas_container_mobile").classList.add("d-none");
+        if (window.config.ocultarVisualizacion != 1) {
+            document.getElementById("preview-container").classList.add("d-none");
+        }
+    }else {
+        document.getElementById("aside-container").classList.remove("d-none");
+        document.getElementById("scramble-container").classList.remove("d-none");
+        document.getElementById("config-btn").classList.remove("d-none");
+        document.getElementById("toggleBox").classList.remove("d-none");
+        document.getElementById("estadisticas_container_mobile").classList.remove("d-none");
+        if (window.config.ocultarVisualizacion != 1) {
+            document.getElementById("preview-container").classList.remove("d-none");
+        }
+    }
 }

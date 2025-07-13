@@ -16,7 +16,7 @@ public class MessageUtil {
     private static final Logger _log = LogManager.getLogger(MessageUtil.class);
 
     private static ResourceBundle getBundleForLocale(Locale locale) {
-        return ResourceBundle.getBundle("language", locale, new UTF8Control());
+        return ResourceBundle.getBundle("Language", locale, new UTF8Control());
     }
 
     public static String getFormattedMessage(Locale locale, String key, Object... params) {

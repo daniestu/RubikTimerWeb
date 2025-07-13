@@ -4,6 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%
+    Locale locale = (Locale) request.getAttribute("locale");
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,35 +25,35 @@
                                 <div class="text-center mb-3">
                                     <img src="../images/logo-2.png" alt="DER Timer logo" width="99.75" height="57">
                                 </div>
-                                <h2 class="fs-6 fw-normal text-center text-secondary mb-4"><%= MessageUtil.getMessage(new Locale("es", "ES"), "title.inicio_sesion")%></h2>
+                                <h2 class="fs-6 fw-normal text-center text-secondary mb-4"><%= MessageUtil.getMessage(locale, "title.inicio_sesion")%></h2>
                                 <form action="login" method="post">
                                     <div class="row gy-2 overflow-hidden">
                                         <div class="col-12">
                                             <div class="form-floating mb-3">
-                                                <input type="text" class="form-control" name="username" id="username" placeholder="<%= MessageUtil.getMessage(new Locale("es", "ES"), "label.username_title")%>" autocomplete="username" required>
-                                                <label for="username" class="form-label"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.usuario")%></label>
+                                                <input type="text" class="form-control" name="username" id="username" placeholder="<%= MessageUtil.getMessage(locale, "label.username_title")%>" autocomplete="username" required>
+                                                <label for="username" class="form-label"><%= MessageUtil.getMessage(locale, "label.usuario")%></label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-floating mb-3">
-                                                <input type="password" class="form-control" name="password" id="password" placeholder="<%= MessageUtil.getMessage(new Locale("es", "ES"), "label.contrasena")%>" autocomplete="current-password" required>
-                                                <label for="password" class="form-label"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.contrasena")%></label>
+                                                <input type="password" class="form-control" name="password" id="password" placeholder="<%= MessageUtil.getMessage(locale, "label.contrasena")%>" autocomplete="current-password" required>
+                                                <label for="password" class="form-label"><%= MessageUtil.getMessage(locale, "label.contrasena")%></label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="d-flex gap-2 justify-content-between">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe">
-                                                    <label class="form-check-label text-secondary" for="rememberMe"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.rememberme") %></label>
+                                                    <label class="form-check-label text-secondary" for="rememberMe"><%= MessageUtil.getMessage(locale, "label.rememberme") %></label>
                                                 </div>
-                                                <a href="forgotPassword" class="link-success text-decoration-none"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.olvidaste_contrasena")%></a>
+                                                <a href="forgotPassword" class="link-success text-decoration-none"><%= MessageUtil.getMessage(locale, "label.olvidaste_contrasena")%></a>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="d-grid my-3">
-                                                <button class="btn btn-success btn-lg" type="submit"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.iniciar_sesion") %></button>
+                                                <button class="btn btn-success btn-lg" type="submit"><%= MessageUtil.getMessage(locale, "label.iniciar_sesion") %></button>
                                             </div>
-                                            <p><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.no_tienes_cuenta")%> <a href="register" class="link-success"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.registrate_aqui")%></a></p>
+                                            <p><%= MessageUtil.getMessage(locale, "label.no_tienes_cuenta")%> <a href="register" class="link-success"><%= MessageUtil.getMessage(locale, "label.registrate_aqui")%></a></p>
                                             <c:if test="${not empty error}">
                                                 <div class="error m-auto">${error}</div>
                                             </c:if>

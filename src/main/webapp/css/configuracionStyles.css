@@ -50,7 +50,10 @@
 
 .config-icon {
 	width: 18px;
-	margin-right: 10px;
+	height: 18px;
+    margin-right: 10px;
+    flex-shrink: 0;
+    align-self: center;
 }
 
 .list-item-disabled {
@@ -115,7 +118,7 @@
     #config-container {
     	top: 5vh;
     	right: 0.5vw;
-    	width: 230px;
+    	width: 235px;
     }
 
     .list-item {
@@ -132,7 +135,7 @@
     #config-container {
         top: 5vh;
         right: 0.5vw;
-        width: 230px;
+        width: 235px;
     }
 
     .list-item {
@@ -149,7 +152,7 @@
     #config-container {
         top: 5vh;
         right: 0.5vw;
-        width: 230px;
+        width: 235px;
     }
 
     .list-item {

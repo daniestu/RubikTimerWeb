@@ -4,6 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%
+    Locale locale = (Locale) request.getAttribute("locale");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,13 +25,13 @@
 							<div class="text-center mb-3">
 								<img src="../images/logo-2.png" alt="DER Timer logo" width="99.75" height="57">
 							</div>
-							<h2 class="fs-6 fw-normal text-center text-secondary mb-4"><%= MessageUtil.getMessage(new Locale("es", "ES"), "title.restablecimiento_contrasena") %></h2>
+							<h2 class="fs-6 fw-normal text-center text-secondary mb-4"><%= MessageUtil.getMessage(locale, "title.restablecimiento_contrasena") %></h2>
                             <c:choose>
                                 <c:when test="${not empty confirmation}">
-                                    <div class="text-success text-center m-auto"><p><%= MessageUtil.getMessage(new Locale("es", "ES"), "confirm.contrasena_restablecida")%></p></div>
+                                    <div class="text-success text-center m-auto"><p><%= MessageUtil.getMessage(locale, "confirm.contrasena_restablecida")%></p></div>
                                 </c:when>
                                 <c:when test="${caducado}">
-                                    <div class="text-danger fs-5 d-flex text-center m-auto"><p class="m-auto"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.enlace_caducado")%></p></div>
+                                    <div class="text-danger fs-5 d-flex text-center m-auto"><p class="m-auto"><%= MessageUtil.getMessage(locale, "label.enlace_caducado")%></p></div>
                                 </c:when>
                                 <c:otherwise>
                                     <form action="resetPassword" method="post">
@@ -35,19 +39,19 @@
                                         <div class="row gy-2 overflow-hidden">
                                             <div class="col-12">
                                                 <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" name="password" id="password" placeholder="<%= MessageUtil.getMessage(new Locale("es", "ES"), "label.nueva_contrasena")%>" required>
-                                                    <label for="password" class="form-label"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.nueva_contrasena")%></label>
+                                                    <input type="password" class="form-control" name="password" id="password" placeholder="<%= MessageUtil.getMessage(locale, "label.nueva_contrasena")%>" required>
+                                                    <label for="password" class="form-label"><%= MessageUtil.getMessage(locale, "label.nueva_contrasena")%></label>
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" name="confirm-password" id="confirm-password" placeholder="<%= MessageUtil.getMessage(new Locale("es", "ES"), "label.confirm_contrasena")%>" required>
-                                                    <label for="confirm-password" class="form-label"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.confirm_contrasena")%></label>
+                                                    <input type="password" class="form-control" name="confirm-password" id="confirm-password" placeholder="<%= MessageUtil.getMessage(locale, "label.confirm_contrasena")%>" required>
+                                                    <label for="confirm-password" class="form-label"><%= MessageUtil.getMessage(locale, "label.confirm_contrasena")%></label>
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="d-grid my-3">
-                                                    <button class="btn btn-success btn-lg" type="submit"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.restablecer_contrasena")%></button>
+                                                    <button class="btn btn-success btn-lg" type="submit"><%= MessageUtil.getMessage(locale, "label.restablecer_contrasena")%></button>
                                                 </div>
                                                 <c:if test="${not empty error}">
                                                     <div class="error w-100 text-center m-auto">${error}</div>
@@ -58,7 +62,7 @@
                                 </c:otherwise>
                             </c:choose>
                             <div class="mt-2 m-auto back-link">
-                                <a href="login" class="link-success text-underline"><%= MessageUtil.getMessage(new Locale("es", "ES"), "label.volver_formulario_login")%></a>
+                                <a href="login" class="link-success text-underline"><%= MessageUtil.getMessage(locale, "label.volver_formulario_login")%></a>
                             </div>
 						</div>
 					</div>

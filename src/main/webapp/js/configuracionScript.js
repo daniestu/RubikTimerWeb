@@ -22,6 +22,7 @@ $(document).ready(function() {
 	var configModal = $("#configModal-content");
 
     function toggleConfigContainer() {
+
         configContainer.toggle();
         if (configContainer.is(":visible")) {
             configBtn.css("background-color", window.config.colorTerciario);

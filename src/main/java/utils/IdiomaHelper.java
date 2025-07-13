@@ -30,4 +30,32 @@ public class IdiomaHelper {
                 return Locale.KOREAN;
         }
     }
+
+    public static int getIdioma(Locale locale) {
+        if (locale.equals(Locale.ENGLISH)) {
+            return 1;
+        } else if (locale.equals(new Locale("es", "ES"))) {
+            return 2;
+        } else if (locale.equals(Locale.FRENCH)) {
+            return 3;
+        } else if (locale.equals(Locale.GERMAN)) {
+            return 4;
+        } else if (locale.equals(Locale.ITALIAN)) {
+            return 5;
+        } else if (locale.equals(new Locale("pt", "PT"))) {
+            return 6;
+        } else if (locale.equals(Locale.SIMPLIFIED_CHINESE)) {
+            return 7;
+        } else if (locale.equals(new Locale("ar", "SA"))) {
+            return 8;
+        } else if (locale.equals(new Locale("ru", "RU"))) {
+            return 9;
+        } else if (locale.equals(Locale.JAPANESE)) {
+            return 10;
+        } else if (locale.equals(Locale.KOREAN)) {
+            return 11;
+        } else {
+            return 1;
+        }
+    }
 }
