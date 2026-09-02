@@ -1,0 +1,30 @@
+services:
+  # --- BASE DE DATOS (MySQL) ---
+  bd:
+    image: mysql:8.0
+    container_name: mysql_rubikTimer
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - datos_mysql:/var/lib/mysql
+    networks:
+      - red_interna
+
+  # --- SERVIDOR WEB (Tomcat) ---
+  web:
+    build: .
+    container_name: tomcat_rubikTimer
+    restart: always
+    depends_on:
+      - bd
+    networks:
+      - red_interna
+
+volumes:
+  datos_mysql:
+
+networks:
+  red_interna:
+    driver: bridge

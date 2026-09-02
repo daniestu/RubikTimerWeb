@@ -90,6 +90,9 @@ public class UserController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Locale locale = request.getLocale();
+		request.setAttribute("locale", locale);
+
 		String username = request.getParameter("username");
         String password = request.getParameter("password");
         String passwordConfirmation = request.getParameter("confirm-password");

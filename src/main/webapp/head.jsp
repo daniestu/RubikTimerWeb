@@ -17,6 +17,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<c:set var="projectName" value='<%= MessageUtil.getMessage(locale, "project.name")%>'/>
-<link href="/${projectName}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<script src="/${projectName}/bootstrap/js/bootstrap.bundle.js" charset="UTF-8"></script>
+<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="/bootstrap/js/bootstrap.bundle.js" charset="UTF-8"></script>

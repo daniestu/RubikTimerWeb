@@ -10,7 +10,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,79 +20,85 @@ import utils.CoockieHandler;
 import utils.UserUtils;
 
 public class AuthenticationFilter implements Filter {
-	
+
 	private List<String> allowedPages;
 
-    public AuthenticationFilter() {
-        super();
-    }
-    
-	public void destroy() {
-		
+	public AuthenticationFilter() {
+		super();
 	}
 
 	@Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-
-        HttpSession session = req.getSession(false);
-        
-        String url = req.getRequestURI();
-        
-        boolean isAllowed = allowedPages.contains(url);
-        
-        if (!isAllowed) {
-        	if (session == null || session.getAttribute("usuario") == null) {
-
-				String username = CoockieHandler.findCookie(req, res, "RubikTimerUsername");
-				String password = CoockieHandler.findCookie(req, res, "RubikTimerPassword");
-        		
-        		if (username != null && password != null) {
-					
-        			Usuario usuario = null;
-        			UsuarioService usuarioService = new UsuarioService();
-        			
-        	        try {
-        	        	usuario = usuarioService.verificarUsuario(username, UserUtils.encryptPassword(password));
-        	        	
-        	        	if (usuario != null && usuario.getIdUsuario() != null) {
-        	    			req.getSession().setAttribute("usuario", usuario);
-        	            	chain.doFilter(request, response);
-        	    		}else {
-        	    			res.sendRedirect("/rubikTimerWeb/user/login");
-        	    		}
-        			} catch (Exception e) {
-        				res.sendRedirect("/rubikTimerWeb/user/login");
-        			}
-        	        
-				}else {
-	            	res.sendRedirect("/rubikTimerWeb/user/login");
-				}
-        		
-            } else {
-                chain.doFilter(request, response);
-            }
-		}else {
-			chain.doFilter(request, response);
-		}
-    }
-
 	public void init(FilterConfig fConfig) throws ServletException {
-		allowedPages = new ArrayList<String>();
-		
-		allowedPages.add("/rubikTimerWeb/user/login");
-		allowedPages.add("/rubikTimerWeb/user/register");
-		allowedPages.add("/rubikTimerWeb/js/login.js");
-		allowedPages.add("/rubikTimerWeb/css/loginStyles.css");
-		allowedPages.add("/rubikTimerWeb/user/images/favicon.ico");
-		allowedPages.add("/rubikTimerWeb/images/favicon.ico");
-		allowedPages.add("/rubikTimerWeb/user/checkAuthentication");
-		allowedPages.add("/rubikTimerWeb/user/forgotPassword");
-		allowedPages.add("/rubikTimerWeb/user/resetPassword");
-		allowedPages.add("/rubikTimerWeb/bootstrap/css/bootstrap.min.css");
-		allowedPages.add("/rubikTimerWeb/bootstrap/js/bootstrap.bundle.js");
-		allowedPages.add("/rubikTimerWeb/images/logo-2.png");
+		allowedPages = new ArrayList<>();
+
+		allowedPages.add("/user/login");
+		allowedPages.add("/user/register");
+		allowedPages.add("/user/checkAuthentication");
+		allowedPages.add("/user/forgotPassword");
+		allowedPages.add("/user/resetPassword");
 	}
 
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
+
+		String contextPath = req.getContextPath();
+		String uri = req.getRequestURI();
+
+		// Extraemos la ruta relativa omitiendo el context path
+		String path = uri.substring(contextPath.length());
+
+		// Comprobamos si la ruta o recurso estatico esta permitido
+		if (allowedPages.contains(path) || isStaticResource(path)) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		// Comprobamos sesion activa
+		HttpSession session = req.getSession(false);
+		if (session != null && session.getAttribute("usuario") != null) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		// Si no hay sesion, intentamos autenticacion por cookies
+		String username = CoockieHandler.findCookie(req, res, "RubikTimerUsername");
+		String password = CoockieHandler.findCookie(req, res, "RubikTimerPassword");
+
+		if (username != null && password != null) {
+			try {
+				UsuarioService usuarioService = new UsuarioService();
+				Usuario usuario = usuarioService.verificarUsuario(username, UserUtils.encryptPassword(password));
+
+				if (usuario != null && usuario.getIdUsuario() != null) {
+					req.getSession().setAttribute("usuario", usuario);
+					chain.doFilter(request, response);
+					return;
+				}
+			} catch (Exception e) {
+				// Falla en verificación de usuario por cookie
+			}
+		}
+
+		res.sendRedirect(contextPath + "/user/login");
+	}
+
+	private boolean isStaticResource(String path) {
+		return path.startsWith("/css/") ||
+				path.startsWith("/js/") ||
+				path.startsWith("/images/") ||
+				path.startsWith("/bootstrap/") ||
+				path.endsWith(".css") ||
+				path.endsWith(".js") ||
+				path.endsWith(".ico") ||
+				path.endsWith(".png") ||
+				path.endsWith(".jpg");
+	}
+
+	@Override
+	public void destroy() {
+	}
 }
