@@ -1,0 +1,25 @@
+services:
+  # --- PROXY INVERSO (Nginx) ---
+  proxy:
+    image: nginx:alpine
+    container_name: nginx_rubikTimer
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    depends_on:
+      - web
+    networks:
+      - red_interna
+
+  # --- GENERADOR SSL (Certbot) ---
+  certbot:
+    image: certbot/certbot
+    container_name: certbot_rubikTimer
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
