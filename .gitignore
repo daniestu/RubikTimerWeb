@@ -90,3 +90,8 @@ nb-configuration.xml
 ##############################
 .env
 docker-compose.override.yml
+
+##############################
+## NGNIX
+##############################
+ngnix/

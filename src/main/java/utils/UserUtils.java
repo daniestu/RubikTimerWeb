@@ -1,16 +1,7 @@
 package utils;
 
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 import business.TokenService;
 import models.Conf;
@@ -18,57 +9,33 @@ import models.Token;
 import models.Usuario;
 
 public class UserUtils {
-	
+
 	public static boolean enviarMailConfirmacionReset(Usuario user) {
-		AccesoProperties accesoProperties = new AccesoProperties();
-		Properties prop = accesoProperties.cargarFicheroEmail();
-		final String username = prop.getProperty("email-user");
-        final String password = prop.getProperty("email-password");
+		try {
+			Token token = TokenUtils.generateToken(user);
 
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        //props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.starttls.enable", "false");
-        //props.put("mail.smtp.host", "smtp.office365.com");
-        props.put("mail.smtp.host", "localhost");
-        props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props,
-          new javax.mail.Authenticator() {
-            protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                return new javax.mail.PasswordAuthentication(username, password);
-            }
-          });
-
-        try {
-        	Token token = TokenUtils.generateToken(user);
-        	
-        	TokenService tokenService = new TokenService();
-        	if (!tokenService.caducarTokens(user.getIdUsuario())) {
-        		return false;
+			TokenService tokenService = new TokenService();
+			if (!tokenService.caducarTokens(user.getIdUsuario())) {
+				return false;
 			}
-        	token = tokenService.add(token);
-        	
-        	if (token == null || token.getToken_id() == null || token.getToken_id() == 0) {
-        		return false;
+			token = tokenService.add(token);
+
+			if (token == null || token.getToken_id() == null || token.getToken_id() == 0) {
+				return false;
 			}
-        	
-            String emailContent = String.format(template, "https://www.der-timer.com/rubikTimerWeb/user/resetPassword?token=" + token.getUuid());
-            
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username, "DER Timer"));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getCorreo()));
-            message.setSubject("Solicitud de restablecimiento de contraseña");
-            message.setContent(emailContent, "text/html");
 
-            Transport.send(message);
+			String emailContent = String.format(template, "https://www.dtimerapp.com/user/resetPassword?token=" + token.getUuid());
 
-        } catch (MessagingException | IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+			return EmailUtils.enviarEmail(
+					user.getCorreo(),
+					"Solicitud de restablecimiento de contraseña",
+					emailContent
+			);
 
-		return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public static String encryptPassword(String password) throws NoSuchAlgorithmException {
