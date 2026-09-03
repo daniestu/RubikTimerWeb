@@ -5,12 +5,17 @@ services:
     container_name: mysql_rubikTimer
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
     volumes:
       - datos_mysql:/var/lib/mysql
     networks:
       - red_interna
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # --- SERVIDOR WEB (Tomcat) ---
   web:
@@ -23,6 +28,11 @@ services:
       - bd
     networks:
       - red_interna
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   datos_mysql:

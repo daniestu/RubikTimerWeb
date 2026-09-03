@@ -1,31 +1,23 @@
 package dao;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import dao.contracts.Persistencia;
 import models.Conf;
 import models.Usuario;
 import utils.AccesoProperties;
+
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDao implements Persistencia<Usuario>{
 
 	@Override
 	public Usuario add(Usuario usuario) throws IOException{
 		String sql = "INSERT INTO usuario (usuario, contrasena, correo) VALUES (?, ?, ?)";
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
         
 		int generatedId = -1;
-        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+        try (Connection connection = AccesoProperties.getDBConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             statement.setString(1, usuario.getNombreUsuario());
@@ -52,12 +44,9 @@ public class UsuarioDao implements Persistencia<Usuario>{
 	public List<Usuario> getAll() throws IOException, SQLException {
 		List<Usuario> usuarios = new ArrayList<>();
 	    String query = "SELECT id, usuario, correo FROM usuario";
-	    
-	    AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 
-	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-	         Statement stmt = conn.createStatement();
+	    try (Connection connection = AccesoProperties.getDBConnection();
+	         Statement stmt = connection.createStatement();
 	         ResultSet rs = stmt.executeQuery(query)) {
 	        while (rs.next()) {
 	            int id = rs.getInt("id");
@@ -73,14 +62,12 @@ public class UsuarioDao implements Persistencia<Usuario>{
 	}
 	
 	public Usuario getByUsernamePwd(String username, String password) throws SQLException {
-	    AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 
 		Usuario usuario = null;
 		
 		String sql = "SELECT id, usuario, correo FROM usuario WHERE usuario = ? AND contrasena = ?";
-	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection connection = AccesoProperties.getDBConnection();
+	    		PreparedStatement stmt = connection.prepareStatement(sql)) {
 	    	stmt.setString(1, username);
 	        stmt.setString(2, password);
 	        ResultSet rs = stmt.executeQuery();
@@ -97,14 +84,12 @@ public class UsuarioDao implements Persistencia<Usuario>{
 	}
 	
 	public Usuario getByEmailPwd(String email, String password) throws SQLException {
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 
 		Usuario usuario = null;
 		
 		String sql = "SELECT id, usuario, correo FROM usuario WHERE correo = ? AND contrasena = ?";
-	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection connection = AccesoProperties.getDBConnection();
+	    		PreparedStatement stmt = connection.prepareStatement(sql)) {
 	    	stmt.setString(1, email);
 	        stmt.setString(2, password);
 	        ResultSet rs = stmt.executeQuery();
@@ -121,14 +106,12 @@ public class UsuarioDao implements Persistencia<Usuario>{
 	}
 	
 	public Usuario getByEmail(String correo) throws SQLException {
-	    AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 
 		Usuario usuario = null;
 		
 		String sql = "SELECT id, usuario, correo FROM usuario WHERE correo = ?";
-	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection connection = AccesoProperties.getDBConnection();
+	    		PreparedStatement stmt = connection.prepareStatement(sql)) {
 	    	stmt.setString(1, correo);
 	        ResultSet rs = stmt.executeQuery();
 	        if (rs.next()) {
@@ -145,10 +128,8 @@ public class UsuarioDao implements Persistencia<Usuario>{
 
 	public boolean restablecerContraseña(Integer usuarioId, String password) {
 		String sql = "UPDATE usuario SET contrasena = ? WHERE id = ?";
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		
-        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+        try (Connection connection = AccesoProperties.getDBConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             
         	statement.setString(1, password);
@@ -164,14 +145,12 @@ public class UsuarioDao implements Persistencia<Usuario>{
 	}
 
 	public Conf getConfiguracionUsuario(Usuario usuario) throws SQLException {
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 
 		Conf conf = null;
 
 		String sql = "SELECT conf_tema, conf_idioma, conf_ocultar_elementos, conf_ocultar_visualizacion, conf_pulsacion_larga, conf_cronometro_raton, conf_tiempo_inspeccion, conf_segundos_inspeccion FROM usuario WHERE id = ?";
-		try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-			 PreparedStatement stmt = conn.prepareStatement(sql)) {
+		try (Connection connection = AccesoProperties.getDBConnection();
+			 PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setInt(1, usuario.getIdUsuario());
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -191,10 +170,7 @@ public class UsuarioDao implements Persistencia<Usuario>{
 				"conf_ocultar_visualizacion = ?, conf_pulsacion_larga = ?, conf_cronometro_raton = ?, " +
 				"conf_tiempo_inspeccion = ?, conf_segundos_inspeccion = ? WHERE id = ?";
 
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
-
-		try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+		try (Connection connection = AccesoProperties.getDBConnection();
 			 PreparedStatement statement = connection.prepareStatement(sql)) {
 
 			statement.setInt(1, conf.getTema());

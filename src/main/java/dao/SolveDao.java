@@ -1,33 +1,25 @@
 package dao;
 
+import dao.contracts.Persistencia;
+import models.Solve;
+import utils.AccesoProperties;
+
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
-
-import dao.contracts.Persistencia;
-import models.Solve;
-import utils.AccesoProperties;
 
 public class SolveDao implements Persistencia<Solve>{
 
 	@Override
 	public Solve add(Solve solve) throws IOException {
 		String sql = "INSERT INTO tiempos (tiempo, scramble, fecha, mas_dos, dnf, usuario_id, sesion_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
 		
 		int generatedId = -1;
-        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+        try (Connection connection = AccesoProperties.getDBConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
         	statement.setString(1, solve.getTiempo());
@@ -58,11 +50,8 @@ public class SolveDao implements Persistencia<Solve>{
 		List<Solve> solves = new ArrayList<>();
 	    String query = "SELECT * FROM tiempos";
 		
-	    AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
-		
-		try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-	         Statement stmt = conn.createStatement();
+		try (Connection connection = AccesoProperties.getDBConnection();
+	         Statement stmt = connection.createStatement();
 	         ResultSet rs = stmt.executeQuery(query)) {
 	        while (rs.next()) {
 	            int id = rs.getInt("id");
@@ -85,12 +74,9 @@ public class SolveDao implements Persistencia<Solve>{
 		List<Solve> solves = new ArrayList<>();
 	    String query = "SELECT * FROM tiempos WHERE sesion_id = ?";
 		
-	    AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
-		
 		ResultSet rs = null;
-		try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-			PreparedStatement statement = conn.prepareStatement(query)){
+		try (Connection connection = AccesoProperties.getDBConnection();
+			PreparedStatement statement = connection.prepareStatement(query)){
 			
 			statement.setInt(1, id_sesion);
 	    	rs = statement.executeQuery();
@@ -117,10 +103,8 @@ public class SolveDao implements Persistencia<Solve>{
 
 	public boolean deleteBySesion(Integer id_sesion) {
 		String sql = "DELETE FROM tiempos WHERE sesion_id = ?";
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		
-        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+        try (Connection connection = AccesoProperties.getDBConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id_sesion);
             statement.executeUpdate();
@@ -135,14 +119,11 @@ public class SolveDao implements Persistencia<Solve>{
 
 	public Solve getById(int id_tiempo) throws SQLException {
 		String query = "SELECT * FROM tiempos WHERE id = ?";
-	    
-	    AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		
 		Solve solve = null;
 		ResultSet rs = null;
-	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-    		PreparedStatement statement = conn.prepareStatement(query)) {
+	    try (Connection connection = AccesoProperties.getDBConnection();
+    		PreparedStatement statement = connection.prepareStatement(query)) {
 	    	
 	    	statement.setInt(1, id_tiempo);
 	    	rs = statement.executeQuery();
@@ -160,10 +141,8 @@ public class SolveDao implements Persistencia<Solve>{
 
 	public boolean delete(int id) {
 		String sql = "DELETE FROM tiempos WHERE id = ?";
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		
-        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+        try (Connection connection = AccesoProperties.getDBConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -179,10 +158,7 @@ public class SolveDao implements Persistencia<Solve>{
 	public boolean updateMas2(int id, int action) {
 		String sql = "UPDATE tiempos SET mas_dos = " + action + ", dnf = 0 WHERE id = ?";
 		
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
-		
-        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+        try (Connection connection = AccesoProperties.getDBConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -198,10 +174,7 @@ public class SolveDao implements Persistencia<Solve>{
 	public boolean updateDnf(int id, int action) {
 		String sql = "UPDATE tiempos SET dnf = " + action + ", mas_dos = 0 WHERE id = ?";
 		
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
-		
-        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+        try (Connection connection = AccesoProperties.getDBConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -217,13 +190,10 @@ public class SolveDao implements Persistencia<Solve>{
 	public Solve getLastSolveBySesion(Integer sesion_id) throws SQLException {
 		String query = "select * from tiempos where sesion_id = ? order by id desc limit 1";
 
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
-
 		Solve solve = null;
 		ResultSet rs = null;
-		try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-			 PreparedStatement statement = conn.prepareStatement(query)) {
+		try (Connection connection = AccesoProperties.getDBConnection();
+			 PreparedStatement statement = connection.prepareStatement(query)) {
 
 			statement.setInt(1, sesion_id);
 			rs = statement.executeQuery();

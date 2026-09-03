@@ -1,28 +1,35 @@
 package utils;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Properties;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class AccesoProperties {
-	
-	public Properties cargarFicheroBBDD() {
+
+	public static Connection getDBConnection() throws SQLException {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			ClassLoader cl = getClass().getClassLoader();
-			InputStream is = cl.getResourceAsStream("CFG.INI");
-
-			if (is == null) {
-				throw new IllegalArgumentException("CGF.INI no encontrado!");
-			}else {
-				Properties prop=new Properties();
-				prop.load(new InputStreamReader(is));
-				return prop;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException("Error inesperado");
+		} catch (ClassNotFoundException e) {
+			throw new SQLException("Driver MySQL no encontrado", e);
 		}
-		
+
+		String host = getRequiredEnv("DB_HOST");
+		String port = getRequiredEnv("DB_PORT");
+		String dbName = getRequiredEnv("DB_NAME");
+		String user = getRequiredEnv("DB_USER");
+		String password = getRequiredEnv("DB_PASSWORD");
+
+		String jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/" + dbName
+				+ "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+
+		return DriverManager.getConnection(jdbcUrl, user, password);
+	}
+
+	public static String getRequiredEnv(String varName) {
+		String value = System.getenv(varName);
+		if (value == null || value.trim().isEmpty()) {
+			throw new IllegalStateException("Error de configuracion de correo: La variable de entorno '" + varName + "' no esta definida.");
+		}
+		return value;
 	}
 }

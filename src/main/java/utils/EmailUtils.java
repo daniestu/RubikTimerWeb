@@ -8,10 +8,10 @@ import java.util.Properties;
 public class EmailUtils {
 
     private static Session getMailSession() {
-        final String username = getRequiredEnv("MAIL_USERNAME");
-        final String password = getRequiredEnv("MAIL_PASSWORD");
-        final String mailHost = getRequiredEnv("MAIL_HOST");
-        final String mailPort = getRequiredEnv("MAIL_PORT");
+        final String username = AccesoProperties.getRequiredEnv("MAIL_USERNAME");
+        final String password = AccesoProperties.getRequiredEnv("MAIL_PASSWORD");
+        final String mailHost = AccesoProperties.getRequiredEnv("MAIL_HOST");
+        final String mailPort = AccesoProperties.getRequiredEnv("MAIL_PORT");
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -25,14 +25,6 @@ public class EmailUtils {
                 return new PasswordAuthentication(username, password);
             }
         });
-    }
-
-    private static String getRequiredEnv(String varName) {
-        String value = System.getenv(varName);
-        if (value == null || value.trim().isEmpty()) {
-            throw new IllegalStateException("Error de configuracion de correo: La variable de entorno '" + varName + "' no esta definida.");
-        }
-        return value;
     }
 
     public static boolean enviarEmail(String destinatario, String asunto, String contenidoHtml) {

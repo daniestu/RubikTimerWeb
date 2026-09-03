@@ -1,25 +1,17 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Properties;
-
 import models.Token;
 import utils.AccesoProperties;
+
+import java.sql.*;
 
 public class TokenDao {
 	
 	public Token add(Token token) {
 		String sql = "INSERT INTO token (uuid, usuario_id, fecha_creacion, caducado) VALUES (?, ?, ?, 0)";
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
         
 		int generatedId = -1;
-        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+        try (Connection connection = AccesoProperties.getDBConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             statement.setString(1, token.getUuid());
@@ -43,14 +35,12 @@ public class TokenDao {
 	}
 
 	public Token getByUUID(String uuid) {
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 
 		Token token = null;
 		
 		String sql = "SELECT token_id, uuid, usuario_id, fecha_creacion, caducado FROM token WHERE uuid = ?";
-	    try (Connection conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
-	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection connection = AccesoProperties.getDBConnection();
+	    		PreparedStatement stmt = connection.prepareStatement(sql)) {
 	    	stmt.setString(1, uuid);
 	        ResultSet rs = stmt.executeQuery();
 	        if (rs.next()) {
@@ -71,10 +61,8 @@ public class TokenDao {
 
 	public boolean caducarTokens(Integer idUsuario) {
 		String sql = "UPDATE token SET caducado = 1 WHERE usuario_id = ?";
-		AccesoProperties accesoBBDD = new AccesoProperties();
-		Properties prop = accesoBBDD.cargarFicheroBBDD();
 		
-        try (Connection connection = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
+        try (Connection connection = AccesoProperties.getDBConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             
         	statement.setInt(1, idUsuario);
