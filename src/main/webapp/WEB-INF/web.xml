@@ -75,6 +75,6 @@
     <url-pattern>/conf/*</url-pattern>
   </servlet-mapping>
 
-  <display-name>Archetype Created Web Application</display-name>
+  <display-name>DTimer</display-name>
 
 </web-app>

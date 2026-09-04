@@ -61,7 +61,7 @@ public class UserController extends HttpServlet {
 			break;
 		case "/checkAuthentication":
 			boolean isAuthenticated = (request.getSession().getAttribute("usuario") != null);
-			
+
 			response.setContentType("application/json");
 	        response.setCharacterEncoding("UTF-8");
 	        response.getWriter().write("{\"authenticated\":" + isAuthenticated + "}");

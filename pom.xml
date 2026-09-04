@@ -9,9 +9,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <name>pruebas Maven Webapp</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <name>DTimer</name>
+  <url>http://www.dtimerapp.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -81,7 +80,7 @@
   </dependencies>
 
   <build>
-    <finalName>rubikTimerWeb</finalName>
+    <finalName>DTimerApp</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>
