@@ -1,23 +1,25 @@
 package controller;
 
-import java.io.IOException;
-import java.util.Locale;
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import business.TokenService;
 import business.UsuarioService;
 import models.Token;
 import models.Usuario;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.CoockieHandler;
 import utils.TokenUtils;
 import utils.UserUtils;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Locale;
+
 public class UserController extends HttpServlet {
+	private static final Logger _log = LogManager.getLogger(UserController.class);
 	private static final long serialVersionUID = 1L;
 
     public UserController() {
@@ -127,7 +129,7 @@ public class UserController extends HttpServlet {
 	            	response.sendRedirect("../");
 	    		}
 			} catch (Exception e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 				request.setAttribute("error", "Ha ocurrido un error al verificar las credenciales.");
 				request.getRequestDispatcher("../login.jsp").forward(request, response);
 			}
@@ -163,7 +165,7 @@ public class UserController extends HttpServlet {
 					throw new Exception();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 				request.setAttribute("error", "Ha ocurrido un error al registrar el usuario.");
 	            request.getRequestDispatcher("../register.jsp").forward(request, response);
 	            return;
@@ -191,7 +193,7 @@ public class UserController extends HttpServlet {
 	            
                 request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
 			} catch (Exception e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 				request.setAttribute("error", "Ha ocurrido un error al enviar el Correo.");
 	            request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
 	            return;
@@ -231,7 +233,7 @@ public class UserController extends HttpServlet {
 				request.setAttribute("confirmation", "ok");
 				request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
 			} catch (Exception e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 				request.setAttribute("error", "Ha ocurrido un error al restablecer la contraseña.");
 				request.setAttribute("caducado", false);
 	            request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);

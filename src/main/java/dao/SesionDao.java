@@ -2,7 +2,10 @@ package dao;
 
 import dao.contracts.Persistencia;
 import models.Sesion;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.AccesoProperties;
+import utils.EmailUtils;
 
 import java.io.IOException;
 import java.sql.*;
@@ -10,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SesionDao implements Persistencia<Sesion>{
+	private static final Logger _log = LogManager.getLogger(SesionDao.class);
 
 	@Override
 	public Sesion add(Sesion sesion) throws IOException, SQLException {
@@ -30,7 +34,7 @@ public class SesionDao implements Persistencia<Sesion>{
                 generatedId = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
         } finally {
 	    	if (rs != null) {
 	            rs.close();
@@ -105,7 +109,7 @@ public class SesionDao implements Persistencia<Sesion>{
             return true;
             
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
             return false;
         }
 	}
@@ -122,7 +126,7 @@ public class SesionDao implements Persistencia<Sesion>{
             statement.executeUpdate();
             
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
             return false;
         }
         
@@ -147,7 +151,7 @@ public class SesionDao implements Persistencia<Sesion>{
             statement.executeUpdate();
             
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
         }
 	}
 	

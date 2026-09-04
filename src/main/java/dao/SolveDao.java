@@ -2,6 +2,8 @@ package dao;
 
 import dao.contracts.Persistencia;
 import models.Solve;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.AccesoProperties;
 
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class SolveDao implements Persistencia<Solve>{
+	private static final Logger _log = LogManager.getLogger(SolveDao.class);
 
 	@Override
 	public Solve add(Solve solve) throws IOException {
@@ -36,7 +39,7 @@ public class SolveDao implements Persistencia<Solve>{
                 generatedId = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
         }
         if (generatedId != -1) {
         	solve.setId(generatedId);
@@ -112,7 +115,7 @@ public class SolveDao implements Persistencia<Solve>{
             return true;
             
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
             return false;
         }
 	}
@@ -150,7 +153,7 @@ public class SolveDao implements Persistencia<Solve>{
             return true;
             
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
             return false;
         }
 	}
@@ -166,7 +169,7 @@ public class SolveDao implements Persistencia<Solve>{
             return true;
             
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
             return false;
         }
 	}
@@ -182,7 +185,7 @@ public class SolveDao implements Persistencia<Solve>{
             return true;
             
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
             return false;
         }
 	}

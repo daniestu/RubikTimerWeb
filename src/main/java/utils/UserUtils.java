@@ -1,14 +1,17 @@
 package utils;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import business.TokenService;
 import models.Conf;
 import models.Token;
 import models.Usuario;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class UserUtils {
+	private static final Logger _log = LogManager.getLogger(UserUtils.class);
 
 	public static boolean enviarMailConfirmacionReset(Usuario user) {
 		try {
@@ -33,7 +36,7 @@ public class UserUtils {
 			);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			_log.error(e.getMessage(), e);
 			return false;
 		}
 	}

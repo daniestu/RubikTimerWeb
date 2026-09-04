@@ -21,8 +21,12 @@ import business.SolveService;
 import models.Sesion;
 import models.Solve;
 import models.Usuario;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import utils.EmailUtils;
 
 public class SolveController extends HttpServlet {
+	private static final Logger _log = LogManager.getLogger(SolveController.class);
 	private static final long serialVersionUID = 1L;
 
     public SolveController() {
@@ -69,7 +73,7 @@ public class SolveController extends HttpServlet {
 				Solve solve = solveService.getLastSolveBySesion(sesion);
 				eliminado = solveService.eliminar(solve.getId());
 			} catch (Exception e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 			}
 
 			resultado.put("eliminado", eliminado);
@@ -87,7 +91,7 @@ public class SolveController extends HttpServlet {
 				solves = solveService.getAll(sesion);
 			} catch (Exception e) {
 				if (usuario != null) {
-					e.printStackTrace();
+					_log.error(e.getMessage(), e);
 				}
 			}
 			
@@ -120,7 +124,7 @@ public class SolveController extends HttpServlet {
 				response.setContentType("text/plain");
 				response.getWriter().write("El tiempo se ha guardado correctamente.");
 			}catch (Exception e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				response.setContentType("text/plain");
 				response.getWriter().write("Ha ocurrido un error al guardar el tiempo.");
@@ -161,7 +165,7 @@ public class SolveController extends HttpServlet {
 				Solve solve = solveService.getLastSolveBySesion(sesion);
 				ok = solveService.updateMas2(solve.getId(), action);
 			} catch (Exception e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 			}
 
 			resultado.put("actualizado", ok);
@@ -182,7 +186,7 @@ public class SolveController extends HttpServlet {
 				resultado.put("tiempo_original", solve.getTiempo());
 				ok = solveService.updateDnf(solve.getId(), action);
 			} catch (Exception e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 			}
 
 			resultado.put("actualizado", ok);

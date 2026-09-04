@@ -1,11 +1,15 @@
 package dao;
 
 import models.Token;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.AccesoProperties;
+import utils.EmailUtils;
 
 import java.sql.*;
 
 public class TokenDao {
+	private static final Logger _log = LogManager.getLogger(TokenDao.class);
 	
 	public Token add(Token token) {
 		String sql = "INSERT INTO token (uuid, usuario_id, fecha_creacion, caducado) VALUES (?, ?, ?, 0)";
@@ -25,7 +29,7 @@ public class TokenDao {
                 generatedId = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
         }
         if (generatedId != -1) {
         	token.setToken_id(generatedId);
@@ -53,7 +57,7 @@ public class TokenDao {
 	        }
 	        rs.close();
 	    } catch (SQLException e) {
-			e.printStackTrace();
+			_log.error(e.getMessage(), e);
 		}
 
 	    return token;
@@ -69,7 +73,7 @@ public class TokenDao {
             statement.executeUpdate();
             
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
             return false;
         }
         

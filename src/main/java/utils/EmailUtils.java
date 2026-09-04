@@ -1,11 +1,15 @@
 package utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class EmailUtils {
+    private static final Logger _log = LogManager.getLogger(EmailUtils.class);
 
     private static Session getMailSession() {
         final String username = AccesoProperties.getRequiredEnv("MAIL_USERNAME");
@@ -42,7 +46,7 @@ public class EmailUtils {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            _log.error(e.getMessage(), e);
             return false;
         }
     }

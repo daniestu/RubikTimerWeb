@@ -29,9 +29,13 @@ import models.Estadisticas;
 import models.Sesion;
 import models.Solve;
 import models.Usuario;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import utils.EmailUtils;
 import utils.SesionUtils;
 
 public class SessionController extends HttpServlet {
+	private static final Logger _log = LogManager.getLogger(SessionController.class);
 	private static final long serialVersionUID = 1L;
 
     public SessionController() {
@@ -59,7 +63,7 @@ public class SessionController extends HttpServlet {
 			try {
 				sesion = sesionService.crearSesion(nombre_sesion, usuario);
 			} catch (IOException | SQLException e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 			}
 			json = new Gson().toJson(sesion);
 			
@@ -81,7 +85,7 @@ public class SessionController extends HttpServlet {
 					ok = true;
 				}
 			} catch (IOException | SQLException e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 			}
 			
 			resultado.put("eliminado", ok);
@@ -98,7 +102,7 @@ public class SessionController extends HttpServlet {
 			try {
 				sesiones = sesionService.getAllByUser(usuario);
 			} catch (IOException | SQLException e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 			}
 			
 			json = new Gson().toJson(sesiones);
@@ -119,7 +123,7 @@ public class SessionController extends HttpServlet {
 				ok = sesionService.updateSession(sesion);
 				
 			} catch (IOException | SQLException e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 			}
 			
 			response.setContentType("text/plain");
@@ -156,7 +160,7 @@ public class SessionController extends HttpServlet {
 		            writer.write(csvContent.toString());
 		        }
 			} catch (IOException | SQLException e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 			}
 			break;
 		default:
@@ -212,7 +216,7 @@ public class SessionController extends HttpServlet {
 			try {
 				sesion = sesionService.getByName(nombre_sesion, usuario);
 			} catch (IOException | SQLException e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 				return;
 			}
 			
@@ -251,7 +255,7 @@ public class SessionController extends HttpServlet {
 	                solveService.registrarSolve(solve);
 	            }
 	        } catch (ParseException e) {
-				e.printStackTrace();
+				_log.error(e.getMessage(), e);
 				resultado.put("importado", false);
 				json = new Gson().toJson(resultado);
 				response.getWriter().write(json);

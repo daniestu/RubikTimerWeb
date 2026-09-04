@@ -3,7 +3,10 @@ package dao;
 import dao.contracts.Persistencia;
 import models.Conf;
 import models.Usuario;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.AccesoProperties;
+import utils.EmailUtils;
 
 import java.io.IOException;
 import java.sql.*;
@@ -11,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioDao implements Persistencia<Usuario>{
+	private static final Logger _log = LogManager.getLogger(UsuarioDao.class);
 
 	@Override
 	public Usuario add(Usuario usuario) throws IOException{
@@ -31,7 +35,7 @@ public class UsuarioDao implements Persistencia<Usuario>{
                 generatedId = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
         }
         if (generatedId != -1) {
         	usuario.setIdUsuario(generatedId);
@@ -137,7 +141,7 @@ public class UsuarioDao implements Persistencia<Usuario>{
             statement.executeUpdate();
             
         } catch (SQLException e) {
-            e.printStackTrace();
+			_log.error(e.getMessage(), e);
             return false;
         }
         
@@ -185,7 +189,7 @@ public class UsuarioDao implements Persistencia<Usuario>{
 			statement.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			_log.error(e.getMessage(), e);
 			return false;
 		}
 
