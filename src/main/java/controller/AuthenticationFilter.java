@@ -39,9 +39,8 @@ public class AuthenticationFilter implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		/*
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 
@@ -84,6 +83,38 @@ public class AuthenticationFilter implements Filter {
 		}
 
 		res.sendRedirect(contextPath + "/user/login");
+		*/
+
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
+
+		// Comprobamos sesion activa
+		HttpSession session = req.getSession(false);
+		if (session != null && session.getAttribute("usuario") != null) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		// Si no hay sesion, intentamos autenticacion por cookies
+		String username = CoockieHandler.findCookie(req, res, "RubikTimerUsername");
+		String password = CoockieHandler.findCookie(req, res, "RubikTimerPassword");
+
+		if (username != null && password != null) {
+			try {
+				UsuarioService usuarioService = new UsuarioService();
+				Usuario usuario = usuarioService.verificarUsuario(username, UserUtils.encryptPassword(password));
+
+				if (usuario != null && usuario.getIdUsuario() != null) {
+					req.getSession().setAttribute("usuario", usuario);
+					chain.doFilter(request, response);
+					return;
+				}
+			} catch (Exception e) {
+				// Falla en verificación de usuario por cookie
+			}
+		}
+
+		chain.doFilter(request, response);
 	}
 
 	private boolean isStaticResource(String path) {

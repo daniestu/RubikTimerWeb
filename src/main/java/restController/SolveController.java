@@ -90,11 +90,9 @@ public class SolveController extends HttpServlet {
 				sesion = sesionService.getByName(nombre_sesion, usuario);
 				solves = solveService.getAll(sesion);
 			} catch (Exception e) {
-				if (usuario != null) {
-					_log.error(e.getMessage(), e);
-				}
+				_log.error(e.getMessage(), e);
 			}
-			
+
 			if (usuario == null) {
 				json = "{\"usuario\":\"nulo\"}";
 			}else {

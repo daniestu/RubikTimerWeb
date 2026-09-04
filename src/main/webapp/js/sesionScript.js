@@ -250,59 +250,54 @@ function getTiemposSesion(sesion) {
 	fetch('solve/get?sesion=' + sesion)
 		.then(response => response.json())
 		.then(json => {
-			if(json.usuario == "nulo") {
-				window.location.href = "./login.jsp";
-			}else {
-				
-				$('#export-icon').attr('src', (json.length != 0) ? window.config.imageExport : 'images/export-disabled.png');
-				$("#export-solves").removeClass((json.length != 0) ? "list-item-disabled" : "list-item");
-				$("#export-solves").addClass((json.length != 0) ? "list-item" : "list-item-disabled");
-				
-				json = formatJsonTiempos(json, 0);
-				getEstadisticasSesion(json);
-				const tbody = document.querySelector('#tablaTiempos tbody');
-				const tbody_mobile = document.querySelector('#tablaTiempos_mobile tbody');
-				tbody.innerHTML = '';
-				tbody_mobile.innerHTML = '';
-				for (let i = json.length-1; i >= 0; i--) {
-					const tiempo = json[i];
-					const tr = document.createElement('tr');
-					const tr_mobile = document.createElement('tr');
+            $('#export-icon').attr('src', (json.length != 0) ? window.config.imageExport : 'images/export-disabled.png');
+            $("#export-solves").removeClass((json.length != 0) ? "list-item-disabled" : "list-item");
+            $("#export-solves").addClass((json.length != 0) ? "list-item" : "list-item-disabled");
 
-					const idTd = document.createElement('td');
-					const idTd_mobile = document.createElement('td');
-					idTd.textContent = i+1;
-					idTd_mobile.textContent = i+1;
-					tr.appendChild(idTd);
-					tr_mobile.appendChild(idTd_mobile);
+            json = formatJsonTiempos(json, 0);
+            getEstadisticasSesion(json);
+            const tbody = document.querySelector('#tablaTiempos tbody');
+            const tbody_mobile = document.querySelector('#tablaTiempos_mobile tbody');
+            tbody.innerHTML = '';
+            tbody_mobile.innerHTML = '';
+            for (let i = json.length-1; i >= 0; i--) {
+                const tiempo = json[i];
+                const tr = document.createElement('tr');
+                const tr_mobile = document.createElement('tr');
 
-					const tiempoTd = document.createElement('td');
-					const tiempoTd_mobile = document.createElement('td');
+                const idTd = document.createElement('td');
+                const idTd_mobile = document.createElement('td');
+                idTd.textContent = i+1;
+                idTd_mobile.textContent = i+1;
+                tr.appendChild(idTd);
+                tr_mobile.appendChild(idTd_mobile);
 
-					if (tiempo.dnf == 1) {
-						tiempoTd.textContent = "DNF";
-						tiempoTd_mobile.textContent = "DNF";
-					}else {
-						tiempoTd.textContent = (tiempo.mas_2 == 0) ? tiempo.tiempo : (sumarMas2(tiempo.tiempo) + "+");
-						tiempoTd_mobile.textContent = (tiempo.mas_2 == 0) ? tiempo.tiempo : (sumarMas2(tiempo.tiempo) + "+");
-					}
-					
-					tiempoTd.classList.add('tablaTiempos-tiempo');
-					tiempoTd_mobile.classList.add('tablaTiempos-tiempo');
-					tiempoTd.onclick = function() {
-						mostrarTiempo(tiempo);
-					}
-					tiempoTd_mobile.onclick = function() {
-					    console.log("Clic en mostrar Tiempo");
-						mostrarTiempo(tiempo);
-					}
-					tr.appendChild(tiempoTd);
-					tr_mobile.appendChild(tiempoTd_mobile);
+                const tiempoTd = document.createElement('td');
+                const tiempoTd_mobile = document.createElement('td');
 
-					tbody.appendChild(tr);
-					tbody_mobile.appendChild(tr_mobile);
-				}
-			}
+                if (tiempo.dnf == 1) {
+                    tiempoTd.textContent = "DNF";
+                    tiempoTd_mobile.textContent = "DNF";
+                }else {
+                    tiempoTd.textContent = (tiempo.mas_2 == 0) ? tiempo.tiempo : (sumarMas2(tiempo.tiempo) + "+");
+                    tiempoTd_mobile.textContent = (tiempo.mas_2 == 0) ? tiempo.tiempo : (sumarMas2(tiempo.tiempo) + "+");
+                }
+
+                tiempoTd.classList.add('tablaTiempos-tiempo');
+                tiempoTd_mobile.classList.add('tablaTiempos-tiempo');
+                tiempoTd.onclick = function() {
+                    mostrarTiempo(tiempo);
+                }
+                tiempoTd_mobile.onclick = function() {
+                    console.log("Clic en mostrar Tiempo");
+                    mostrarTiempo(tiempo);
+                }
+                tr.appendChild(tiempoTd);
+                tr_mobile.appendChild(tiempoTd_mobile);
+
+                tbody.appendChild(tr);
+                tbody_mobile.appendChild(tr_mobile);
+            }
 		});
 }
 
