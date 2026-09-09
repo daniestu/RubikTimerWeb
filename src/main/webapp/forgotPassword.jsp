@@ -9,56 +9,64 @@
 %>
 
 <!DOCTYPE html>
-<html>
-<head>
-	<jsp:include page="head.jsp" />
-	<script src="../js/login.js"></script>
-	<link rel="stylesheet" type="text/css" href="../css/loginStyles.css">
-</head>
-<body>
-	<section class="py-3 py-md-5">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-					<div class="card border border-light-subtle rounded-3 shadow">
-						<div class="card-body p-3 p-md-4 p-xl-5">
-							<div class="text-center mb-3">
-								<img src="../images/logo-2.png" alt="DER Timer logo" width="99.75" height="57">
-							</div>
-							<h2 class="fs-6 fw-normal text-center text-secondary mb-4"><%= MessageUtil.getMessage(locale, "title.inicio_sesion")%></h2>
-							<c:choose>
-                                <c:when test="${not empty confirmation}">
-                                    <div class="text-success d-flex text-center m-auto"><p><%= MessageUtil.getMessage(locale, "confirmation.olvido_contrasena")%></p></div>
-                                </c:when>
-                                <c:otherwise>
-                                    <form action="forgotPassword" method="post">
-                                        <div class="row gy-2 overflow-hidden">
-                                            <div class="col-12">
-                                                <div class="form-floating mb-3">
-                                                    <input type="email" class="form-control" name="correo" id="correo" placeholder="<%= MessageUtil.getMessage(locale, "label.correo")%>" autocomplete="username" required>
-                                                    <label for="correo" class="form-label"><%= MessageUtil.getMessage(locale, "label.correo")%></label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="d-grid my-3">
-                                                    <button class="btn btn-success btn-lg" type="submit"><%= MessageUtil.getMessage(locale, "label.enviar_solicitud")%></button>
-                                                </div>
-                                                <c:if test="${not empty error}">
-                                                    <div class="error w-100 text-center m-auto">${error}</div>
-                                                </c:if>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </c:otherwise>
-                            </c:choose>
-                            <div class="mt-2 m-auto back-link">
-                                <a href="login" class="link-success text-underline"><%= MessageUtil.getMessage(locale, "label.volver_login")%></a>
-                            </div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-</body>
+<html data-bs-theme="dark">
+    <head>
+        <jsp:include page="head.jsp" />
+        <script src="../js/login.js"></script>
+        <link rel="stylesheet" type="text/css" href="../css/loginStyles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    </head>
+    <body class="auth-body">
+        <div class="d-flex flex-column flex-lg-row min-vh-100">
+            <div class="auth-form-side d-flex align-items-center justify-content-center p-4 p-lg-5">
+                <div class="auth-form-card">
+                    <div class="auth-brand">
+                        <img src="../images/logo.png" alt="">
+                        <span>DER Timer</span>
+                    </div>
+
+                    <h1 class="auth-title"><%= MessageUtil.getMessage(locale, "title.olvido_contrasena")%></h1>
+
+                    <c:choose>
+                        <c:when test="${not empty confirmation}">
+                            <div class="status-message success"><%= MessageUtil.getMessage(locale, "confirmation.olvido_contrasena")%></div>
+                        </c:when>
+                        <c:otherwise>
+                            <form action="forgotPassword" method="post">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" name="correo" id="correo" placeholder="<%= MessageUtil.getMessage(locale, "label.correo")%>" autocomplete="username" required>
+                                    <label for="correo"><%= MessageUtil.getMessage(locale, "label.correo")%></label>
+                                </div>
+                                <div class="d-grid mb-3">
+                                    <button class="btn auth-btn btn-lg" type="submit"><%= MessageUtil.getMessage(locale, "label.enviar_solicitud")%></button>
+                                </div>
+                                <c:if test="${not empty error}">
+                                    <div class="error">${error}</div>
+                                </c:if>
+                            </form>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <p class="auth-foot mt-3 mb-0 text-center">
+                        <a href="login" class="auth-link"><%= MessageUtil.getMessage(locale, "label.volver_login")%></a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="auth-brand-side d-flex align-items-center p-4 p-lg-5">
+                <div class="auth-scramble" id="auth-scramble">R U R' U' R' F R2 U' R' U' R U R' F'</div>
+            </div>
+        </div>
+
+        <script>
+            fetch('../cube/generateScramble')
+                .then(function (response) { return response.text(); })
+                .then(function (scramble) {
+                    document.getElementById('auth-scramble').textContent = scramble;
+                })
+                .catch(function () { });
+        </script>
+    </body>
 </html>
