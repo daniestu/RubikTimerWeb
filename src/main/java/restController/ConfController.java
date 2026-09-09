@@ -5,10 +5,7 @@ import models.Conf;
 import models.Usuario;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 public class ConfController extends HttpServlet {
@@ -22,13 +19,14 @@ public class ConfController extends HttpServlet {
             switch (path) {
                 case "/save":
                     HttpSession session = request.getSession(false);
+                    Usuario usuario = (session != null) ? (Usuario) session.getAttribute("usuario") : null;
 
-                    if (session != null && session.getAttribute("usuario") != null) {
+                    int tema = (request.getParameter("config-theme") != null) ? Integer.parseInt(request.getParameter("config-theme")) : 1;
+                    int idioma = (request.getParameter("config-lang") != null) ? Integer.parseInt(request.getParameter("config-lang")) : 1;
+
+                    if (usuario != null) {
                         UsuarioService usuarioService = new UsuarioService();
-                        Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-                        int tema = (request.getParameter("config-theme") != null) ? Integer.parseInt(request.getParameter("config-theme")) : 1;
-                        int idioma = (request.getParameter("config-lang") != null) ? Integer.parseInt(request.getParameter("config-lang")) : 1;
                         boolean ocultarElementos = request.getParameter("config-hide-elements") != null;
                         boolean ocultarPreview = request.getParameter("config-hide-preview") != null;
                         boolean pulsacionLarga = request.getParameter("config-long-pulse") != null;
@@ -42,11 +40,23 @@ public class ConfController extends HttpServlet {
                                 (tiempoInspeccion) ? 1 : 0, segundosInspeccion);
 
                         usuarioService.actualizarConfiguracionUsuario(usuario, conf);
+                    } else {
+                        // invitado: idioma y tema van en cookie (el servidor los necesita para renderizar),
+                        // el resto de preferencias las gestiona el propio navegador
+                        String path_cookie = request.getContextPath().isEmpty() ? "/" : request.getContextPath();
+
+                        Cookie cookieIdioma = new Cookie("guestIdioma", String.valueOf(idioma));
+                        cookieIdioma.setPath(path_cookie);
+                        cookieIdioma.setMaxAge(60 * 60 * 24 * 365); // 1 año
+                        response.addCookie(cookieIdioma);
+
+                        Cookie cookieTema = new Cookie("guestTema", String.valueOf(tema));
+                        cookieTema.setPath(path_cookie);
+                        cookieTema.setMaxAge(60 * 60 * 24 * 365);
+                        response.addCookie(cookieTema);
                     }
 
-                    // Redireccion dinamica segun el contextPath de la aplicacion
-                    String contextPath = request.getContextPath();
-                    response.sendRedirect(contextPath.isEmpty() ? "/" : contextPath);
+                    response.setStatus(HttpServletResponse.SC_OK);
                     break;
 
                 default:

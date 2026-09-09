@@ -104,6 +104,18 @@ $(document).ready(function() {
 				console.error('Error:', error);
 			});
 	}
+
+	function sincronizarFormularioPreferencias() {
+        document.getElementById('config-hide-elements').checked = window.config.ocultarElementos == 1;
+        document.getElementById('config-hide-preview').checked = window.config.ocultarVisualizacion == 1;
+        document.getElementById('config-long-pulse').checked = window.config.pulsacionLarga == 1;
+        document.getElementById('config-mouse-timer').checked = window.config.cronometroRaton == 1;
+        document.getElementById('config-inspect-time').checked = window.config.tiempoInspeccion == 1;
+        document.getElementById('config-inspect-sec').value = window.config.segundosInspeccion;
+
+
+        checkInspectTime(document.getElementById('config-inspect-time'));
+    }
 	
 	$("#logout").click(function(event) {
 	  	logout();
@@ -148,7 +160,7 @@ $(document).ready(function() {
 	
 	$("#export-solves").click(function(event) {
 		if ($('#export-solves').hasClass('list-item')) {
-            exportSolves(document.getElementById("sesion_select").value);
+		    sesionData.exportSolves(document.getElementById("sesion_select").value);
         }
 	});
 	
@@ -161,6 +173,7 @@ $(document).ready(function() {
 	});
 	
 	$("#preferences").click(function(event) {
+	    sincronizarFormularioPreferencias();
 		document.getElementById("config-modal-error").style.display = "none";
 		document.getElementById("configModal").style.display = "flex";
 		toggleConfigContainer();

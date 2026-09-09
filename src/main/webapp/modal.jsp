@@ -175,7 +175,7 @@
 <div id="configModal" class="modal">
     <div id="configModal-content" class="modal-content modal-30">
         <h2><%= MessageUtil.getMessage(locale, "option.configuracion")%></h2>
-        <form id="configForm" class="configForm" action="conf/save" method="post">
+        <form id="configForm" class="configForm" onsubmit="guardarPreferencias(event)">
             <div class="form-group">
                 <label class="config-label" for="config-theme"><%= MessageUtil.getMessage(locale, "label.tema")%></label>
                 <select class="form-control config-select" name="config-theme" id="config-theme">

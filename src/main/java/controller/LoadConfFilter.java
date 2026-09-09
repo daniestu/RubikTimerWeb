@@ -9,6 +9,7 @@ import utils.TemaHelper;
 import utils.UserUtils;
 
 import javax.servlet.*;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -40,6 +41,10 @@ public class LoadConfFilter implements Filter {
                 }
 
                 conf = usuarioService.getConfiguracionUsuario(usuario);
+
+                if (usuario == null) {
+                    conf = aplicarPreferenciasInvitado(req, conf);
+                }
             } catch (Exception e) {
                 conf = UserUtils.getDefaultConf();
             }
@@ -51,9 +56,27 @@ public class LoadConfFilter implements Filter {
             request.setAttribute("locale", locale);
             request.setAttribute("temaConfig", config);
             request.setAttribute("conf", conf);
+            request.setAttribute("esInvitado", usuario == null);
         }
 
         chain.doFilter(request, response);
+    }
+
+    private Conf aplicarPreferenciasInvitado(HttpServletRequest request, Conf conf) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            return conf;
+        }
+
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("guestIdioma")) {
+                conf.setIdioma(Integer.parseInt(cookie.getValue()));
+            } else if (cookie.getName().equals("guestTema")) {
+                conf.setTema(Integer.parseInt(cookie.getValue()));
+            }
+        }
+
+        return conf;
     }
 
     @Override

@@ -30,13 +30,30 @@
             colorTexto: "<%= temaConfig.getColorTextoJS() %>",
             colorTerciario: "<%= temaConfig.getColorTerciarioJS() %>",
             imageExport: "<%= temaConfig.getImageExport() %>",
-            imagePrevius: "<%= temaConfig.getImagePrevius() %>"
+            imagePrevius: "<%= temaConfig.getImagePrevius() %>",
+            invitado: <%= request.getAttribute("esInvitado") %>
         };
+
+        if (window.config.invitado) {
+            try {
+                const preferenciasGuardadas = JSON.parse(localStorage.getItem('rubikTimerPreferencias') || '{}');
+                Object.assign(window.config, preferenciasGuardadas);
+            } catch (e) {
+                console.error('No se han podido cargar las preferencias del invitado', e);
+            }
+        }
     </script>
-    <script src="js/scrambleScript.js" charset="UTF-8"></script>
-    <script src="js/sesionScript.js" charset="UTF-8"></script>
-    <script src="js/configuracionScript.js" charset="UTF-8"></script>
-    <script src="js/preferenciasScript.js" charset="UTF-8"></script>
+    <% if (session.getAttribute("usuario") != null) { %>
+        <script src="js/data/account/sesionData.js" charset="UTF-8"></script>
+    <% } else { %>
+        <script src="js/data/guest/statsEngine.js" charset="UTF-8"></script>
+        <script src="js/data/guest/db.js" charset="UTF-8"></script>
+        <script src="js/data/guest/sesionData.js" charset="UTF-8"></script>
+    <% } %>
+    <script src="js/core/scrambleScript.js" charset="UTF-8"></script>
+    <script src="js/core/preferenciasScript.js" charset="UTF-8"></script>
+    <script src="js/core/configuracionScript.js" charset="UTF-8"></script>
+    <script src="js/ui/sesionUI.js" charset="UTF-8"></script>
     <link rel="stylesheet" type="text/css" href="css/mainStyles.css">
     <link rel="stylesheet" type="text/css" href="css/asideStyles.css">
     <link rel="stylesheet" type="text/css" href="css/scrambleStyles.css">
@@ -292,7 +309,7 @@
     	</div>
     </div>
 
-    <script src="js/cronometroScript.js"></script>
+    <script src="js/core/cronometroScript.js"></script>
     <script>
 	    generateScramble();
 	    getSesiones();

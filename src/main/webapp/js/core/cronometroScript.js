@@ -101,14 +101,16 @@ function pad(numero, longitud) {
 }
 
 function guardarTiempo(tiempo, scramble) {
-	fetch('solve/save?tiempo=' + tiempo + '&scramble=' + scramble + '&sesion=' + document.getElementById("sesion_select").value)
-		.then(response => {
-			getTiemposSesion(document.getElementById("sesion_select").value)
-			console.log('El tiempo se ha guardado correctamente.');
-		})
-		.catch(error => {
-			console.error('Error al guardar el tiempo:', error);
-		});
+	const sesion = document.getElementById("sesion_select").value;
+
+    sesionData.guardarTiempo(tiempo, scramble, sesion)
+        .then(() => {
+            getTiemposSesion(sesion);
+            console.log('El tiempo se ha guardado correctamente.');
+        })
+        .catch(error => {
+            console.error('Error al guardar el tiempo:', error);
+        });
 }
 
 document.body.onkeyup = function(e) {
