@@ -688,7 +688,6 @@ function pintarEstadisticas(estadisticas) {
 }
 
 function pintarTablaTiempos(solves) {
-    $('#export-icon').attr('src', (solves.length != 0) ? window.config.imageExport : 'images/export-disabled.png');
     $("#export-solves").removeClass((solves.length != 0) ? "list-item-disabled" : "list-item");
     $("#export-solves").addClass((solves.length != 0) ? "list-item" : "list-item-disabled");
 

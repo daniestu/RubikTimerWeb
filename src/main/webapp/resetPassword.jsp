@@ -24,7 +24,7 @@
                 <div class="auth-form-card">
                     <div class="auth-brand">
                         <img src="../images/logo.png" alt="">
-                        <span>DER Timer</span>
+                        <span>DTimer</span>
                     </div>
 
                     <h1 class="auth-title"><%= MessageUtil.getMessage(locale, "title.restablecimiento_contrasena") %></h1>

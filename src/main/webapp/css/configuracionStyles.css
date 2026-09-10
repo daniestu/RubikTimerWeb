@@ -1,165 +1,83 @@
 #config-btn {
-	position: fixed;
-	top: 0.5vh;
-	right: 0.5vw;
-	min-width: 20px;
-	padding: 0.5vh;
-	border-radius: 10%;
-	box-sizing: content-box;
-	z-index: 1000;
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    padding: 7px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    box-sizing: border-box;
+    cursor: pointer;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .15s ease;
+    z-index: 1000;
 }
+
+#config-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+#config-btn.is-active, #config-btn:hover { background-color: var(--bg-surface); }
 
 #config-container {
-	position: fixed;
-	border-radius: 12px;
-	z-index: 1;
+    position: fixed;
+    top: 56px;
+    right: 14px;
+    width: 235px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    z-index: 1;
 }
 
-#config-menu {
-    list-style: none;
-    width: 100%;
-    padding: 0px;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    line-height: normal;
-}
+#config-menu { list-style: none; width: 100%; padding: 6px; margin: 0; line-height: normal; }
 
 .list-item {
-  	text-align: left;
-  	padding-left: 10px;
-  	padding: 5px 10px;
-  	display: flex;
-	flex-direction: row;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    text-align: left;
+    padding: 9px 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 8px;
+    color: var(--text);
+    transition: background-color .12s ease, color .12s ease;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
+.list-item:hover { cursor: pointer; color: var(--accent); }
 
-.list-item:hover {
-  cursor: pointer;
-}
+#config-menu hr { border: none; border-top: 1px solid var(--border); margin: 6px 4px; }
 
-#config-menu hr {
-	overflow: hidden;
-    border-style: inset;
-    border-width: 1px;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.config-icon {
-	width: 18px;
-	height: 18px;
-    margin-right: 10px;
-    flex-shrink: 0;
-    align-self: center;
-}
+.config-icon { width: 18px; height: 18px; margin-right: 10px; flex-shrink: 0; align-self: center; }
 
 .list-item-disabled {
-  	text-align: left;
-  	padding-left: 10px;
-  	padding: 5px 10px;
-  	display: flex;
-	flex-direction: row;
-	color: #999;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    text-align: left;
+    padding: 9px 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 8px;
+    color: var(--disabled);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
+.list-item-disabled:hover { cursor: default; }
 
-.list-item-disabled:hover {
-	cursor: default;
-}
-
-/* Extra small devices (phones, less than 576px)  */
 @media (max-width: 575.98px) {
-    #config-container {
-        bottom: 0;
-        left: 0;
-        width: 100vw;
-        z-index: 1001;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
-
-    .list-item {
-        padding: 8px 10px;
-    }
-
-    #config-btn {
-        width: 22px;
-    }
+    #config-container { top: auto; bottom: 0; left: 0; right: 0; width: 100%; border-radius: 16px 16px 0 0; z-index: 1001; padding-top: .5rem; padding-bottom: 1rem; }
+    #config-btn { top: 10px; right: 10px; width: 30px; height: 30px; }
 }
-
-/* Small devices (landscape phones, 576px and up)  */
 @media (min-width: 576px) and (max-width: 767.98px) {
-    #config-container {
-        bottom: 0;
-        left: 0;
-        width: 100vw;
-        z-index: 1001;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
-
-    .list-item {
-        padding: 8px 10px;
-    }
-
-    #config-btn {
-        width: 22px;
-    }
-}
-
-/* Medium devices (tablets, 768px and up)  */
-@media (min-width: 768px) and (max-width: 991.98px) {
-    #config-container {
-    	top: 5vh;
-    	right: 0.5vw;
-    	width: 235px;
-    }
-
-    .list-item {
-        padding: 5px 10px;
-    }
-
-    #config-btn {
-        width: 22px;
-    }
-}
-
-/* Large devices (desktops, 992px and up)  */
-@media (min-width: 992px) and (max-width: 1199.98px) {
-    #config-container {
-        top: 5vh;
-        right: 0.5vw;
-        width: 235px;
-    }
-
-    .list-item {
-        padding: 5px 10px;
-    }
-
-    #config-btn {
-        width: 3vh;
-    }
-}
-
-/* Extra large devices (large desktops, 1200px and up)  */
-@media (min-width: 1200px) {
-    #config-container {
-        top: 5vh;
-        right: 0.5vw;
-        width: 235px;
-    }
-
-    .list-item {
-        padding: 5px 10px;
-    }
-
-    #config-btn {
-        width: 3vh;
-    }
+    #config-container { top: auto; bottom: 0; left: 0; right: 0; width: 100%; border-radius: 16px 16px 0 0; z-index: 1001; padding-top: .5rem; padding-bottom: 1rem; }
+    #config-btn { top: 10px; right: 10px; width: 30px; height: 30px; }
 }

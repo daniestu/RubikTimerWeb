@@ -16,7 +16,7 @@
             <label for="nombre_sesion"><%= MessageUtil.getMessage(locale, "label.nombre_sesion")%></label>
             <input type="text" class="input-100" id="nombre_sesion" autocomplete="off" onchange="document.getElementById('nuevaSesion-modal-error').style.display = 'none'" required>
             <button type="submit" class="btn btn-guardar"><%= MessageUtil.getMessage(locale, "forms.save")%></button>
-            <span id="nuevaSesion-modal-error" style="color:#B00C0C; display:none;"><%= MessageUtil.getMessage(locale, "error.session.already_exist")%></span>
+            <span id="nuevaSesion-modal-error" class="form-error" style="display:none;"><%= MessageUtil.getMessage(locale, "error.session.already_exist")%></span>
         </form>
     </div>
 </div>
@@ -30,7 +30,7 @@
             <button id="sesionBtn-aceptar" onclick="borrarSesion(originalSelectedOption)"><%= MessageUtil.getMessage(locale, "forms.aceptar")%></button>
             <button id="sesionBtn-cancelar" onclick="ocultarBorrarSesionModal()"><%= MessageUtil.getMessage(locale, "forms.cancelar")%></button>
         </div>
-        <span id="borrarSesion-modal-error" style="color:#B00C0C; display:none;"><%= MessageUtil.getMessage(locale, "error.session.delete")%></span>
+        <span id="borrarSesion-modal-error" class="form-error" style="display:none;"><%= MessageUtil.getMessage(locale, "error.session.delete")%></span>
     </div>
 </div>
 <div id="scramble-personalizado-modal" class="modal">
@@ -40,7 +40,7 @@
             <label for="scramble-text"><%= MessageUtil.getMessage(locale, "label.scramble")%></label>
             <input type="text" id="scramble-text" class="input-100" autocomplete="off" required>
             <button type="submit" class=" btn btn-guardar"><%= MessageUtil.getMessage(locale, "forms.save")%></button>
-            <span id="scramble-personalizado-modal-error" style="color:#B00C0C; display:none;"><%= MessageUtil.getMessage(locale, "error.scramble_personalizado")%></span>
+            <span id="scramble-personalizado-modal-error" class="form-error" style="display:none;"><%= MessageUtil.getMessage(locale, "error.scramble_personalizado")%></span>
         </form>
     </div>
 </div>
@@ -53,7 +53,7 @@
             <label><%= MessageUtil.getMessage(locale, "label.tiempo")%></label>
             <input type="text" id="addSolve-tiempo" autocomplete="off" required>
             <button type="submit" class="btn btn-guardar"><%= MessageUtil.getMessage(locale, "forms.save")%></button>
-            <span id="add-solve-modal-error" style="color:#B00C0C; display:none;"><%= MessageUtil.getMessage(locale, "error.tiempo")%></span>
+            <span id="add-solve-modal-error" class="form-error" style="display:none;"><%= MessageUtil.getMessage(locale, "error.tiempo")%></span>
         </form>
     </div>
 </div>
@@ -75,9 +75,9 @@
                 <button id="solveBtn-dnf" class="solveBtn" onclick="addDnf(document.getElementById('hidden-id').value);"><%= MessageUtil.getMessage(locale, "label.dnf")%></button>
             </div>
             <div class="w-100 d-flex justify-content-end mt-3">
-                <button type="submit" id="solveBtn-eliminar"><%= MessageUtil.getMessage(locale, "forms.delete")%></button>
+                <button type="submit" id="solveBtn-eliminar"><svg class="icon"><use href="#icon-trash"/></svg><%= MessageUtil.getMessage(locale, "forms.delete")%></button>
             </div>
-            <span id="solve-modal-error" style="color:#B00C0C; display:none;"><%= MessageUtil.getMessage(locale, "error.borrar_tiempo")%></span>
+            <span id="solve-modal-error" class="form-error" style="display:none;"><%= MessageUtil.getMessage(locale, "error.borrar_tiempo")%></span>
         </form>
     </div>
 </div>
@@ -150,8 +150,8 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-guardar"><%= MessageUtil.getMessage(locale, "forms.aceptar")%></button>
-            <button type="submit" class="btn btn-danger ml-1" onclick="event.preventDefault();confirmDelete(document.getElementById('sesion_select').value);"><%= MessageUtil.getMessage(locale, "forms.delete")%></button>
-            <span id="session-info-modal-error" style="color:#B00C0C; display:none; margin-top:2%;"><%= MessageUtil.getMessage(locale, "error.actualizar_sesion")%></span>
+            <button type="submit" class="btn btn-danger ml-1" onclick="event.preventDefault();confirmDelete(document.getElementById('sesion_select').value);"><svg class="icon"><use href="#icon-trash"/></svg> <%= MessageUtil.getMessage(locale, "forms.delete")%></button>
+            <span id="session-info-modal-error" class="form-error" style="display:none; margin-top:2%;"><%= MessageUtil.getMessage(locale, "error.actualizar_sesion")%></span>
         </form>
     </div>
 </div>
@@ -167,7 +167,7 @@
             <input type="hidden" name="sesion" id="importSesion" />
             <input type="file" id="importFile" name="importFile" required />
             <button type="button" onclick="importSolves()" class="btn btn-guardar mt-3"><%= MessageUtil.getMessage(locale, "forms.importar")%></button>
-            <span id="import-modal-error" class="mt-2" style="color:#B00C0C; display:none;"><%= MessageUtil.getMessage(locale, "error.importar_tiempos")%></span>
+            <span id="import-modal-error" class="form-error mt-2" style="display:none;"><%= MessageUtil.getMessage(locale, "error.importar_tiempos")%></span>
         </form>
     </div>
 </div>
@@ -181,6 +181,9 @@
                 <select class="form-control config-select" name="config-theme" id="config-theme">
                     <option value="1" <% out.print((conf.getTema() == 1) ? "selected" : "");%>><%= MessageUtil.getMessage(locale, "label.tema1")%></option>
                     <option value="2" <% out.print((conf.getTema() == 2) ? "selected" : "");%>><%= MessageUtil.getMessage(locale, "label.tema2")%></option>
+                    <option value="3" <% out.print((conf.getTema() == 3) ? "selected" : "");%>><%= MessageUtil.getMessage(locale, "label.tema3")%></option>
+                    <option value="4" <% out.print((conf.getTema() == 4) ? "selected" : "");%>><%= MessageUtil.getMessage(locale, "label.tema4")%></option>
+                    <option value="5" <% out.print((conf.getTema() == 5) ? "selected" : "");%>><%= MessageUtil.getMessage(locale, "label.tema5")%></option>
                 </select>
             </div>
             <div class="form-group">
@@ -230,7 +233,7 @@
                 <button type="button" class="btn btn-guardar config-btn mt-3"><%= MessageUtil.getMessage(locale, "forms.cancelar")%></button>
             </div>
 
-            <span id="config-modal-error" class="mt-2" style="color:#B00C0C; display:none;"><%= MessageUtil.getMessage(locale, "error.configuracion")%></span>
+            <span id="config-modal-error" class="form-error mt-2" style="display:none;"><%= MessageUtil.getMessage(locale, "error.configuracion")%></span>
         </form>
     </div>
 </div>
