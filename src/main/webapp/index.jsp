@@ -15,6 +15,9 @@
 <!DOCTYPE html>
 <html data-tema="<%= conf.getTema() %>" data-bs-theme="<%= (conf.getTema() == 1 || conf.getTema() == 2 || conf.getTema() == 3) ? "dark" : "light" %>">
   <head>
+    <% request.setAttribute("tituloClave", "seo.titulo_inicio");
+      request.setAttribute("descripcionClave", "seo.descripcion_inicio");
+      request.setAttribute("urlCanonica", "https://www.dtimerapp.com/"); %>
     <jsp:include page="head.jsp"/>
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.googleapis.com">

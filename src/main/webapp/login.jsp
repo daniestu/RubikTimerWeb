@@ -11,6 +11,9 @@
 <!DOCTYPE html>
 <html data-bs-theme="dark">
     <head>
+        <% request.setAttribute("tituloClave", "seo.titulo_login");
+            request.setAttribute("descripcionClave", "seo.descripcion_login");
+            request.setAttribute("urlCanonica", "https://www.dtimerapp.com/user/login"); %>
         <jsp:include page="head.jsp" />
         <script src="../js/login.js"></script>
         <link rel="stylesheet" type="text/css" href="../css/loginStyles.css">

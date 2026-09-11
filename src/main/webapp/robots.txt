@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /session/
+Disallow: /solve/
+Disallow: /cube/
+Disallow: /conf/
+Disallow: /user/
+Allow: /user/login
+Allow: /user/register
+
+Sitemap: https://www.dtimerapp.com/sitemap.xml

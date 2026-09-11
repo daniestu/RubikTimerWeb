@@ -6,9 +6,21 @@
 
 <%
     Locale locale = (Locale) request.getAttribute("locale");
+
+    String tituloClave = (String) request.getAttribute("tituloClave");
+    if (tituloClave == null) { tituloClave = "title"; }
+
+    String descripcionClave = (String) request.getAttribute("descripcionClave");
+
+    String urlCanonica = (String) request.getAttribute("urlCanonica");
+    if (urlCanonica == null) { urlCanonica = "https://www.dtimerapp.com/"; }
 %>
 
-<title><%= MessageUtil.getMessage(locale, "title")%></title>
+<title><%= MessageUtil.getMessage(locale, tituloClave)%></title>
+<% if (descripcionClave != null) { %>
+<meta name="description" content="<%= MessageUtil.getMessage(locale, descripcionClave)%>">
+<% } %>
+<link rel="canonical" href="<%= urlCanonica %>">
 <meta charset="UTF-8">
 <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico" />
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
