@@ -15,8 +15,8 @@ var detenido = false;
 var spacePressedForOneSecond = !(window.config.pulsacionLarga == 1);
 var presionando_espacio = false;
 
-const elementosNoPermitidos = ['aside', 'nav', 'section', 'footer', 'ol', 'ul', 'li', 'a', 'i', 'img', 'input', 'textarea', 'button', 'select', 'optgroup', 'option'];
-const idsElementosNoPermitidos = ['config-container', 'scramble-container', 'toggleBox', 'sidePanel'];
+const elementosNoPermitidos = ['aside', 'nav', 'section', 'footer', 'ol', 'ul', 'li', 'a', 'i', 'img', 'svg', 'use', 'input', 'textarea', 'button', 'select', 'optgroup', 'option'];
+const idsElementosNoPermitidos = ['config-container', 'scramble-container', 'toggleBox', 'sidePanel', 'config-btn'];
 
 let touchStartX = null;
 let touchStartY = null;
