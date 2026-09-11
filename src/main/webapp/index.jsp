@@ -63,8 +63,25 @@
     <link rel="stylesheet" type="text/css" href="css/configuracionStyles.css">
     <link rel="stylesheet" type="text/css" href="css/modalStyles.css">
     <link rel="stylesheet" type="text/css" href="css/previewStyles.css">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "DTimer",
+            "url": "https://www.dtimerapp.com/",
+            "description": "<%= MessageUtil.getMessage(locale, "seo.descripcion_inicio")%>",
+            "applicationCategory": "UtilitiesApplication",
+            "operatingSystem": "Any (web-based)",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            }
+        }
+    </script>
   </head>
   <body>
+    <h1 class="visually-hidden"><%= MessageUtil.getMessage(locale, "seo.titulo_inicio")%></h1>
     <jsp:include page="icons.jsp" />
 
     <div class="scramble-container" id="scramble-container">
