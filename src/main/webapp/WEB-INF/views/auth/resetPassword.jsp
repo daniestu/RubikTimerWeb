@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html data-bs-theme="dark">
     <head>
-        <jsp:include page="head.jsp" />
+        <jsp:include page="/WEB-INF/views/common/head.jsp" />
         <script src="../js/login.js"></script>
         <link rel="stylesheet" type="text/css" href="../css/loginStyles.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,20 +27,28 @@
                         <span>DTimer</span>
                     </div>
 
-                    <h1 class="auth-title"><%= MessageUtil.getMessage(locale, "title.olvido_contrasena")%></h1>
+                    <h1 class="auth-title"><%= MessageUtil.getMessage(locale, "title.restablecimiento_contrasena") %></h1>
 
                     <c:choose>
                         <c:when test="${not empty confirmation}">
-                            <div class="status-message success"><%= MessageUtil.getMessage(locale, "confirmation.olvido_contrasena")%></div>
+                            <div class="status-message success"><%= MessageUtil.getMessage(locale, "confirm.contrasena_restablecida")%></div>
+                        </c:when>
+                        <c:when test="${caducado}">
+                            <div class="status-message warning"><%= MessageUtil.getMessage(locale, "label.enlace_caducado")%></div>
                         </c:when>
                         <c:otherwise>
-                            <form action="forgotPassword" method="post">
+                            <form action="resetPassword" method="post">
+                                <input type="hidden" name="token" value="${token}">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" name="correo" id="correo" placeholder="<%= MessageUtil.getMessage(locale, "label.correo")%>" autocomplete="username" required>
-                                    <label for="correo"><%= MessageUtil.getMessage(locale, "label.correo")%></label>
+                                    <input type="password" class="form-control" name="password" id="password" placeholder="<%= MessageUtil.getMessage(locale, "label.nueva_contrasena")%>" required>
+                                    <label for="password"><%= MessageUtil.getMessage(locale, "label.nueva_contrasena")%></label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" name="confirm-password" id="confirm-password" placeholder="<%= MessageUtil.getMessage(locale, "label.confirm_contrasena")%>" required>
+                                    <label for="confirm-password"><%= MessageUtil.getMessage(locale, "label.confirm_contrasena")%></label>
                                 </div>
                                 <div class="d-grid mb-3">
-                                    <button class="btn auth-btn btn-lg" type="submit"><%= MessageUtil.getMessage(locale, "label.enviar_solicitud")%></button>
+                                    <button class="btn auth-btn btn-lg" type="submit"><%= MessageUtil.getMessage(locale, "label.restablecer_contrasena")%></button>
                                 </div>
                                 <c:if test="${not empty error}">
                                     <div class="error">${error}</div>
@@ -50,7 +58,7 @@
                     </c:choose>
 
                     <p class="auth-foot mt-3 mb-0 text-center">
-                        <a href="login" class="auth-link"><%= MessageUtil.getMessage(locale, "label.volver_login")%></a>
+                        <a href="login" class="auth-link"><%= MessageUtil.getMessage(locale, "label.volver_formulario_login")%></a>
                     </p>
                 </div>
             </div>

@@ -18,7 +18,7 @@
     <% request.setAttribute("tituloClave", "seo.titulo_timer");
         request.setAttribute("descripcionClave", "seo.descripcion_timer");
         request.setAttribute("urlCanonica", "https://www.dtimerapp.com/timer"); %>
-    <jsp:include page="/head.jsp"/>
+    <jsp:include page="/WEB-INF/views/common/head.jsp"/>
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,7 +66,7 @@
 </head>
 <body>
 <h1 class="visually-hidden"><%= MessageUtil.getMessage(locale, "seo.titulo_timer")%></h1>
-<jsp:include page="/icons.jsp" />
+<jsp:include page="/WEB-INF/views/common/icons.jsp" />
 
 <div class="scramble-container" id="scramble-container">
     <div id="sesion_container_mobile">
@@ -76,7 +76,7 @@
     <p id="scramble" onclick="generateScramble()"></p>
 </div>
 
-<jsp:include page="/modal.jsp" />
+<jsp:include page="modal.jsp" />
 
 <button type="button" id="config-btn" aria-label="<%= MessageUtil.getMessage(locale, "option.configuracion")%>"><svg class="icon"><use href="#icon-menu-dots"/></svg></button>
 <div id="config-container" style="display:none;">
@@ -94,7 +94,7 @@
     </ul>
 </div>
 <% if (conf.getOcultarVisualizacion() != 1) { %>
-<jsp:include page="/preview.jsp" />
+<jsp:include page="preview.jsp" />
 <%}%>
 <aside id="aside-container" class="aside-container">
     <div id="logo_container" class="logo_container">

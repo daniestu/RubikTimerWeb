@@ -33,8 +33,9 @@ public class LoadConfFilter implements Filter {
 
         String path = req.getRequestURI().substring(req.getContextPath().length());
         boolean esRaiz = path.equals("/") || path.equals("");
+        boolean esBlog = path.equals("/blog") || path.startsWith("/blog/");
 
-        if (esRaiz || path.equals("/timer")) {
+        if (esRaiz || path.equals("/timer") || esBlog) {
             Usuario usuario = null;
             if (session != null) {
                 usuario = (Usuario) session.getAttribute("usuario");

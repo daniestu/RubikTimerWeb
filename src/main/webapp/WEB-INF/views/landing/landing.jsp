@@ -17,7 +17,7 @@
 <!DOCTYPE html>
 <html data-tema="<%= conf.getTema() %>" data-bs-theme="<%= (conf.getTema() == 1 || conf.getTema() == 3) ? "dark" : "light" %>">
 <head>
-    <jsp:include page="/head.jsp"/>
+    <jsp:include page="/WEB-INF/views/common/head.jsp"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@
     </script>
 </head>
 <body class="landing-body">
-<jsp:include page="/icons.jsp" />
+<jsp:include page="/WEB-INF/views/common/icons.jsp" />
 
 <nav class="landing-nav">
     <div class="landing-nav-brand">

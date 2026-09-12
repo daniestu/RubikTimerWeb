@@ -11,10 +11,10 @@
 <!DOCTYPE html>
 <html data-bs-theme="dark">
     <head>
-        <% request.setAttribute("tituloClave", "seo.titulo_registro");
-            request.setAttribute("descripcionClave", "seo.descripcion_registro");
-            request.setAttribute("urlCanonica", "https://www.dtimerapp.com/user/register"); %>
-        <jsp:include page="head.jsp" />
+        <% request.setAttribute("tituloClave", "seo.titulo_login");
+            request.setAttribute("descripcionClave", "seo.descripcion_login");
+            request.setAttribute("urlCanonica", "https://www.dtimerapp.com/user/login"); %>
+        <jsp:include page="/WEB-INF/views/common/head.jsp" />
         <script src="../js/login.js"></script>
         <link rel="stylesheet" type="text/css" href="../css/loginStyles.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,34 +30,33 @@
                         <span>DTimer</span>
                     </div>
 
-                    <h1 class="auth-title"><%= MessageUtil.getMessage(locale, "title.registro_usuario")%></h1>
+                    <h1 class="auth-title"><%= MessageUtil.getMessage(locale, "title.inicio_sesion")%></h1>
 
-                    <form action="register" method="post">
+                    <form action="login" method="post">
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" name="correo" id="correo" placeholder="<%= MessageUtil.getMessage(locale, "label.correo")%>" required>
-                            <label for="correo"><%= MessageUtil.getMessage(locale, "label.correo")%></label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="username" id="username" placeholder="<%= MessageUtil.getMessage(locale, "label.username_title")%>" required>
+                            <input type="text" class="form-control" name="username" id="username" placeholder="<%= MessageUtil.getMessage(locale, "label.username_title")%>" autocomplete="username" required>
                             <label for="username"><%= MessageUtil.getMessage(locale, "label.usuario")%></label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="<%= MessageUtil.getMessage(locale, "label.contrasena")%>" required>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="<%= MessageUtil.getMessage(locale, "label.contrasena")%>" autocomplete="current-password" required>
                             <label for="password"><%= MessageUtil.getMessage(locale, "label.contrasena")%></label>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" name="confirm-password" id="confirm-password" placeholder="<%= MessageUtil.getMessage(locale, "label.confirm_contrasena")%>" required>
-                            <label for="confirm-password"><%= MessageUtil.getMessage(locale, "label.confirm_contrasena")%></label>
+                        <div class="d-flex gap-2 justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe"><%= MessageUtil.getMessage(locale, "label.rememberme") %></label>
+                            </div>
+                            <a href="forgotPassword" class="auth-link"><%= MessageUtil.getMessage(locale, "label.olvidaste_contrasena")%></a>
                         </div>
 
                         <div class="d-grid mb-2">
-                            <button class="btn auth-btn btn-lg" type="submit"><%= MessageUtil.getMessage(locale, "label.registrarse") %></button>
+                            <button class="btn auth-btn btn-lg" type="submit"><%= MessageUtil.getMessage(locale, "label.iniciar_sesion") %></button>
                         </div>
                         <div class="d-grid mb-3">
                             <a href="../timer" class="btn auth-btn-ghost btn-lg"><%= MessageUtil.getMessage(locale, "label.continuar_invitado")%></a>
                         </div>
 
-                        <p class="auth-foot mb-0"><%= MessageUtil.getMessage(locale, "label.ya_tienes_cuenta")%> <a href="login" class="auth-link"><%= MessageUtil.getMessage(locale, "label.inicia_sesion_aqui")%></a></p>
+                        <p class="auth-foot mb-0"><%= MessageUtil.getMessage(locale, "label.no_tienes_cuenta")%> <a href="register" class="auth-link"><%= MessageUtil.getMessage(locale, "label.registrate_aqui")%></a></p>
                         <c:if test="${not empty error}">
                             <div class="error">${error}</div>
                         </c:if>
@@ -71,12 +70,14 @@
         </div>
 
         <script>
+            autocompletarLogin();
+
             fetch('../cube/generateScramble')
                 .then(function (response) { return response.text(); })
                 .then(function (scramble) {
                     document.getElementById('auth-scramble').textContent = scramble;
                 })
-                .catch(function () { });
+                .catch(function () { /* nos quedamos con el scramble de ejemplo del HTML */ });
         </script>
     </body>
 </html>

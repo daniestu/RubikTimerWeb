@@ -20,4 +20,24 @@
         <changefreq>monthly</changefreq>
         <priority>0.3</priority>
     </url>
+    <url>
+        <loc>https://www.dtimerapp.com/blog</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.dtimerapp.com/blog/que-es-ao5-ao12-ao100</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://www.dtimerapp.com/blog/como-mejorar-tiempos-cubo-rubik</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://www.dtimerapp.com/blog/mejores-cronometros-online-cubo-rubik</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
 </urlset>

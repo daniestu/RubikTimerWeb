@@ -36,7 +36,7 @@ public class UserController extends HttpServlet {
 			locale = request.getLocale();
 			request.setAttribute("locale", locale);
 
-			request.getRequestDispatcher("../login.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
 			break;
 		case "/logout":
 			HttpSession session = request.getSession(false);
@@ -57,7 +57,7 @@ public class UserController extends HttpServlet {
 			locale = request.getLocale();
 			request.setAttribute("locale", locale);
 
-			request.getRequestDispatcher("../register.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
 			break;
 		case "/checkAuthentication":
 			boolean isAuthenticated = (request.getSession().getAttribute("usuario") != null);
@@ -71,7 +71,7 @@ public class UserController extends HttpServlet {
 			locale = request.getLocale();
 			request.setAttribute("locale", locale);
 
-			request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/auth/forgotPassword.jsp").forward(request, response);
 			break;
 		case "/resetPassword":
 			locale = request.getLocale();
@@ -84,7 +84,7 @@ public class UserController extends HttpServlet {
 			
 			request.setAttribute("caducado", (caducado) ? true : false);
 			
-			request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/auth/resetPassword.jsp").forward(request, response);
 			break;
 		default:
 			break;
@@ -117,7 +117,7 @@ public class UserController extends HttpServlet {
 	        	
 	        	if (usuario == null || usuario.getIdUsuario() == null) {
 	    			request.setAttribute("error", "Credenciales inválidas. Intente nuevamente.");
-	    			request.getRequestDispatcher("../login.jsp").forward(request, response);
+	    			request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
 	    		}else {
 	    			request.getSession().setAttribute("usuario", usuario);
 
@@ -131,7 +131,7 @@ public class UserController extends HttpServlet {
 			} catch (Exception e) {
 				_log.error(e.getMessage(), e);
 				request.setAttribute("error", "Ha ocurrido un error al verificar las credenciales.");
-				request.getRequestDispatcher("../login.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
 			}
 			break;
 		case "/logout":
@@ -140,7 +140,7 @@ public class UserController extends HttpServlet {
 		case "/register":
 	        if (!password.equals(passwordConfirmation)) {
 	            request.setAttribute("error", "Las contraseñas no coinciden.");
-	            request.getRequestDispatcher("../register.jsp").forward(request, response);
+	            request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
 	            return;
 	        }
 	        
@@ -149,13 +149,13 @@ public class UserController extends HttpServlet {
 	        	
 	        	if (usuarioService.usuarioExiste(usuario, 0)) {
 	            	request.setAttribute("error", "El nombre de usuario ya existe.");
-	                request.getRequestDispatcher("../register.jsp").forward(request, response);
+	                request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
 	                return;
 	    		}
 	            
 	            if (usuarioService.usuarioExiste(usuario, 1)) {
 	            	request.setAttribute("error", "El correo introducido ya existe.");
-	                request.getRequestDispatcher("../register.jsp").forward(request, response);
+	                request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
 	                return;
 	    		}
 	            
@@ -167,7 +167,7 @@ public class UserController extends HttpServlet {
 			} catch (Exception e) {
 				_log.error(e.getMessage(), e);
 				request.setAttribute("error", "Ha ocurrido un error al registrar el usuario.");
-	            request.getRequestDispatcher("../register.jsp").forward(request, response);
+	            request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(request, response);
 	            return;
 			}
 	    	
@@ -181,7 +181,7 @@ public class UserController extends HttpServlet {
 	        	
 	            if (usuario == null || usuario.getIdUsuario() == null || usuario.getIdUsuario() == 0) {
 	            	request.setAttribute("error", "El correo introducido no existe.");
-	                request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
+	                request.getRequestDispatcher("/WEB-INF/views/auth/forgotPassword.jsp").forward(request, response);
 	                return;
 	    		}
 	            
@@ -191,11 +191,11 @@ public class UserController extends HttpServlet {
 					request.setAttribute("error", "Ha ocurrido un error al enviar el Correo.");
 				}
 	            
-                request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/auth/forgotPassword.jsp").forward(request, response);
 			} catch (Exception e) {
 				_log.error(e.getMessage(), e);
 				request.setAttribute("error", "Ha ocurrido un error al enviar el Correo.");
-	            request.getRequestDispatcher("../forgotPassword.jsp").forward(request, response);
+	            request.getRequestDispatcher("/WEB-INF/views/auth/forgotPassword.jsp").forward(request, response);
 	            return;
 			}
 			break;
@@ -207,7 +207,7 @@ public class UserController extends HttpServlet {
 				
 				if (caducado) {
 					request.setAttribute("caducado", true);
-					request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+					request.getRequestDispatcher("/WEB-INF/views/auth/resetPassword.jsp").forward(request, response);
 					return;
 				}else {
 					request.setAttribute("caducado", false);
@@ -215,7 +215,7 @@ public class UserController extends HttpServlet {
 				
 				if (!password.equals(passwordConfirmation)) {
 		            request.setAttribute("error", "Las contraseñas no coinciden.");
-		            request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+		            request.getRequestDispatcher("/WEB-INF/views/auth/resetPassword.jsp").forward(request, response);
 		            return;
 		        }
 				
@@ -224,19 +224,19 @@ public class UserController extends HttpServlet {
 				
 				if (!usuarioService.restablecerContraseña(token.getUsuarioId(), UserUtils.encryptPassword(password))) {
 					request.setAttribute("error", "Ha ocurrido un error al restablecer la contraseña.");
-		            request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+		            request.getRequestDispatcher("/WEB-INF/views/auth/resetPassword.jsp").forward(request, response);
 		            return;
 				}
 
 				tokenService.caducarTokens(token.getUsuarioId());
 				
 				request.setAttribute("confirmation", "ok");
-				request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/auth/resetPassword.jsp").forward(request, response);
 			} catch (Exception e) {
 				_log.error(e.getMessage(), e);
 				request.setAttribute("error", "Ha ocurrido un error al restablecer la contraseña.");
 				request.setAttribute("caducado", false);
-	            request.getRequestDispatcher("../resetPassword.jsp").forward(request, response);
+	            request.getRequestDispatcher("/WEB-INF/views/auth/resetPassword.jsp").forward(request, response);
 	            return;
 			}
 			

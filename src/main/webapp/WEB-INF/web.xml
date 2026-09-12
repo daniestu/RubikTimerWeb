@@ -26,12 +26,30 @@
   </filter-mapping>
 
   <servlet>
+    <servlet-name>LandingController</servlet-name>
+    <servlet-class>controller.LandingController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LandingController</servlet-name>
+    <url-pattern></url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>TimerController</servlet-name>
     <servlet-class>controller.TimerController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>TimerController</servlet-name>
     <url-pattern>/timer</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>BlogController</servlet-name>
+    <servlet-class>controller.BlogController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BlogController</servlet-name>
+    <url-pattern>/blog/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
