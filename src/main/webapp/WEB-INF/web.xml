@@ -26,6 +26,15 @@
   </filter-mapping>
 
   <servlet>
+    <servlet-name>TimerController</servlet-name>
+    <servlet-class>controller.TimerController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TimerController</servlet-name>
+    <url-pattern>/timer</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>Session</servlet-name>
     <servlet-class>restController.SessionController</servlet-class>
     <multipart-config>

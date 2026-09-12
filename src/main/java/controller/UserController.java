@@ -126,7 +126,7 @@ public class UserController extends HttpServlet {
 						CoockieHandler.addCoockie(response, "RubikTimerPassword", password, "password to rubikTimerWeb");
 					}
 	            	
-	            	response.sendRedirect("../");
+	            	response.sendRedirect("../timer");
 	    		}
 			} catch (Exception e) {
 				_log.error(e.getMessage(), e);
@@ -173,7 +173,7 @@ public class UserController extends HttpServlet {
 	    	
 	        HttpSession session = request.getSession();
 	        session.setAttribute("usuario", usuario);
-	        response.sendRedirect("../");
+	        response.sendRedirect("../timer");
 			break;
 		case "/forgotPassword":
 			try {

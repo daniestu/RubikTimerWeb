@@ -54,7 +54,7 @@
                             <button class="btn auth-btn btn-lg" type="submit"><%= MessageUtil.getMessage(locale, "label.registrarse") %></button>
                         </div>
                         <div class="d-grid mb-3">
-                            <a href="/" class="btn auth-btn-ghost btn-lg"><%= MessageUtil.getMessage(locale, "label.continuar_invitado")%></a>
+                            <a href="../timer" class="btn auth-btn-ghost btn-lg"><%= MessageUtil.getMessage(locale, "label.continuar_invitado")%></a>
                         </div>
 
                         <p class="auth-foot mb-0"><%= MessageUtil.getMessage(locale, "label.ya_tienes_cuenta")%> <a href="login" class="auth-link"><%= MessageUtil.getMessage(locale, "label.inicia_sesion_aqui")%></a></p>

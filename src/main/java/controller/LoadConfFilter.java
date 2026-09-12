@@ -11,6 +11,7 @@ import utils.UserUtils;
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Locale;
@@ -31,17 +32,22 @@ public class LoadConfFilter implements Filter {
         UsuarioService usuarioService = new UsuarioService();
 
         String path = req.getRequestURI().substring(req.getContextPath().length());
+        boolean esRaiz = path.equals("/") || path.equals("");
 
-        if (path.equals("/") || path.equals("")) {
+        if (esRaiz || path.equals("/timer")) {
             Usuario usuario = null;
+            if (session != null) {
+                usuario = (Usuario) session.getAttribute("usuario");
+            }
+
+            if (esRaiz && usuario != null) {
+                ((HttpServletResponse) response).sendRedirect(req.getContextPath() + "/timer");
+                return;
+            }
+
             Conf conf;
             try {
-                if (session != null) {
-                    usuario = (Usuario) session.getAttribute("usuario");
-                }
-
                 conf = usuarioService.getConfiguracionUsuario(usuario);
-
                 if (usuario == null) {
                     conf = aplicarPreferenciasInvitado(req, conf);
                 }
