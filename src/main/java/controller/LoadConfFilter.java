@@ -28,6 +28,7 @@ public class LoadConfFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
         UsuarioService usuarioService = new UsuarioService();
 
@@ -50,16 +51,21 @@ public class LoadConfFilter implements Filter {
             try {
                 conf = usuarioService.getConfiguracionUsuario(usuario);
                 if (usuario == null) {
-                    conf = aplicarPreferenciasInvitado(req, conf);
+                    conf = aplicarPreferenciasInvitado(req, resp, conf);
                 }
             } catch (Exception e) {
                 conf = UserUtils.getDefaultConf();
             }
 
+            Integer idiomaForzado = (Integer) request.getAttribute("idiomaForzado");
+            if (idiomaForzado != null) {
+                conf.setIdioma(idiomaForzado);
+            }
             TemaConfig config = TemaHelper.getConfig(conf.getTema());
             Locale locale = IdiomaHelper.getLocale(conf.getIdioma());
             int idiomaNavegador = IdiomaHelper.getIdioma(request.getLocale());
             request.setAttribute("idiomaNavegador", idiomaNavegador);
+            request.setAttribute("codigoIdioma", IdiomaHelper.getCodigoUrl(conf.getIdioma()));
             request.setAttribute("locale", locale);
             request.setAttribute("temaConfig", config);
             request.setAttribute("conf", conf);
@@ -69,18 +75,44 @@ public class LoadConfFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    private Conf aplicarPreferenciasInvitado(HttpServletRequest request, Conf conf) {
+    private Conf aplicarPreferenciasInvitado(HttpServletRequest request, HttpServletResponse response, Conf conf) {
         Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            return conf;
+        boolean existeCookieIdioma = false;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("guestIdioma".equals(cookie.getName())) {
+                    try {
+                        conf.setIdioma(Integer.parseInt(cookie.getValue()));
+                        existeCookieIdioma = true;
+                    } catch (NumberFormatException e) {
+                        // Si la cookie es inválida, se ignorará para recrearla
+                    }
+                } else if ("guestTema".equals(cookie.getName())) {
+                    try {
+                        conf.setTema(Integer.parseInt(cookie.getValue()));
+                    } catch (NumberFormatException e) {
+                        // Ignorar si no es numérico
+                    }
+                }
+            }
         }
 
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("guestIdioma")) {
-                conf.setIdioma(Integer.parseInt(cookie.getValue()));
-            } else if (cookie.getName().equals("guestTema")) {
-                conf.setTema(Integer.parseInt(cookie.getValue()));
+        // Si no se encuientra la cookie "guestIdioma", la creamos con el idioma del navegador
+        if (!existeCookieIdioma) {
+            Locale localeNavegador = request.getLocale();
+            int idiomaDetectado = 1;
+
+            if (localeNavegador != null && localeNavegador.getLanguage() != null) {
+                idiomaDetectado = IdiomaHelper.getIdiomaDesdeCodigoUrl(localeNavegador.getLanguage());
             }
+
+            conf.setIdioma(idiomaDetectado);
+
+            Cookie cookieIdioma = new Cookie("guestIdioma", String.valueOf(idiomaDetectado));
+            cookieIdioma.setPath("/");
+            cookieIdioma.setMaxAge(365 * 24 * 60 * 60);
+            response.addCookie(cookieIdioma);
         }
 
         return conf;

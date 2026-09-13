@@ -9,15 +9,28 @@
     TemaConfig temaConfig = (TemaConfig) request.getAttribute("temaConfig");
     Locale locale = (Locale) request.getAttribute("locale");
 
+    String codigoIdioma = (String) request.getAttribute("codigoIdioma");
     request.setAttribute("tituloClave", "seo.titulo_inicio");
     request.setAttribute("descripcionClave", "seo.descripcion_inicio");
-    request.setAttribute("urlCanonica", "https://www.dtimerapp.com/");
+    request.setAttribute("urlCanonica", "https://www.dtimerapp.com/" + codigoIdioma);
 %>
 
 <!DOCTYPE html>
 <html data-tema="<%= conf.getTema() %>" data-bs-theme="<%= (conf.getTema() == 1 || conf.getTema() == 3) ? "dark" : "light" %>">
 <head>
     <jsp:include page="/WEB-INF/views/common/head.jsp"/>
+    <link rel="alternate" hreflang="en" href="https://www.dtimerapp.com/en">
+    <link rel="alternate" hreflang="es" href="https://www.dtimerapp.com/es">
+    <link rel="alternate" hreflang="fr" href="https://www.dtimerapp.com/fr">
+    <link rel="alternate" hreflang="de" href="https://www.dtimerapp.com/de">
+    <link rel="alternate" hreflang="it" href="https://www.dtimerapp.com/it">
+    <link rel="alternate" hreflang="pt" href="https://www.dtimerapp.com/pt">
+    <link rel="alternate" hreflang="zh" href="https://www.dtimerapp.com/zh">
+    <link rel="alternate" hreflang="ar" href="https://www.dtimerapp.com/ar">
+    <link rel="alternate" hreflang="ru" href="https://www.dtimerapp.com/ru">
+    <link rel="alternate" hreflang="ja" href="https://www.dtimerapp.com/ja">
+    <link rel="alternate" hreflang="ko" href="https://www.dtimerapp.com/ko">
+    <link rel="alternate" hreflang="x-default" href="https://www.dtimerapp.com/en">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
