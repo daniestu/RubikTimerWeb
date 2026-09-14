@@ -320,7 +320,7 @@ const sesionData = {
         localStorage.setItem('rubikTimerPreferencias', JSON.stringify(preferenciasLocales));
 
         const params = new URLSearchParams(formData);
-        return fetch('conf/save', { method: 'POST', body: params })
+        return fetch('/conf/save', { method: 'POST', body: params })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al guardar las preferencias');

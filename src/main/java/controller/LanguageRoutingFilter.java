@@ -12,8 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LanguageRoutingFilter implements Filter {
+
+    private static final Pattern LANG_PATTERN = Pattern.compile("^/(en|es|fr|de|it|pt|zh|ar|ru|ja|ko)(/.*)?$");
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
@@ -25,19 +29,23 @@ public class LanguageRoutingFilter implements Filter {
 
         String path = req.getRequestURI().substring(req.getContextPath().length());
 
-        // Se procesan todas las rutas de los 11 idiomas soportados
-        if (path.matches("^/(en|es|fr|de|it|pt|zh|ar|ru|ja|ko)$")) {
-            String codigo = path.substring(1);
-            request.setAttribute("idiomaForzado", IdiomaHelper.getIdiomaDesdeCodigoUrl(codigo));
-            req.getRequestDispatcher("/").forward(request, response);
-            return;
+        Matcher matcher = LANG_PATTERN.matcher(path);
+        if (matcher.matches()) {
+            String codigoDetectado = matcher.group(1);
+            String subPath = matcher.group(2);
+            String resto = (subPath == null || subPath.isEmpty()) ? "/" : subPath;
+
+            if (resto.equals("/") || resto.equals("/timer")) {
+                request.setAttribute("idiomaForzado", IdiomaHelper.getIdiomaDesdeCodigoUrl(codigoDetectado));
+                req.getRequestDispatcher(resto).forward(request, response);
+                return;
+            }
         }
 
-        // La raíz sin prefijo -> redirige al idioma sugerido según el visitante
-        if (path.equals("/") || path.equals("")) {
+        if (path.equals("/") || path.equals("") || path.equals("/timer")) {
             int idiomaSugerido = adivinarIdioma(req);
             String codigo = IdiomaHelper.getCodigoUrl(idiomaSugerido);
-            res.sendRedirect(req.getContextPath() + "/" + codigo);
+            res.sendRedirect(req.getContextPath() + "/" + codigo + (path.equals("/timer") ? "/timer" : ""));
             return;
         }
 
@@ -55,7 +63,7 @@ public class LanguageRoutingFilter implements Filter {
                 }
             }
         } catch (Exception e) {
-            // si falla, seguimos probando con el resto de señales
+            // seguimos con el resto de señales
         }
 
         Cookie[] cookies = request.getCookies();
@@ -72,8 +80,8 @@ public class LanguageRoutingFilter implements Filter {
         }
 
         Locale localeNavegador = request.getLocale();
-        if (localeNavegador != null && localeNavegador.getLanguage().equals("es")) {
-            return 2;
+        if (localeNavegador != null && localeNavegador.getLanguage() != null) {
+            return IdiomaHelper.getIdiomaDesdeCodigoUrl(localeNavegador.getLanguage());
         }
 
         return 1;

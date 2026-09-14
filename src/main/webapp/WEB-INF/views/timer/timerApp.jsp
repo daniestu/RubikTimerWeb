@@ -15,10 +15,25 @@
 <!DOCTYPE html>
 <html data-tema="<%= conf.getTema() %>" data-bs-theme="<%= (conf.getTema() == 1 || conf.getTema() == 2 || conf.getTema() == 3) ? "dark" : "light" %>">
 <head>
-    <% request.setAttribute("tituloClave", "seo.titulo_timer");
+    <%
+        String codigoIdioma = (String) request.getAttribute("codigoIdioma");
+        request.setAttribute("tituloClave", "seo.titulo_timer");
         request.setAttribute("descripcionClave", "seo.descripcion_timer");
-        request.setAttribute("urlCanonica", "https://www.dtimerapp.com/timer"); %>
+        request.setAttribute("urlCanonica", "https://www.dtimerapp.com/" + codigoIdioma + "/timer");
+    %>
     <jsp:include page="/WEB-INF/views/common/head.jsp"/>
+    <link rel="alternate" hreflang="en" href="https://www.dtimerapp.com/en/timer">
+    <link rel="alternate" hreflang="es" href="https://www.dtimerapp.com/es/timer">
+    <link rel="alternate" hreflang="fr" href="https://www.dtimerapp.com/fr/timer">
+    <link rel="alternate" hreflang="de" href="https://www.dtimerapp.com/de/timer">
+    <link rel="alternate" hreflang="it" href="https://www.dtimerapp.com/it/timer">
+    <link rel="alternate" hreflang="pt" href="https://www.dtimerapp.com/pt/timer">
+    <link rel="alternate" hreflang="zh" href="https://www.dtimerapp.com/zh/timer">
+    <link rel="alternate" hreflang="ar" href="https://www.dtimerapp.com/ar/timer">
+    <link rel="alternate" hreflang="ru" href="https://www.dtimerapp.com/ru/timer">
+    <link rel="alternate" hreflang="ja" href="https://www.dtimerapp.com/ja/timer">
+    <link rel="alternate" hreflang="ko" href="https://www.dtimerapp.com/ko/timer">
+    <link rel="alternate" hreflang="x-default" href="https://www.dtimerapp.com/en/timer">
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,22 +62,22 @@
         }
     </script>
     <% if (session.getAttribute("usuario") != null) { %>
-    <script src="js/data/account/sesionData.js" charset="UTF-8"></script>
+    <script src="/js/data/account/sesionData.js" charset="UTF-8"></script>
     <% } else { %>
-    <script src="js/data/guest/statsEngine.js" charset="UTF-8"></script>
-    <script src="js/data/guest/db.js" charset="UTF-8"></script>
-    <script src="js/data/guest/sesionData.js" charset="UTF-8"></script>
+    <script src="/js/data/guest/statsEngine.js" charset="UTF-8"></script>
+    <script src="/js/data/guest/db.js" charset="UTF-8"></script>
+    <script src="/js/data/guest/sesionData.js" charset="UTF-8"></script>
     <% } %>
-    <script src="js/core/scrambleScript.js" charset="UTF-8"></script>
-    <script src="js/core/preferenciasScript.js" charset="UTF-8"></script>
-    <script src="js/core/configuracionScript.js" charset="UTF-8"></script>
-    <script src="js/ui/sesionUI.js" charset="UTF-8"></script>
-    <link rel="stylesheet" type="text/css" href="css/mainStyles.css">
-    <link rel="stylesheet" type="text/css" href="css/asideStyles.css">
-    <link rel="stylesheet" type="text/css" href="css/scrambleStyles.css">
-    <link rel="stylesheet" type="text/css" href="css/configuracionStyles.css">
-    <link rel="stylesheet" type="text/css" href="css/modalStyles.css">
-    <link rel="stylesheet" type="text/css" href="css/previewStyles.css">
+    <script src="/js/core/scrambleScript.js" charset="UTF-8"></script>
+    <script src="/js/core/preferenciasScript.js" charset="UTF-8"></script>
+    <script src="/js/core/configuracionScript.js" charset="UTF-8"></script>
+    <script src="/js/ui/sesionUI.js" charset="UTF-8"></script>
+    <link rel="stylesheet" type="text/css" href="/css/mainStyles.css">
+    <link rel="stylesheet" type="text/css" href="/css/asideStyles.css">
+    <link rel="stylesheet" type="text/css" href="/css/scrambleStyles.css">
+    <link rel="stylesheet" type="text/css" href="/css/configuracionStyles.css">
+    <link rel="stylesheet" type="text/css" href="/css/modalStyles.css">
+    <link rel="stylesheet" type="text/css" href="/css/previewStyles.css">
 </head>
 <body>
 <h1 class="visually-hidden"><%= MessageUtil.getMessage(locale, "seo.titulo_timer")%></h1>
@@ -98,7 +113,7 @@
 <%}%>
 <aside id="aside-container" class="aside-container">
     <div id="logo_container" class="logo_container">
-        <img id="logo" class="logo" src="images/logo.png" alt="Rubik timer">
+        <img id="logo" class="logo" src="/images/logo.png" alt="Rubik timer">
     </div>
     <div id="sesion_container">
         <label id="sesion_label" class="mb-0" for="sesion_select"><%= MessageUtil.getMessage(locale, "label.sesion")%>:</label>
@@ -129,7 +144,7 @@
 
 <div class="side-panel d-lg-none" id="sidePanel">
     <div id="logo_container_mobile" class="logo_container">
-        <img id="logo_mobile" class="logo" src="images/logo.png" alt="Rubik timer">
+        <img id="logo_mobile" class="logo" src="/images/logo.png" alt="Rubik timer">
     </div>
     <div id="estadisticas_container_mobile_side" class="estadisticas_container">
         <table id="tablaEstadisticas_mobile" class="tablaEstadisticas">
@@ -199,7 +214,7 @@
     </div>
 </div>
 
-<script src="js/core/cronometroScript.js"></script>
+<script src="/js/core/cronometroScript.js"></script>
 <script>
     generateScramble();
     getSesiones();

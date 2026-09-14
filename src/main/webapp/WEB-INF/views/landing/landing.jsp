@@ -67,12 +67,12 @@
 
 <nav class="landing-nav">
     <div class="landing-nav-brand">
-        <img src="images/logo.png" alt="" width="32" height="32">
-        <span>DER Timer</span>
+        <img src="/images/logo.png" alt="" width="32" height="32">
+        <span>DTimer</span>
     </div>
     <div class="landing-nav-links">
         <a href="user/login" class="landing-nav-link"><%= MessageUtil.getMessage(locale, "label.iniciar_sesion")%></a>
-        <a href="timer" class="btn landing-btn landing-btn-sm"><%= MessageUtil.getMessage(locale, "landing.cta_principal")%></a>
+        <a href="<%= codigoIdioma %>/timer" class="btn landing-btn landing-btn-sm"><%= MessageUtil.getMessage(locale, "landing.cta_principal")%></a>
     </div>
 </nav>
 
@@ -80,7 +80,7 @@
     <h1><%= MessageUtil.getMessage(locale, "landing.h1")%></h1>
     <p class="landing-subheadline"><%= MessageUtil.getMessage(locale, "landing.subheadline")%></p>
     <div class="landing-hero-actions">
-        <a href="timer" class="btn landing-btn landing-btn-lg"><%= MessageUtil.getMessage(locale, "landing.cta_principal")%></a>
+        <a href="<%= codigoIdioma %>/timer" class="btn landing-btn landing-btn-lg"><%= MessageUtil.getMessage(locale, "landing.cta_principal")%></a>
         <span class="landing-hero-note"><%= MessageUtil.getMessage(locale, "landing.cta_nota")%></span>
     </div>
     <div class="landing-scramble" id="landing-scramble">R U R' U' R' F R2 U' R' U' R U R' F'</div>
@@ -157,12 +157,12 @@
 </section>
 
 <footer class="landing-footer">
-    <a href="timer" class="btn landing-btn landing-btn-lg"><%= MessageUtil.getMessage(locale, "landing.cta_final")%></a>
+    <a href="<%= codigoIdioma %>/timer" class="btn landing-btn landing-btn-lg"><%= MessageUtil.getMessage(locale, "landing.cta_final")%></a>
     <p class="landing-footer-note">DTimer — <%= MessageUtil.getMessage(locale, "landing.footer_texto")%></p>
 </footer>
 
 <script>
-    fetch('cube/generateScramble')
+    fetch('/cube/generateScramble')
         .then(function (response) { return response.text(); })
         .then(function (scramble) {
             document.getElementById('landing-scramble').textContent = scramble;

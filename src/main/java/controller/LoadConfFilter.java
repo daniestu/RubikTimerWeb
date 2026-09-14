@@ -42,11 +42,6 @@ public class LoadConfFilter implements Filter {
                 usuario = (Usuario) session.getAttribute("usuario");
             }
 
-            if (esRaiz && usuario != null) {
-                ((HttpServletResponse) response).sendRedirect(req.getContextPath() + "/timer");
-                return;
-            }
-
             Conf conf;
             try {
                 conf = usuarioService.getConfiguracionUsuario(usuario);
@@ -61,15 +56,22 @@ public class LoadConfFilter implements Filter {
             if (idiomaForzado != null) {
                 conf.setIdioma(idiomaForzado);
             }
+
+            if (esRaiz && usuario != null) {
+                String codigo = IdiomaHelper.getCodigoUrl(conf.getIdioma());
+                ((HttpServletResponse) response).sendRedirect(req.getContextPath() + "/" + codigo + "/timer");
+                return;
+            }
+
             TemaConfig config = TemaHelper.getConfig(conf.getTema());
             Locale locale = IdiomaHelper.getLocale(conf.getIdioma());
             int idiomaNavegador = IdiomaHelper.getIdioma(request.getLocale());
             request.setAttribute("idiomaNavegador", idiomaNavegador);
-            request.setAttribute("codigoIdioma", IdiomaHelper.getCodigoUrl(conf.getIdioma()));
             request.setAttribute("locale", locale);
             request.setAttribute("temaConfig", config);
             request.setAttribute("conf", conf);
             request.setAttribute("esInvitado", usuario == null);
+            request.setAttribute("codigoIdioma", IdiomaHelper.getCodigoUrl(conf.getIdioma()));
         }
 
         chain.doFilter(request, response);

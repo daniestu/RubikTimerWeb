@@ -87,7 +87,7 @@ $(document).ready(function() {
 	});
 	
 	function logout() {
-		fetch('user/logout')
+		fetch('/user/logout')
 			.then(response => {
 				if (response.redirected) {
 					window.location.href = response.url;

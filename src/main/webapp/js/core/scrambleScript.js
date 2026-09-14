@@ -1,7 +1,7 @@
 var historialScrambles = [];
 
 function generateScramble() {
-	fetch('cube/generateScramble')
+	fetch('/cube/generateScramble')
 		.then(response => response.text())
 		.then(scramble => {
 			establecerCubo(scramble);
@@ -58,7 +58,7 @@ function validarScramble(scramble) {
 
 
 function establecerCubo(scramble) {
-	fetch('cube/generateCube?scramble=' + scramble.toUpperCase())
+	fetch('/cube/generateCube?scramble=' + scramble.toUpperCase())
         .then(response => response.json())
         .then(json => {
 

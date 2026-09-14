@@ -23,7 +23,7 @@
             <div class="auth-form-side d-flex align-items-center justify-content-center p-4 p-lg-5">
                 <div class="auth-form-card">
                     <div class="auth-brand">
-                        <img src="../images/logo.png" alt="">
+                        <img src="/images/logo.png" alt="">
                         <span>DTimer</span>
                     </div>
 
@@ -69,7 +69,7 @@
         </div>
 
         <script>
-            fetch('../cube/generateScramble')
+            fetch('/cube/generateScramble')
                 .then(function (response) { return response.text(); })
                 .then(function (scramble) {
                     document.getElementById('auth-scramble').textContent = scramble;

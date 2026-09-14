@@ -1,0 +1,17 @@
+.error-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.error-card { text-align: center; max-width: 460px; padding: 2rem; }
+.error-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0 0 .5rem;
+    line-height: 1;
+}
+.error-card h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: .75rem; }
+.error-text { color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }

@@ -7,7 +7,7 @@
     <div class="landing-nav-brand">
         <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;">
             <img src="/images/logo.png" alt="" width="32" height="32">
-            <span>DER Timer</span>
+            <span>DTimer</span>
         </a>
     </div>
     <div class="landing-nav-links">

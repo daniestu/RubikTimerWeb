@@ -22,8 +22,8 @@
 <% } %>
 <link rel="canonical" href="<%= urlCanonica %>">
 <meta charset="UTF-8">
-<link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico" />
-<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

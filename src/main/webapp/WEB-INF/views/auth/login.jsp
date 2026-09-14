@@ -6,6 +6,7 @@
 
 <%
     Locale locale = (Locale) request.getAttribute("locale");
+    String codigoIdiomaBoton = utils.IdiomaHelper.getCodigoUrl(utils.IdiomaHelper.getIdioma(locale));
 %>
 
 <!DOCTYPE html>
@@ -26,7 +27,7 @@
             <div class="auth-form-side d-flex align-items-center justify-content-center p-4 p-lg-5">
                 <div class="auth-form-card">
                     <div class="auth-brand">
-                        <img src="../images/logo.png" alt="">
+                        <img src="/images/logo.png" alt="">
                         <span>DTimer</span>
                     </div>
 
@@ -53,7 +54,7 @@
                             <button class="btn auth-btn btn-lg" type="submit"><%= MessageUtil.getMessage(locale, "label.iniciar_sesion") %></button>
                         </div>
                         <div class="d-grid mb-3">
-                            <a href="../timer" class="btn auth-btn-ghost btn-lg"><%= MessageUtil.getMessage(locale, "label.continuar_invitado")%></a>
+                            <a href="../<%= codigoIdiomaBoton %>/timer" class="btn auth-btn-ghost btn-lg"><%= MessageUtil.getMessage(locale, "label.continuar_invitado")%></a>
                         </div>
 
                         <p class="auth-foot mb-0"><%= MessageUtil.getMessage(locale, "label.no_tienes_cuenta")%> <a href="register" class="auth-link"><%= MessageUtil.getMessage(locale, "label.registrate_aqui")%></a></p>
@@ -72,7 +73,7 @@
         <script>
             autocompletarLogin();
 
-            fetch('../cube/generateScramble')
+            fetch('/cube/generateScramble')
                 .then(function (response) { return response.text(); })
                 .then(function (scramble) {
                     document.getElementById('auth-scramble').textContent = scramble;

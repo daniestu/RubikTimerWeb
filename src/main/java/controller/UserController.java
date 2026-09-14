@@ -2,11 +2,13 @@ package controller;
 
 import business.TokenService;
 import business.UsuarioService;
+import models.Conf;
 import models.Token;
 import models.Usuario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.CoockieHandler;
+import utils.IdiomaHelper;
 import utils.TokenUtils;
 import utils.UserUtils;
 
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Locale;
 
 public class UserController extends HttpServlet {
@@ -125,8 +128,9 @@ public class UserController extends HttpServlet {
 						CoockieHandler.addCoockie(response, "RubikTimerUsername", username, "user to rubikTimerWeb");
 						CoockieHandler.addCoockie(response, "RubikTimerPassword", password, "password to rubikTimerWeb");
 					}
-	            	
-	            	response.sendRedirect("../timer");
+
+					Conf confPostLogin = new UsuarioService().getConfiguracionUsuario(usuario);
+					response.sendRedirect("../" + IdiomaHelper.getCodigoUrl(confPostLogin.getIdioma()) + "/timer");
 	    		}
 			} catch (Exception e) {
 				_log.error(e.getMessage(), e);
@@ -173,7 +177,13 @@ public class UserController extends HttpServlet {
 	    	
 	        HttpSession session = request.getSession();
 	        session.setAttribute("usuario", usuario);
-	        response.sendRedirect("../timer");
+            try {
+				Conf confPostLogin = new UsuarioService().getConfiguracionUsuario(usuario);
+            	response.sendRedirect("../" + IdiomaHelper.getCodigoUrl(confPostLogin.getIdioma()) + "/timer");
+            } catch (SQLException e) {
+				_log.error(e.getMessage(), e);
+				response.sendRedirect("../timer");
+            }
 			break;
 		case "/forgotPassword":
 			try {
